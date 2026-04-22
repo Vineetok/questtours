@@ -2,52 +2,136 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Map, 
-  TrendingUp, 
-  ArrowUpRight, 
+import {
+  LayoutDashboard,
+  Users,
+  Map,
+  TrendingUp,
+  ArrowUpRight,
   ArrowDownRight,
   MoreVertical,
-  Plus
+  Plus,
+  CreditCard,
+  TicketPercent,
+  UserCircle,
+  Briefcase
 } from 'lucide-react';
-import { adminStats, recentBookings, revenueData } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import { getAuthToken, API_URL, getUserData } from '@/lib/auth';
+import { toast } from 'sonner';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ResponsiveContainer, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Cell 
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell
 } from 'recharts';
 
 const adminNavItems = [
   { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'User Management', url: '#', icon: Users },
-  { title: 'Tour Packages', url: '#', icon: Map },
-  { title: 'Analytics', url: '#', icon: TrendingUp },
+  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
+  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
+  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
+  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
+  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
 ];
 
 export default function AdminDashboard() {
+  const [stats, setStats] = React.useState<any>(null);
+  const [revenueData, setRevenueData] = React.useState<any[]>([]);
+  const [recentBookings, setRecentBookings] = React.useState<any[]>([]);
+  const [user, setUser] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+
+    const fetchDashboardData = async () => {
+      try {
+        const token = getAuthToken();
+        const response = await fetch(`${API_URL}/admin/stats`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setStats(data);
+          setRevenueData(data.revenueData || []);
+          setRecentBookings(data.recentBookings || []);
+        } else {
+          toast.error(data.message || 'Failed to fetch dashboard stats');
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const statsConfig = React.useMemo(() => {
+    if (!stats) return [];
+    return [
+      {
+        label: 'Total Revenue',
+        value: `₹${stats.totalRevenue.toLocaleString()}`,
+        change: stats.trends.revenue.change,
+        trend: stats.trends.revenue.trend,
+        icon: TrendingUp,
+        color: 'text-blue-600',
+        bg: 'bg-blue-50'
+      },
+      {
+        label: 'Trips Done',
+        value: stats.totalTrips.toLocaleString(),
+        change: stats.trends.bookings.change,
+        trend: stats.trends.bookings.trend,
+        icon: TicketPercent,
+        color: 'text-purple-600',
+        bg: 'bg-purple-50'
+      },
+      {
+        label: 'Active Customers',
+        value: stats.totalCustomers.toLocaleString(),
+        change: stats.trends.customers.change,
+        trend: stats.trends.customers.trend,
+        icon: Users,
+        color: 'text-teal-600',
+        bg: 'bg-teal-50'
+      },
+      {
+        label: 'Active Agents',
+        value: stats.totalAgents.toLocaleString(),
+        change: stats.trends.agents.change,
+        trend: stats.trends.agents.trend,
+        icon: Briefcase,
+        color: 'text-orange-600',
+        bg: 'bg-orange-50'
+      }
+    ];
+  }, [stats]);
   return (
-    <DashboardLayout 
-      role="admin" 
-      userName="Admin User" 
-      userEmail="admin@questtours.com"
+    <DashboardLayout
+      role="admin"
+      userName={user?.name || "Admin User"}
+      userEmail={user?.email || "admin@questtours.com"}
       navItems={adminNavItems}
     >
       <div className="space-y-8">
@@ -63,23 +147,40 @@ export default function AdminDashboard() {
 
         {/* Stats Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {adminStats.map((stat) => (
-            <Card key={stat.label} className="border-none shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className={cn(
-                  "text-xs flex items-center mt-1",
-                  stat.trend === 'up' ? "text-green-600" : "text-red-600"
-                )}>
-                  {stat.trend === 'up' ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
-                  {stat.change} from last month
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {loading ? (
+            Array(4).fill(0).map((_, i) => (
+              <Card key={i} className="border-none shadow-sm animate-pulse">
+                <CardHeader className="pb-2">
+                  <div className="h-4 w-24 bg-gray-100 rounded"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-8 w-16 bg-gray-100 rounded mb-2"></div>
+                  <div className="h-3 w-32 bg-gray-100 rounded"></div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            statsConfig.map((stat) => (
+              <Card key={stat.label} className="border-none shadow-sm overflow-hidden group hover:shadow-md transition-all duration-300">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600">{stat.label}</CardTitle>
+                  <div className={`${stat.bg} ${stat.color} p-2 rounded-xl group-hover:scale-110 transition-transform`}>
+                    <stat.icon size={16} />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <p className={cn(
+                    "text-xs flex items-center mt-1 font-medium",
+                    stat.trend === 'up' ? "text-teal-600" : "text-red-600"
+                  )}>
+                    {stat.trend === 'up' ? <ArrowUpRight className="h-3 w-3 mr-1" strokeWidth={3} /> : <ArrowDownRight className="h-3 w-3 mr-1" strokeWidth={3} />}
+                    {stat.change} <span className="text-gray-400 font-normal ml-1">from last month</span>
+                  </p>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -94,23 +195,22 @@ export default function AdminDashboard() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={revenueData}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="name" 
-                      stroke="#888888" 
-                      fontSize={12} 
-                      tickLine={false} 
-                      axisLine={false} 
-                    />
-                    <YAxis 
-                      stroke="#888888" 
-                      fontSize={12} 
-                      tickLine={false} 
+                    <XAxis
+                      dataKey="name"
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `$${value}`}
                     />
-                    <Tooltip 
-                      cursor={{fill: '#f5f5f5'}}
-                      contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}
+                    <YAxis
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip
+                      cursor={{ fill: '#f5f5f5' }}
+                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                     />
                     <Bar dataKey="total" radius={[4, 4, 0, 0]}>
                       {revenueData.map((entry, index) => (
@@ -187,8 +287,8 @@ export default function AdminDashboard() {
                     <TableCell>{booking.date}</TableCell>
                     <TableCell>
                       <Badge variant={
-                        booking.status === 'Confirmed' ? 'default' : 
-                        booking.status === 'Pending' ? 'secondary' : 'destructive'
+                        booking.status === 'Confirmed' ? 'default' :
+                          booking.status === 'Pending' ? 'secondary' : 'destructive'
                       }>
                         {booking.status}
                       </Badge>

@@ -76,6 +76,11 @@ export function Navbar() {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/signup?role=agent">
+              <Button variant="ghost" className="text-white hover:text-blue-400 font-medium">
+                Become an Agent
+              </Button>
+            </Link>
             <Link href="/login">
               <Button variant="ghost" className="text-white hover:bg-white/10 font-medium">
                 Login
@@ -150,6 +155,11 @@ export function Navbar() {
               Contact
             </Link>
             <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
+              <Link href="/signup?role=agent" className="w-full" onClick={() => setIsOpen(false)}>
+                <Button variant="ghost" className="w-full text-blue-400 hover:bg-white/10 justify-center h-12">
+                  Become an Agent
+                </Button>
+              </Link>
               <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
                 <Button variant="ghost" className="w-full text-white hover:bg-white/10 justify-center h-12">
                   Login

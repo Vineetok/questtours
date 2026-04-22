@@ -70,11 +70,10 @@ export function Testimonials() {
                   <Star
                     key={i}
                     size={16}
-                    className={`${
-                      i < testimonial.rating
+                    className={`${i < testimonial.rating
                         ? 'fill-yellow-400 text-yellow-400'
                         : 'text-gray-300'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -115,11 +114,10 @@ export function Testimonials() {
                   <Star
                     key={i}
                     size={20}
-                    className={`${
-                      i < selectedTestimonial.rating
+                    className={`${i < selectedTestimonial.rating
                         ? 'fill-yellow-400 text-yellow-400'
                         : 'text-gray-300'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

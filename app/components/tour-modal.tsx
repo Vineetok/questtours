@@ -110,7 +110,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
           {/* RIGHT COLUMN: Information (Scrollable) */}
           <div className="flex flex-1 flex-col overflow-hidden bg-slate-50">
             <div className="flex-1 overflow-y-auto px-6 py-8 sm:px-10">
-              
+
               {/* Quick Stats Grid */}
               <div className="grid grid-cols-3 gap-3 mb-10">
                 {[
@@ -177,7 +177,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
                     <span className="text-sm font-medium text-slate-500">/ person</span>
                   </div>
                 </div>
-                
+
                 <Link href="/signup" className="flex-1 sm:flex-none">
                   <Button className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 text-base font-bold text-white transition-all hover:shadow-lg hover:shadow-sky-200 active:scale-[0.98] sm:min-w-[200px]">
                     Reserve Now

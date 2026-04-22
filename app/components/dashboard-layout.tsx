@@ -3,15 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Map, 
-  Calendar, 
-  Settings, 
-  LogOut, 
-  Search, 
-  Bell, 
+import {
+  LayoutDashboard,
+  Users,
+  Map,
+  Calendar,
+  Settings,
+  LogOut,
+  Search,
+  Bell,
   User as UserIcon,
   Heart,
   TrendingUp,
@@ -36,13 +36,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
 interface NavItem {
@@ -81,8 +81,8 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
                 <SidebarMenu>
                   {navItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton 
-                        asChild 
+                      <SidebarMenuButton
+                        asChild
                         isActive={pathname === item.url}
                         tooltip={item.title}
                       >
@@ -110,7 +110,7 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
-        
+
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
             <SidebarTrigger className="-ml-1" />
@@ -129,7 +129,7 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
               </Button>
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100">
@@ -159,7 +159,7 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
               </DropdownMenu>
             </div>
           </header>
-          
+
           <main className="flex-1 p-6 lg:p-8">
             {children}
           </main>

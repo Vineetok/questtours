@@ -8,6 +8,24 @@ import Link from 'next/link';
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80; // Offset for fixed navbar
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+    setIsOpen(false);
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,11 +42,35 @@ export function Navbar() {
             <Link href="/" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
               Home
             </Link>
-            <Link href="#tours" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
+            <a 
+              href="#tours" 
+              onClick={(e) => handleScroll(e, 'tours')}
+              className="text-white hover:text-blue-400 transition-colors text-sm font-medium cursor-pointer"
+            >
               Tours
-            </Link>
-            <Link href="/destinations" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
+            </a>
+            <a 
+              href="#destinations" 
+              onClick={(e) => handleScroll(e, 'destinations')}
+              className="text-white hover:text-blue-400 transition-colors text-sm font-medium cursor-pointer"
+            >
               Destinations
+            </a>
+            <a 
+              href="#categories" 
+              onClick={(e) => handleScroll(e, 'categories')}
+              className="text-white hover:text-blue-400 transition-colors text-sm font-medium cursor-pointer"
+            >
+              Categories
+            </a>
+            <Link href="/about" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
+              About
+            </Link>
+            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
+              Blog
+            </Link>
+            <Link href="/contact" className="text-white hover:text-blue-400 transition-colors text-sm font-medium">
+              Contact
             </Link>
           </div>
 
@@ -40,7 +82,7 @@ export function Navbar() {
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-lg shadow-blue-900/20">
+              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20">
                 Sign Up
               </Button>
             </Link>
@@ -65,19 +107,47 @@ export function Navbar() {
             >
               Home
             </Link>
-            <Link
+            <a
               href="#tours"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => handleScroll(e, 'tours')}
+              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
             >
               Tours
-            </Link>
+            </a>
+            <a
+              href="#destinations"
+              onClick={(e) => handleScroll(e, 'destinations')}
+              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
+            >
+              Destinations
+            </a>
+            <a
+              href="#categories"
+              onClick={(e) => handleScroll(e, 'categories')}
+              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
+            >
+              Categories
+            </a>
             <Link
-              href="/destinations"
+              href="/about"
               className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >
-              Destinations
+              About
+            </Link>
+            <Link
+              href="/blog"
+              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
+              onClick={() => setIsOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/contact"
+              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
+              onClick={() => setIsOpen(false)}
+            >
+              Contact
             </Link>
             <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
               <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
@@ -86,7 +156,7 @@ export function Navbar() {
                 </Button>
               </Link>
               <Link href="/signup" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white h-12">
                   Sign Up
                 </Button>
               </Link>

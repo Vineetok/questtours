@@ -150,14 +150,14 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
               </div>
 
               {/* Trust Section */}
-              <div className="rounded-2xl bg-slate-900 p-6 text-white shadow-xl">
+              <div className="rounded-2xl bg-sky-100 p-6 text-slate-900 shadow-sm border border-sky-200">
                 <div className="flex items-start gap-4">
-                  <div className="rounded-xl bg-white/10 p-3">
-                    <ShieldCheck size={24} className="text-sky-400" />
+                  <div className="rounded-xl bg-white p-3 shadow-sm text-sky-600">
+                    <ShieldCheck size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Peace of Mind Guarantee</h4>
-                    <p className="text-sm text-slate-400 mt-1">
+                    <h4 className="font-bold text-lg text-sky-900">Peace of Mind Guarantee</h4>
+                    <p className="text-sm text-sky-700/80 mt-1">
                       Free cancellation up to 24 hours before the tour starts. Instant confirmation upon booking.
                     </p>
                   </div>
@@ -179,7 +179,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
                 </div>
                 
                 <Link href="/signup" className="flex-1 sm:flex-none">
-                  <Button className="h-14 w-full rounded-2xl bg-sky-600 px-8 text-base font-bold text-white transition-all hover:bg-sky-700 hover:shadow-lg hover:shadow-sky-200 active:scale-[0.98] sm:min-w-[200px]">
+                  <Button className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 text-base font-bold text-white transition-all hover:shadow-lg hover:shadow-sky-200 active:scale-[0.98] sm:min-w-[200px]">
                     Reserve Now
                     <ArrowRight size={18} className="ml-2" />
                   </Button>

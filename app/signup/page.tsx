@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { Chrome, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { API_URL, setAuthToken, setUserData } from '@/lib/auth';
+import { authService } from '@/services/authService';
+import { setAuthToken, setUserData } from '@/lib/auth';
 
 function SignupForm() {
   const router = useRouter();
@@ -45,22 +46,12 @@ function SignupForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          password: formData.password,
-          role: role,
-        }),
+      const data = await authService.register({
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+        role: role,
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
 
       toast.success('Registration successful!');
       setAuthToken(data.token);

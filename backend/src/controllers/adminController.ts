@@ -159,3 +159,28 @@ export const getSupportRequests = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const getAgents = async (req: Request, res: Response) => {
+  try {
+    const agentsQuery = `
+      SELECT 
+        u.id, 
+        u.name, 
+        u.email, 
+        u.avatar as avatar_url,
+        SUBSTRING(u.name FROM 1 FOR 1) as avatar,
+        'Active' as status,
+        to_char(u.created_at, 'YYYY-MM-DD') as joined,
+        (SELECT COUNT(*) FROM tours t WHERE t.location ILIKE '%' || u.name || '%') as "totalTours",
+        '₹' || COALESCE((SELECT TO_CHAR(SUM(amount), 'FM9,99,999') FROM bookings b WHERE b.user_id = u.id AND (b.status = 'completed' OR b.status = 'confirmed')), '0') as "totalEarnings"
+      FROM users u
+      WHERE u.role = 'agent'
+      ORDER BY u.created_at DESC;
+    `;
+    const result = await pool.query(agentsQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching agents:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

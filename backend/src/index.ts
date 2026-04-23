@@ -33,6 +33,6 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT} (reachable at http://192.168.1.62:${PORT})`);
 });

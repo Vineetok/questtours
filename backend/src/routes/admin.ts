@@ -3,7 +3,8 @@ import {
   getDashboardStats, 
   getCustomers, 
   getAllBookings, 
-  getSupportRequests 
+  getSupportRequests,
+  getAgents
 } from '../controllers/adminController';
 import { auth } from '../middleware/auth';
 
@@ -27,6 +28,11 @@ router.get('/stats', auth, isAdmin, getDashboardStats);
 // @desc    Get all customers
 // @access  Private (Admin only)
 router.get('/customers', auth, isAdmin, getCustomers);
+
+// @route   GET api/admin/agents
+// @desc    Get all agents
+// @access  Private (Admin only)
+router.get('/agents', auth, isAdmin, getAgents);
 
 // @route   GET api/admin/bookings
 // @desc    Get all bookings

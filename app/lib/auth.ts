@@ -1,9 +1,9 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.62:5000/api';
 
 export const getFullAvatarUrl = (path: string | null) => {
   if (!path) return null;
   if (path.startsWith('http')) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://192.168.1.62:5000';
   return `${baseUrl}${path}`;
 };
 

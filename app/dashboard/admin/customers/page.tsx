@@ -9,9 +9,12 @@ import {
   LayoutDashboard,
   TrendingUp,
   CreditCard,
-  TicketPercent
+  TicketPercent,
+  Briefcase,
+  UserCircle
 } from 'lucide-react';
-import { getAuthToken, API_URL, getUserData } from '@/lib/auth';
+import { adminService } from '@/services/adminService';
+import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
 import { supportRequests, recentBookings } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -32,9 +35,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const adminNavItems = [
   { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
   { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
+  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
   { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
   { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
   { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
+  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
 ];
 
 export default function CustomersPage() {
@@ -51,24 +56,15 @@ export default function CustomersPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const token = getAuthToken();
-        const headers = { 'Authorization': `Bearer ${token}` };
-
-        const [custRes, bookRes, supportRes] = await Promise.all([
-          fetch(`${API_URL}/admin/customers`, { headers }),
-          fetch(`${API_URL}/admin/bookings`, { headers }),
-          fetch(`${API_URL}/admin/support-requests`, { headers })
-        ]);
-
         const [customers, bookings, support] = await Promise.all([
-          custRes.json(),
-          bookRes.json(),
-          supportRes.json()
+          adminService.getCustomers(),
+          adminService.getBookings(),
+          adminService.getSupportRequests()
         ]);
 
-        if (custRes.ok) setCustomerList(customers);
-        if (bookRes.ok) setBookingList(bookings);
-        if (supportRes.ok) setSupportList(support);
+        setCustomerList(customers);
+        setBookingList(bookings);
+        setSupportList(support);
 
       } catch (error) {
         console.error('Error fetching dashboard data:', error);

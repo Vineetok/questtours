@@ -14,7 +14,9 @@ import {
   TrendingUp,
   CreditCard,
   Tag,
-  Gift
+  Gift,
+  Briefcase,
+  UserCircle
 } from 'lucide-react';
 import { coupons } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -33,9 +35,11 @@ import { toast } from 'sonner';
 const adminNavItems = [
   { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
   { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
+  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
   { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
   { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
   { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
+  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
 ];
 
 export default function OffersPage() {

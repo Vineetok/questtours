@@ -21,7 +21,7 @@ export const register = async (req: Request, res: Response) => {
 
     // Create user
     const newUser = await pool.query(
-      'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
+      'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role, avatar',
       [name, email, hashedPassword, role || 'customer']
     );
 
@@ -78,6 +78,7 @@ export const login = async (req: Request, res: Response) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatar: user.avatar,
       },
       token,
     });

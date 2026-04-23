@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AuthModal } from './auth-modal';
+
 
 const popularDestinations = [
   {
@@ -183,7 +183,7 @@ export function Destinations() {
       )}
 
       {/* Auth Modal */}
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      {/* <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
     </section>
   );
 }

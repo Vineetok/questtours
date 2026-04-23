@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { Chrome, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { API_URL, setAuthToken, setUserData } from '@/lib/auth';
+import { authService } from '@/services/authService';
+import { setAuthToken, setUserData } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,17 +23,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      const data = await authService.login({ email, password });
 
       toast.success('Login successful!');
       setAuthToken(data.token);

@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { User, Mail, Shield, Calendar, LogOut, Camera, Check } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { User,  Shield,  LogOut, Camera, Check } from 'lucide-react';
+import { Card} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { getUserData, removeAuthToken, getAuthToken, API_URL, updateUserAvatar, updateUserData, getFullAvatarUrl } from '@/lib/auth';
+import { userService } from '@/services/userService';
+import { getUserData, removeAuthToken, updateUserAvatar, updateUserData, getFullAvatarUrl } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Image from 'next/image';
@@ -18,12 +19,30 @@ export function ProfileView() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    // Initial load from local storage for speed
     const data = getUserData();
-    setUser(data);
     if (data) {
+      setUser(data);
       setFormData({ name: data.name, email: data.email });
     }
+
+    // Then fetch fresh data from server
+    fetchProfile();
   }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const data = await userService.getProfile();
+      if (data) {
+        const updatedUser = updateUserData(data);
+        setUser(updatedUser);
+        setFormData({ name: updatedUser.name, email: updatedUser.email });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      // Don't show toast error here as it might be a simple auth issue handled elsewhere
+    }
+  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,25 +65,11 @@ export function ProfileView() {
     formData.append('avatar', file);
 
     try {
-      const token = getAuthToken();
-      const response = await fetch(`${API_URL}/profile/avatar`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success('Profile picture updated successfully');
-        const avatarUrl = getFullAvatarUrl(data.avatarUrl);
-        updateUserAvatar(avatarUrl!);
-        setUser({ ...user, avatar: avatarUrl });
-      } else {
-        toast.error(data.message || 'Failed to upload image');
-      }
+      const data = await userService.uploadAvatar(formData);
+      toast.success('Profile picture updated successfully');
+      const avatarUrl = getFullAvatarUrl(data.avatarUrl);
+      updateUserAvatar(avatarUrl!);
+      setUser({ ...user, avatar: avatarUrl });
     } catch (error) {
       console.error('Upload error:', error);
       toast.error('An error occurred during upload');
@@ -86,26 +91,11 @@ export function ProfileView() {
 
     setSaving(true);
     try {
-      const token = getAuthToken();
-      const response = await fetch(`${API_URL}/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success('Profile updated successfully');
-        const updatedUser = updateUserData(data.user);
-        setUser(updatedUser);
-        setIsEditing(false);
-      } else {
-        toast.error(data.message || 'Failed to update profile');
-      }
+      const data = await userService.updateProfile(formData);
+      toast.success('Profile updated successfully');
+      const updatedUser = updateUserData(data.user);
+      setUser(updatedUser);
+      setIsEditing(false);
     } catch (error) {
       console.error('Update error:', error);
       toast.error('An error occurred during update');

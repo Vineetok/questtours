@@ -18,7 +18,8 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { getAuthToken, API_URL, getUserData } from '@/lib/auth';
+import { adminService } from '@/services/adminService';
+import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
 import {
   Table,
@@ -43,6 +44,7 @@ import {
 const adminNavItems = [
   { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
   { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
+  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
   { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
   { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
   { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
@@ -62,20 +64,10 @@ export default function AdminDashboard() {
 
     const fetchDashboardData = async () => {
       try {
-        const token = getAuthToken();
-        const response = await fetch(`${API_URL}/admin/stats`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setStats(data);
-          setRevenueData(data.revenueData || []);
-          setRecentBookings(data.recentBookings || []);
-        } else {
-          toast.error(data.message || 'Failed to fetch dashboard stats');
-        }
+        const data = await adminService.getStats();
+        setStats(data);
+        setRevenueData(data.revenueData || []);
+        setRecentBookings(data.recentBookings || []);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {

@@ -58,7 +58,11 @@ const allExtraDestinations = [
   { id: 6, name: 'Dubai', location: 'UAE', packages: 15, image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80' },
 ];
 
-export function Destinations() {
+interface DestinationsProps {
+  showAll?: boolean;
+}
+
+export function Destinations({ showAll = false }: DestinationsProps) {
   const [isAllOpen, setIsAllOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
@@ -83,59 +87,86 @@ export function Destinations() {
           </p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-          {popularDestinations.map((dest) => (
-            <div
-              key={dest.id}
-              className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
-              onClick={() => setIsAuthOpen(true)}
-            >
-              <Image
-                src={dest.image}
-                alt={dest.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#003B5C]/90 via-transparent to-transparent opacity-80" />
-              
-              <div className="absolute bottom-0 left-0 p-6 w-full">
-                <div className="flex items-center gap-1 text-blue-400 mb-1">
-                  <MapPin size={14} className="fill-blue-400" />
-                  <span className="text-xs font-bold uppercase tracking-wider">{dest.location}</span>
+        {showAll ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {[...popularDestinations, ...allExtraDestinations].map((dest) => (
+              <div key={dest.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all group border border-gray-100">
+                <div className="relative h-56 overflow-hidden">
+                  <Image src={dest.image} alt={dest.name} fill className="object-cover transition-transform group-hover:scale-110" />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#003B5C] flex items-center gap-1">
+                    <MapPin size={10} className="text-blue-500" /> {dest.location}
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-1">
-                  {dest.name}
-                </h3>
-                <p className="text-white/80 text-sm">
-                  {dest.packages} Tour Packages
-                </p>
-                <div className="mt-4">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-[#003B5C] mb-1">{dest.name}</h3>
+                  <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                   <Button 
-                    className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
-                    onClick={handleViewPlan}
+                    className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
+                    onClick={() => setIsAuthOpen(true)}
                   >
                     View Plan
                   </Button>
                 </div>
               </div>
+            ))}
+          </div>
+        ) : (
+          <>
+            {/* Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+              {popularDestinations.map((dest) => (
+                <div
+                  key={dest.id}
+                  className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
+                  onClick={() => setIsAuthOpen(true)}
+                >
+                  <Image
+                    src={dest.image}
+                    alt={dest.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#003B5C]/90 via-transparent to-transparent opacity-80" />
+                  
+                  <div className="absolute bottom-0 left-0 p-6 w-full">
+                    <div className="flex items-center gap-1 text-blue-400 mb-1">
+                      <MapPin size={14} className="fill-blue-400" />
+                      <span className="text-xs font-bold uppercase tracking-wider">{dest.location}</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-1">
+                      {dest.name}
+                    </h3>
+                    <p className="text-white/80 text-sm">
+                      {dest.packages} Tour Packages
+                    </p>
+                    <div className="mt-4">
+                      <Button 
+                        className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
+                        onClick={handleViewPlan}
+                      >
+                        View Plan
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* Footer Button */}
-        <div className="mt-12 text-center">
-          <button 
-            onClick={() => setIsAllOpen(true)}
-            className="inline-flex items-center px-8 py-3 bg-white border-2 border-gray-200 rounded-full text-[#003B5C] font-bold hover:bg-gray-50 transition-all gap-2 group cursor-pointer"
-          >
-            View All Destinations
-            <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-1.5 rounded-full text-white transition-transform group-hover:translate-x-1 shadow-md">
-              <ArrowRight size={14} />
+            {/* Footer Button */}
+            <div className="mt-12 text-center">
+              <button 
+                onClick={() => setIsAllOpen(true)}
+                className="inline-flex items-center px-8 py-3 bg-white border-2 border-gray-200 rounded-full text-[#003B5C] font-bold hover:bg-gray-50 transition-all gap-2 group cursor-pointer"
+              >
+                View All Destinations
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-1.5 rounded-full text-white transition-transform group-hover:translate-x-1 shadow-md">
+                  <ArrowRight size={14} />
+                </div>
+              </button>
             </div>
-          </button>
-        </div>
+          </>
+        )}
       </div>
 
       {/* View All Destinations Modal */}
@@ -187,4 +218,3 @@ export function Destinations() {
     </section>
   );
 }
-

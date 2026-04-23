@@ -37,8 +37,7 @@ export default function ContactPage() {
         subject: '',
         message: ''
       });
-    } catch (error) {
-      console.error('Error submitting enquiry:', error);
+    } catch (error: unknown) {
       toast.error('Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);
@@ -196,4 +195,3 @@ export default function ContactPage() {
     </main>
   );
 }
-

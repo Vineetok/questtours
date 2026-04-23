@@ -102,7 +102,7 @@ export function TravelCategories() {
             Find Your Perfect Trip Style
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
-            Whether you're seeking adventure, romance, or family fun — we have the <br className="hidden md:block" />
+            Whether you&apos;re seeking adventure, romance, or family fun — we have the <br className="hidden md:block" />
             perfect tour category for every traveler.
           </p>
           

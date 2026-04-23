@@ -1,4 +1,5 @@
 import { api } from './api';
+import { Enquiry } from '@/lib/types';
 
 export interface EnquiryData {
   firstName: string;
@@ -10,6 +11,6 @@ export interface EnquiryData {
 
 export const enquiryService = {
   submitEnquiry: (data: EnquiryData) => {
-    return api.post<any>('/admin/enquiries', data);
+    return api.post<{ message: string; enquiry: Enquiry }>('/admin/enquiries', data);
   }
 };

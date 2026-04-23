@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { 
   LayoutDashboard, 
@@ -20,6 +20,7 @@ import {
   Printer,
   User as UserIcon
 } from 'lucide-react';
+import Image from 'next/image';
 import { customerBookings } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
@@ -48,7 +49,6 @@ const customerNavItems = [
 
 export default function BookingDetailsPage() {
   const params = useParams();
-  const router = useRouter();
   const bookingId = params.id as string;
   const booking = customerBookings.find(b => b.id === bookingId);
 
@@ -132,7 +132,7 @@ export default function BookingDetailsPage() {
           <div className="flex-1 space-y-6">
             <Card className="border-none shadow-sm overflow-hidden bg-white">
               <div className="h-64 relative">
-                <img 
+                <Image
                   src={booking.image} 
                   alt={booking.tour}
                   className="object-cover w-full h-full"
@@ -179,7 +179,7 @@ export default function BookingDetailsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100">
-                  {booking.itinerary?.map((item: any, idx: number) => (
+                  {booking.itinerary?.map((item: { day: number; title: string; description: string }, idx: number) => (
                     <div key={idx} className="relative pl-8">
                       <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-blue-50 border-2 border-blue-600 flex items-center justify-center z-10">
                         <div className="w-2 h-2 rounded-full bg-blue-600"></div>
@@ -278,7 +278,7 @@ export default function BookingDetailsPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Cancelling your booking for "{booking.tour}" may incur cancellation fees. This action cannot be undone.
+                        Cancelling your booking for &rdquo;{booking.tour}&rdquo; may incur cancellation fees. This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

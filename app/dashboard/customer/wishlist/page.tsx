@@ -4,48 +4,30 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { customerNavItems } from '@/lib/customer-nav-items';
-import { 
-  Star,
-  Trash2,
-  ArrowRight,
-  Plane,
-  Search,
-  SearchX,
-  X,
-  Heart,
-  Map
-} from 'lucide-react';
+import { Star, Trash2, ArrowRight, Plane, Search, SearchX, Heart, Map } from 'lucide-react';
 import { wishlistTours } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/display/card';
+import { Card, CardHeader, CardDescription, CardFooter } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
 import { Input } from '@/components/ui/inputs/input';
 import { TourModal } from '@/components/tour-modal';
 import { toast } from 'sonner';
-import { getUserData } from '@/lib/auth';
+import { Tour } from '@/lib/types';
+import { useUser } from '@/hooks/use-user';
 import Image from 'next/image';
 
 export default function WishlistPage() {
-  const [items, setItems] = useState(wishlistTours);
+  const { user } = useUser();
+  const [items, setItems] = useState<Tour[]>(wishlistTours);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTour, setSelectedTour] = useState<any | null>(null);
-  const [user, setUser] = useState<any>(null);
-
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-  }, []);
+  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
 
   const handleRemove = (id: string, name: string) => {
     setItems(items.filter(item => item.id !== id));
     toast.success(`${name} removed from your wishlist.`);
   };
 
-  const handleBookNow = (name: string) => {
-    toast.success(`Redirecting to booking flow for ${name}...`, {
-      description: "You're one step closer to your dream destination!",
-    });
-  };
+
 
   const filteredItems = items.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -63,7 +45,7 @@ export default function WishlistPage() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Your Wishlist</h1>
-            <p className="text-gray-500">Keep track of the destinations you're dreaming about.</p>
+            <p className="text-gray-500">Keep track of the destinations you&apos;re dreaming about.</p>
           </div>
           
           <div className="relative w-full md:w-80 group">
@@ -77,6 +59,7 @@ export default function WishlistPage() {
             {searchQuery && (
               <button 
                 onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
                 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-gray-600"
               >
                 <SearchX className="h-4 w-4" />
@@ -117,7 +100,7 @@ export default function WishlistPage() {
                   <div className="space-y-1">
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate pr-2">{tour.name}</h3>
-                      <p className="text-xl font-black text-blue-600 shrink-0">₹{(tour.price as any).toLocaleString('en-IN')}</p>
+                      <p className="text-xl font-black text-blue-600 shrink-0">₹{tour.price.toLocaleString('en-IN')}</p>
                     </div>
                     <CardDescription className="flex items-center gap-1.5 text-gray-500 font-medium">
                       <Map className="h-3.5 w-3.5" /> {tour.location}

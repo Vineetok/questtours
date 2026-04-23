@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { DashboardLayout } from '@/components/dashboard-layout';
 import {
   ArrowUpRight,

@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { adminService } from '@/services/adminService';
-import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
@@ -20,56 +18,50 @@ import { Badge } from '@/components/ui/display/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/display/avatar';
 import { Input } from '@/components/ui/inputs/input';
 import { adminNavItems } from '@/lib/admin-nav-items';
-import {
-  Users,
-  Search,
-  MoreVertical,
-} from 'lucide-react';
+import { Search, MoreVertical } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/tabs';
 import { TicketDetailsDialog } from '@/components/ticket-details-dialog';
+import { useUser } from '@/hooks/use-user';
+import { Customer, Booking, Ticket } from '@/lib/types';
 
 export default function CustomersPage() {
-  const [customerList, setCustomerList] = React.useState<any[]>([]);
-  const [bookingList, setBookingList] = React.useState<any[]>([]);
-  const [supportList, setSupportList] = React.useState<any[]>([]);
+  const { user } = useUser();
+  const [customerList, setCustomerList] = React.useState<Customer[]>([]);
+  const [bookingList, setBookingList] = React.useState<Booking[]>([]);
+  const [supportList, setSupportList] = React.useState<Ticket[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<any>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
+  const fetchData = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const [customers, bookings, support] = await Promise.all([
+        adminService.getCustomers(),
+        adminService.getBookings(),
+        adminService.getSupportRequests()
+      ]);
 
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [customers, bookings, support] = await Promise.all([
-          adminService.getCustomers(),
-          adminService.getBookings(),
-          adminService.getSupportRequests()
-        ]);
+      setCustomerList(customers);
+      setBookingList(bookings);
+      setSupportList(support);
 
-        setCustomerList(customers);
-        setBookingList(bookings);
-        setSupportList(support);
-
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        toast.error('Connection error');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    } catch (error: unknown) {
+      toast.error('Connection error');
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const fetchSupportRequests = async () => {
     try {
       const support = await adminService.getSupportRequests();
       setSupportList(support);
-    } catch (error) {
-      console.error('Error fetching support requests:', error);
+    } catch (error: unknown) {
+      // Silent fail
     }
   };
 
@@ -141,7 +133,7 @@ export default function CustomersPage() {
                     ) : filteredCustomers.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={6} className="text-center py-10 text-gray-500">
-                          No customers found matching "{searchQuery}".
+                          No customers found matching &quot;{searchQuery}&quot; .
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -315,4 +307,3 @@ export default function CustomersPage() {
     </DashboardLayout>
   );
 }
-

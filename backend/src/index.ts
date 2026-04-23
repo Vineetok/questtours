@@ -30,11 +30,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Error handling middleware
-app.use((err: any, req: Request, res: Response, next: any) => {
-  console.error(err.stack);
+app.use((err: Error, _req: Request, res: Response, _next: express.NextFunction) => { // eslint-disable-line @typescript-eslint/no-unused-vars
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
 app.listen(Number(PORT), '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT} (reachable at http://192.168.1.62:${PORT})`);
+  console.log(`Server is running on port ${PORT}`);
 });

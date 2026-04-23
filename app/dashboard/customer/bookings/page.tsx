@@ -3,38 +3,42 @@
 import React from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { 
-  LayoutDashboard, 
-  Map, 
-  Heart, 
-  History, 
-  Calendar as CalendarIcon,
-  ChevronRight,
-  ExternalLink,
-  Download,
-  User as UserIcon
-  Download
-} from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronRight, Download } from 'lucide-react';
 import { customerBookings } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Card } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/tabs';
 import { customerNavItems } from '@/lib/customer-nav-items';
 import { toast } from 'sonner';
-import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
 import Image from 'next/image';
+import { Booking } from '@/lib/types';
 
 export default function BookingsPage() {
-  const [user, setUser] = React.useState<any>(null);
+  const { user } = useUser();
+  const [bookings, setBookings] = React.useState<Booking[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
+    let isMounted = true;
+    // Simulating data fetch
+    const loadBookings = () => {
+      if (isMounted) {
+        setBookings(customerBookings as Booking[]);
+        setLoading(false);
+      }
+    };
+    
+    const timer = setTimeout(loadBookings, 100);
+    return () => { 
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, []);
 
-  const upcomingBookings = customerBookings.filter(b => b.status === 'Confirmed' || b.status === 'Pending');
-  const pastBookings = customerBookings.filter(b => b.status === 'Completed' || b.status === 'Cancelled');
+  const upcomingBookings = bookings.filter(b => b.status === 'Confirmed' || b.status === 'Pending');
+  const pastBookings = bookings.filter(b => b.status === 'Completed' || b.status === 'Cancelled');
 
   return (
     <DashboardLayout 
@@ -63,7 +67,11 @@ export default function BookingsPage() {
           </TabsList>
 
           <TabsContent value="upcoming" className="space-y-4">
-            {upcomingBookings.length > 0 ? (
+            {loading ? (
+              Array(3).fill(0).map((_, i) => (
+                <div key={i} className="h-48 w-full bg-gray-100 animate-pulse rounded-xl"></div>
+              ))
+            ) : upcomingBookings.length > 0 ? (
               upcomingBookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />
               ))
@@ -73,7 +81,11 @@ export default function BookingsPage() {
           </TabsContent>
 
           <TabsContent value="past" className="space-y-4">
-            {pastBookings.length > 0 ? (
+            {loading ? (
+              Array(3).fill(0).map((_, i) => (
+                <div key={i} className="h-48 w-full bg-gray-100 animate-pulse rounded-xl"></div>
+              ))
+            ) : pastBookings.length > 0 ? (
               pastBookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />
               ))
@@ -87,7 +99,7 @@ export default function BookingsPage() {
   );
 }
 
-function BookingCard({ booking }: { booking: any }) {
+function BookingCard({ booking }: { booking: Booking & { image: string; tour: string; date: string; invoice_no?: string; payment_method?: string; price: string } }) {
   const [isDownloading, setIsDownloading] = React.useState(false);
 
   const handleDownloadInvoice = () => {

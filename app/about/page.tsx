@@ -48,10 +48,10 @@ export default function AboutPage() {
                 Crafting Unforgettable Experiences Since 2010
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed">
-                QuestTours started with a simple idea: to make authentic, premium travel experiences accessible to everyone. We meticulously curate every package, partnering with local experts to ensure you don't just visit a destination—you truly experience it.
+                QuestTours started with a simple idea: to make authentic, premium travel experiences accessible to everyone. We meticulously curate every package, partnering with local experts to ensure you don&apos;t just visit a destination—you truly experience it.
               </p>
               <p className="text-gray-600 text-lg leading-relaxed">
-                Whether you're looking for a romantic honeymoon escape, a thrilling adventure, or a relaxing family getaway, our dedicated team is here to handle every detail so you can focus on making memories.
+                Whether you&apos;re looking for a romantic honeymoon escape, a thrilling adventure, or a relaxing family getaway, our dedicated team is here to handle every detail so you can focus on making memories.
               </p>
               <div className="grid grid-cols-2 gap-6 pt-6 border-t border-gray-200">
                 <div>

@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import pool from '../config/db';
-import path from 'path';
-import fs from 'fs';
-
+import { AuthenticatedRequest } from '../types';
 export const uploadAvatar = async (req: Request, res: Response) => {
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
 
-  const userId = (req as any).user?.id;
+  const userId = (req as unknown as AuthenticatedRequest).user?.id;
   if (!userId) {
     // If auth middleware is not yet implemented or user ID not found
     // We should ideally have a user ID from the token
@@ -25,14 +23,13 @@ export const uploadAvatar = async (req: Request, res: Response) => {
       message: 'Avatar uploaded successfully',
       avatarUrl
     });
-  } catch (error: any) {
-    console.error('Error updating avatar:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 export const getProfile = async (req: Request, res: Response) => {
-  const userId = (req as any).user?.id;
+  const userId = (req as unknown as AuthenticatedRequest).user?.id;
   
   try {
     const result = await pool.query('SELECT id, name, email, role, avatar FROM users WHERE id = $1', [userId]);
@@ -40,14 +37,13 @@ export const getProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(result.rows[0]);
-  } catch (error: any) {
-    console.error('Error fetching profile:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 export const updateProfile = async (req: Request, res: Response) => {
-  const userId = (req as any).user?.id;
+  const userId = (req as unknown as AuthenticatedRequest).user?.id;
   const { name, email } = req.body;
 
   if (!name || !email) {
@@ -74,14 +70,13 @@ export const updateProfile = async (req: Request, res: Response) => {
       message: 'Profile updated successfully',
       user: result.rows[0]
     });
-  } catch (error: any) {
-    console.error('Error updating profile:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 export const getPayments = async (req: Request, res: Response) => {
-  const userId = (req as any).user?.id;
+  const userId = (req as unknown as AuthenticatedRequest).user?.id;
   
   try {
     const query = `
@@ -98,8 +93,7 @@ export const getPayments = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(query, [userId]);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching payments:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };

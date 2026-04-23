@@ -5,7 +5,6 @@ import { DashboardLayout } from '@/components/dashboard-layout';
 import {
   Mail,
   Search,
-  MoreVertical,
   LayoutDashboard,
   Users,
   Briefcase,
@@ -14,13 +13,12 @@ import {
   TrendingUp,
   UserCircle,
   Eye,
-  CheckCircle,
-  Clock
 } from 'lucide-react';
 import { adminService } from '@/services/adminService';
-import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
+import { Enquiry } from '@/lib/types';
 import { toast } from 'sonner';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Card, CardContent } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import {
   Table,
@@ -53,39 +51,33 @@ const adminNavItems = [
 ];
 
 export default function EnquiriesPage() {
-  const [enquiries, setEnquiries] = React.useState<any[]>([]);
+  const { user } = useUser();
+  const [enquiries, setEnquiries] = React.useState<Enquiry[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<any>(null);
-  const [selectedEnquiry, setSelectedEnquiry] = React.useState<any>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-
-    fetchEnquiries();
-  }, []);
-
-  const fetchEnquiries = async () => {
+  const fetchEnquiries = React.useCallback(async () => {
     setLoading(true);
     try {
       const data = await adminService.getEnquiries();
       setEnquiries(data);
-    } catch (error) {
-      console.error('Error fetching enquiries:', error);
+    } catch (error: unknown) {
       toast.error('Failed to load enquiries');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    fetchEnquiries();
+  }, [fetchEnquiries]);
 
   const handleUpdateStatus = async (id: number, status: string) => {
     try {
       await adminService.updateEnquiryStatus(id, status);
       toast.success(`Enquiry marked as ${status}`);
       fetchEnquiries();
-    } catch (error) {
-      console.error('Error updating enquiry status:', error);
+    } catch (error: unknown) {
       toast.error('Failed to update enquiry status');
     }
   };
@@ -181,7 +173,6 @@ export default function EnquiriesPage() {
                               variant="ghost" 
                               size="sm" 
                               className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                              onClick={() => setSelectedEnquiry(enquiry)}
                             >
                               <Eye className="h-4 w-4 mr-1" /> View
                             </Button>

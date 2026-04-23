@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { X, Mail, Lock, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock} from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 
@@ -71,7 +70,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <button className="text-blue-600 font-bold hover:underline italic">Create one</button>
             </p>
           </div>

@@ -37,30 +37,25 @@ export const register = async (req: Request, res: Response) => {
       user,
       token,
     });
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log('Login attempt for:', email);
 
   try {
     // Check user
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) {
-      console.log('User not found in database');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const user = result.rows[0];
-    console.log('User found:', user.email, 'with role:', user.role);
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password isMatch:', isMatch);
 
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -82,8 +77,7 @@ export const login = async (req: Request, res: Response) => {
       },
       token,
     });
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };

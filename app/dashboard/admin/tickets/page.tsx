@@ -2,27 +2,12 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import {
-  Ticket,
-  Search,
-  MoreVertical,
-  LayoutDashboard,
-  Users,
-  Briefcase,
-  CreditCard,
-  TicketPercent,
-  TrendingUp,
-  UserCircle,
-  Mail,
-  Eye,
-  CheckCircle,
-  Clock,
-  AlertCircle
-} from 'lucide-react';
+import { Search, Eye } from 'lucide-react';
 import { ticketService } from '@/services/ticketService';
-import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Card, CardContent } from '@/components/ui/display/card';
+import { useUser } from '@/hooks/use-user';
+import type { Ticket } from '@/lib/types';
 import { Button } from '@/components/ui/inputs/button';
 import {
   Table,
@@ -34,58 +19,30 @@ import {
 } from '@/components/ui/display/table';
 import { Badge } from '@/components/ui/display/badge';
 import { Input } from '@/components/ui/inputs/input';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/overlays/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/inputs/select";
 import { adminNavItems } from '@/lib/admin-nav-items';
 import { TicketDetailsDialog } from '@/components/ticket-details-dialog';
 
 export default function AdminTicketsPage() {
-  const [tickets, setTickets] = React.useState<any[]>([]);
+  const { user } = useUser();
+  const [tickets, setTickets] = React.useState<Ticket[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<any>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-    fetchTickets();
-  }, []);
-
-  const fetchTickets = async () => {
+  const fetchTickets = React.useCallback(async () => {
     setLoading(true);
     try {
       const data = await ticketService.getAllTickets();
       setTickets(data);
-    } catch (error) {
-      console.error('Error fetching tickets:', error);
+    } catch (error: unknown) {
       toast.error('Failed to load tickets');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleUpdateStatus = async (id: number, status: string) => {
-    try {
-      await ticketService.updateTicketStatus(id, { status });
-      toast.success('Ticket status updated');
-      fetchTickets();
-    } catch (error) {
-      toast.error('Failed to update status');
-    }
-  };
+  React.useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
 
   const filteredTickets = tickets.filter(ticket => 
     (ticket.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||

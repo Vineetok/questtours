@@ -73,7 +73,7 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
 
             <DialogDescription className="text-lg text-gray-600 leading-relaxed space-y-6">
               <p className="font-medium text-gray-900 text-xl italic border-l-4 border-blue-600 pl-4 py-1">
-                "{post.excerpt}"
+                &quot;{post.excerpt}&quot;
               </p>
               
               <div className="space-y-4">
@@ -85,7 +85,7 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
                 </p>
                 <h3 className="text-2xl font-bold text-[#003B5C] pt-4">Why This Destination Matters</h3>
                 <p>
-                  Exploring the hidden corners of our world brings a perspective that no guidebook can offer. Whether it's the mystical waterfalls of Bali or the quiet canals of Venice, every journey is a chance to reconnect with the beauty of nature and human culture.
+                  Exploring the hidden corners of our world brings a perspective that no guidebook can offer. Whether it&apos;s the mystical waterfalls of Bali or the quiet canals of Venice, every journey is a chance to reconnect with the beauty of nature and human culture.
                 </p>
                 <p>
                   Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.

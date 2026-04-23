@@ -1,21 +1,15 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { DashboardLayout } from '@/components/dashboard-layout';
 import {
   TrendingUp,
   Users,
   Map,
   CreditCard,
-  LayoutDashboard,
-  TicketPercent,
   BarChart3,
   PieChart as PieChartIcon,
   Download,
   ArrowUpRight,
   ArrowDownRight,
-  Briefcase,
-  UserCircle
 } from 'lucide-react';
 import { destinationPerformance, revenueData } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';

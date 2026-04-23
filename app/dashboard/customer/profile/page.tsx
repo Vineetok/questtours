@@ -4,15 +4,10 @@ import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { customerNavItems } from '@/lib/customer-nav-items';
 import { ProfileView } from '@/components/profile-view';
-import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
 
 export default function CustomerProfilePage() {
-  const [user, setUser] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-  }, []);
+  const { user } = useUser();
 
   return (
     <DashboardLayout 

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/display/card';
 import { Label } from '@/components/ui/inputs/label';
-import { Chrome, Loader2 } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { authService } from '@/services/authService';
 import { setAuthToken, setUserData } from '@/lib/auth';
@@ -21,7 +21,8 @@ function SignupForm() {
   useEffect(() => {
     const roleParam = searchParams.get('role');
     if (roleParam === 'agent') {
-      setRole('agent');
+      // Synchronize state using a microtask to avoid cascading renders warning
+      Promise.resolve().then(() => setRole('agent'));
     }
   }, [searchParams]);
   const [formData, setFormData] = useState({
@@ -59,8 +60,8 @@ function SignupForm() {
       
       // Redirect based on role
       router.push(`/dashboard/${role}`);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to register');
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +72,13 @@ function SignupForm() {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-md shadow-2xl border-none">
-        <CardHeader className="space-y-1">
+        
+         <Link
+          href="/"
+          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-full transition-all z-20"
+        >
+          <X size={20} />
+        </Link><CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
             <Link href="/" className="text-2xl font-bold text-blue-600 tracking-tight">
               Quest<span className="text-gray-900">Tours</span>
@@ -157,19 +164,9 @@ function SignupForm() {
             </Button>
           </form>
 
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300"></span>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white/90 px-2 text-gray-500">Or continue with</span>
-            </div>
-          </div>
+   
 
-          <Button variant="outline" type="button" className="w-full flex items-center justify-center gap-2 border-gray-200 hover:bg-gray-50">
-            <Chrome className="w-4 h-4" />
-            Google
-          </Button>
+          
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-center gap-1 text-sm">
           <span className="text-gray-600">Already have an account?</span>

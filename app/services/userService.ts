@@ -1,19 +1,20 @@
 import { api } from './api';
+import { User, Payment } from '@/lib/types';
 
 export const userService = {
   getProfile: () => {
-    return api.get<any>('/profile');
+    return api.get<User>('/profile');
   },
-  
-  updateProfile: (data: any) => {
-    return api.put<any>('/profile', data);
+
+  updateProfile: (data: unknown) => {
+    return api.put<unknown>('/profile', data);
   },
-  
+
   uploadAvatar: (formData: FormData) => {
-    return api.post<any>('/profile/avatar', formData, true);
+    return api.post<unknown>('/profile/avatar', formData, true);
   },
-  
+
   getPayments: () => {
-    return api.get<any[]>('/profile/payments');
+    return api.get<Payment[]>('/profile/payments');
   },
 };

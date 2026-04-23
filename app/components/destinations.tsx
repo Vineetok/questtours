@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+// import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
 
 
@@ -214,6 +216,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
       )}
 
       {/* Auth Modal */}
+      {/* <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
       {/* <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
     </section>
   );

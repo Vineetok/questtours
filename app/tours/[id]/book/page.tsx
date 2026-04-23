@@ -4,22 +4,23 @@ import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { tours } from '@/lib/mock-data';
+import { toursData as tours } from '@/lib/data';
+import { Tour } from '@/lib/types';
 import { 
   ArrowLeft,
   Users, 
-  Calendar,
   CreditCard,
   ShieldCheck,
   CheckCircle2,
+  ChevronRight,
   Info,
-  ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Card, CardContent, CardHeader, CardTitle} from '@/components/ui/display/card';
 import { Input } from '@/components/ui/inputs/input';
 import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 export default function BookingPage() {
   const params = useParams();
@@ -30,7 +31,7 @@ export default function BookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1); // 1: Details, 2: Payment, 3: Success
 
-  const tour = tours.find(t => t.id === tourId);
+  const tour = (tours as Tour[]).find((t: Tour) => t.id.toString() === tourId);
 
   if (!tour) return null;
 
@@ -163,7 +164,7 @@ export default function BookingPage() {
                     <span className="text-xs font-bold text-sky-900">Credit Card</span>
                   </Button>
                   <Button variant="outline" className="h-20 rounded-2xl border-slate-200 flex flex-col items-center justify-center gap-1 hover:border-slate-300">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-5" alt="PayPal" />
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-5" alt="PayPal" />
                     <span className="text-xs font-bold text-slate-500">PayPal</span>
                   </Button>
                 </div>
@@ -193,11 +194,11 @@ export default function BookingPage() {
             <div className="sticky top-24 space-y-6">
               <Card className="border-none shadow-xl bg-slate-900 text-white rounded-[2.5rem] overflow-hidden">
                 <div className="h-40 relative">
-                  <img src={tour.image} alt={tour.title} className="w-full h-full object-cover opacity-60" />
+                  <Image src={tour.image} alt={tour.title || tour.name} className="w-full h-full object-cover opacity-60" />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900" />
                   <div className="absolute bottom-4 left-6">
                     <p className="text-[10px] font-black uppercase tracking-widest text-sky-400 mb-1">{tour.location}</p>
-                    <h3 className="text-xl font-bold">{tour.title}</h3>
+                    <h3 className="text-xl font-bold">{tour.title || tour.name}</h3>
                   </div>
                 </div>
                 <CardContent className="p-8 space-y-6">

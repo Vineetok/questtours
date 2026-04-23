@@ -1,3 +1,6 @@
+
+import { User } from './types';
+export { type User };
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.62:5000/api';
 
 export const getFullAvatarUrl = (path: string | null) => {
@@ -6,6 +9,7 @@ export const getFullAvatarUrl = (path: string | null) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://192.168.1.62:5000';
   return `${baseUrl}${path}`;
 };
+
 
 export const setAuthToken = (token: string) => {
   if (typeof window !== 'undefined') {
@@ -27,13 +31,13 @@ export const removeAuthToken = () => {
   }
 };
 
-export const setUserData = (user: any) => {
+export const setUserData = (user: User) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('user', JSON.stringify(user));
   }
 };
 
-export const updateUserData = (updatedData: any) => {
+export const updateUserData = (updatedData: Partial<User>) => {
   if (typeof window !== 'undefined') {
     const user = getUserData();
     if (user) {
@@ -59,7 +63,7 @@ export const updateUserAvatar = (avatarUrl: string) => {
   }
 };
 
-export const getUserData = () => {
+export const getUserData = (): User | null => {
   if (typeof window !== 'undefined') {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;

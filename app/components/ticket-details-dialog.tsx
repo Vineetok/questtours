@@ -13,9 +13,10 @@ import { Badge } from '@/components/ui/display/badge';
 import { Button } from '@/components/ui/inputs/button';
 import { ticketService } from '@/services/ticketService';
 import { toast } from 'sonner';
+import type { Ticket } from '@/lib/types';
 
 interface TicketDetailsDialogProps {
-  ticket: any;
+  ticket: Ticket;
   trigger: React.ReactNode;
   onUpdate?: () => void;
 }
@@ -34,7 +35,7 @@ export function TicketDetailsDialog({ ticket, trigger, onUpdate }: TicketDetails
       await ticketService.updateTicketStatus(numericId, { status });
       toast.success('Ticket status updated');
       if (onUpdate) onUpdate();
-    } catch (error) {
+    } catch  {
       toast.error('Failed to update status');
     } finally {
       setLoading(false);

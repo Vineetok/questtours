@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { 
-  getDashboardStats, 
-  getCustomers, 
-  getAllBookings, 
+import {
+  getDashboardStats,
+  getCustomers,
+  getAllBookings,
   getSupportRequests,
   getAgents,
   getEnquiries,
@@ -11,11 +11,15 @@ import {
 } from '../controllers/adminController';
 import { auth } from '../middleware/auth';
 
+import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../types';
+
 const router = Router();
 
 // Middleware to check if user is admin
-const isAdmin = (req: any, res: any, next: any) => {
-  if (req.user && req.user.role === 'admin') {
+const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  const authReq = req as unknown as AuthenticatedRequest;
+  if (authReq.user && authReq.user.role === 'admin') {
     next();
   } else {
     res.status(403).json({ message: 'Access denied. Admins only.' });

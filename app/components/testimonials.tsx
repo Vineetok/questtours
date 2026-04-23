@@ -80,7 +80,7 @@ export function Testimonials() {
 
               {/* Review Text */}
               <p className="text-gray-600 text-sm sm:text-base mb-6 leading-relaxed line-clamp-4 group-hover:text-gray-900 transition-colors">
-                "{testimonial.review}"
+                &quot;{testimonial.review}&quot;
               </p>
 
               {/* User Info */}
@@ -122,7 +122,7 @@ export function Testimonials() {
                 ))}
               </div>
               <p className="text-lg text-gray-700 leading-relaxed italic">
-                "{selectedTestimonial.review}"
+                &quot;{selectedTestimonial.review}&quot;
               </p>
               <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
                 <div

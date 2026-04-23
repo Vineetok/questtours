@@ -1,11 +1,12 @@
 import { api } from './api';
+import { AuthResponse, LoginCredentials, RegisterData } from '@/lib/types';
 
 export const authService = {
-  login: (credentials: any) => {
-    return api.post<any>('/auth/login', credentials);
+  login: (credentials: LoginCredentials) => {
+    return api.post<AuthResponse>('/auth/login', credentials);
   },
   
-  register: (userData: any) => {
-    return api.post<any>('/auth/register', userData);
+  register: (userData: RegisterData) => {
+    return api.post<AuthResponse>('/auth/register', userData);
   },
 };

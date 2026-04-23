@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import pool from '../config/db';
+import { AuthenticatedRequest } from '../types';
 
-export const createTicket = async (req: any, res: Response) => {
+export const createTicket = async (req: Request, res: Response) => {
   try {
     const { subject, description, priority } = req.body;
-    const userId = req.user.id;
+    const userId = (req as unknown as AuthenticatedRequest).user.id;
 
     if (!subject || !description) {
       return res.status(400).json({ message: 'Subject and description are required' });
@@ -17,15 +18,14 @@ export const createTicket = async (req: any, res: Response) => {
     `;
     const result = await pool.query(insertQuery, [userId, subject, description, priority || 'Medium']);
     res.status(201).json({ message: 'Ticket raised successfully', ticket: result.rows[0] });
-  } catch (error: any) {
-    console.error('Error creating ticket:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-export const getUserTickets = async (req: any, res: Response) => {
+export const getUserTickets = async (req: Request, res: Response) => {
   try {
-    const userId = req.user.id;
+    const userId = (req as unknown as AuthenticatedRequest).user.id;
     const ticketsQuery = `
       SELECT 
         id, subject, description, priority, status, 
@@ -36,8 +36,7 @@ export const getUserTickets = async (req: any, res: Response) => {
     `;
     const result = await pool.query(ticketsQuery, [userId]);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching user tickets:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -55,8 +54,7 @@ export const getAllTickets = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(ticketsQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching all tickets:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -95,8 +93,7 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Ticket updated successfully', ticket: result.rows[0] });
-  } catch (error: any) {
-    console.error('Error updating ticket:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };

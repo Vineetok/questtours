@@ -1,36 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { User,  Shield,  LogOut, Camera, Check } from 'lucide-react';
-import { Card} from '@/components/ui/display/card';
+import { useState, useEffect, useCallback } from 'react';
+import { User, Shield, LogOut, Camera, Check } from 'lucide-react';
+import { Card } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { userService } from '@/services/userService';
-import { getUserData, removeAuthToken, updateUserAvatar, updateUserData, getFullAvatarUrl } from '@/lib/auth';
+import { removeAuthToken, updateUserAvatar, getFullAvatarUrl, updateUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Image from 'next/image';
 
 export function ProfileView() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const { user, setUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    // Initial load from local storage for speed
-    const data = getUserData();
-    if (data) {
-      setUser(data);
-      setFormData({ name: data.name, email: data.email });
-    }
-
-    // Then fetch fresh data from server
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const data = await userService.getProfile();
       if (data) {
@@ -38,11 +27,21 @@ export function ProfileView() {
         setUser(updatedUser);
         setFormData({ name: updatedUser.name, email: updatedUser.email });
       }
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-      // Don't show toast error here as it might be a simple auth issue handled elsewhere
+    } catch (error: unknown) {
+      // Error handled by toast if needed, but fetchProfile is usually silent on background refresh
     }
-  };
+  }, [setUser]);
+
+  useEffect(() => {
+    // Sync form data once when user is loaded
+    if (user && !formData.name) {
+      setFormData({ name: user.name, email: user.email });
+    }
+  }, [user, formData.name]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -61,17 +60,18 @@ export function ProfileView() {
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append('avatar', file);
+    const avatarFormData = new FormData();
+    avatarFormData.append('avatar', file);
 
     try {
-      const data = await userService.uploadAvatar(formData);
+      const data = await userService.uploadAvatar(avatarFormData);
       toast.success('Profile picture updated successfully');
       const avatarUrl = getFullAvatarUrl(data.avatarUrl);
       updateUserAvatar(avatarUrl!);
-      setUser({ ...user, avatar: avatarUrl });
-    } catch (error) {
-      console.error('Upload error:', error);
+      if (user) {
+        setUser({ ...user, avatar: avatarUrl! });
+      }
+    } catch (error: unknown) {
       toast.error('An error occurred during upload');
     } finally {
       setUploading(false);
@@ -96,8 +96,7 @@ export function ProfileView() {
       const updatedUser = updateUserData(data.user);
       setUser(updatedUser);
       setIsEditing(false);
-    } catch (error) {
-      console.error('Update error:', error);
+    } catch (error: unknown) {
       toast.error('An error occurred during update');
     } finally {
       setSaving(false);
@@ -128,7 +127,6 @@ export function ProfileView() {
         {/* Subtle decorative circle */}
         <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
       </div>
-
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Avatar & Contact Quick Info */}
@@ -284,4 +282,3 @@ export function ProfileView() {
     </div>
   );
 }
-

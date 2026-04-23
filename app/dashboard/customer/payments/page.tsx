@@ -3,7 +3,6 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { 
-  Calendar as CalendarIcon,
   Download,
   CreditCard,
   Search,
@@ -11,7 +10,8 @@ import {
   History
 } from 'lucide-react';
 import { customerNavItems } from '@/lib/customer-nav-items';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { useUser } from '@/hooks/use-user';
+import { Card, CardContent, CardHeader } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
 import { 
@@ -23,33 +23,38 @@ import {
   TableRow 
 } from '@/components/ui/display/table';
 import { Input } from '@/components/ui/inputs/input';
-import { getUserData } from '@/lib/auth';
 import { userService } from '@/services/userService';
 import { toast } from 'sonner';
+import { Payment } from '@/lib/types';
 
-export default function PaymentsPage() {
-  const [user, setUser] = React.useState<any>(null);
-  const [payments, setPayments] = React.useState<any[]>([]);
+export default function CustomerPaymentsPage() {
+  const { user } = useUser();
+  const [payments, setPayments] = React.useState<Payment[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-    fetchPayments();
+    let isMounted = true;
+    const fetchPaymentsData = async () => {
+      try {
+        const data = await userService.getPayments();
+        if (isMounted) {
+          setPayments(data);
+        }
+      } catch (error: unknown) {
+        if (isMounted) {
+          toast.error('Failed to load payment history');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+    
+    fetchPaymentsData();
+    return () => { isMounted = false; };
   }, []);
-
-  const fetchPayments = async () => {
-    try {
-      const data = await userService.getPayments();
-      setPayments(data);
-    } catch (error) {
-      console.error('Error fetching payments:', error);
-      toast.error('Failed to load payment history');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredPayments = payments.filter(p => 
     p.id.toLowerCase().includes(searchQuery.toLowerCase()) ||

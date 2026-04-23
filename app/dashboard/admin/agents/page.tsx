@@ -2,19 +2,10 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import {
-  Users,
-  Search,
-  MoreVertical,
-  LayoutDashboard,
-  TrendingUp,
-  CreditCard,
-  TicketPercent,
-  Briefcase,
-  UserCircle
-} from 'lucide-react';
+import { Search, MoreVertical } from 'lucide-react';
 import { adminService } from '@/services/adminService';
-import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
+import { Agent } from '@/lib/types';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
@@ -32,30 +23,33 @@ import { Input } from '@/components/ui/inputs/input';
 import { adminNavItems } from '@/lib/admin-nav-items';
 
 export default function AgentsPage() {
-  const [agentList, setAgentList] = React.useState<any[]>([]);
+  const { user } = useUser();
+  const [agentList, setAgentList] = React.useState<Agent[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<any>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-
+    let isMounted = true;
     const fetchData = async () => {
       setLoading(true);
       try {
         const data = await adminService.getAgents();
-        setAgentList(data);
-
-      } catch (error) {
-        console.error('Error fetching agents data:', error);
-        toast.error('Connection error');
+        if (isMounted) {
+          setAgentList(data);
+        }
+      } catch (error: unknown) {
+        if (isMounted) {
+          toast.error('Connection error');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+    return () => { isMounted = false; };
   }, []);
 
   const filteredAgents = agentList.filter(agent => 
@@ -117,7 +111,7 @@ export default function AgentsPage() {
                 ) : filteredAgents.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-10 text-gray-500">
-                      No agents found matching "{searchQuery}".
+                      No agents found matching &quot;{searchQuery}&quot;.
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -162,4 +156,3 @@ export default function AgentsPage() {
     </DashboardLayout>
   );
 }
-

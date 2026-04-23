@@ -7,9 +7,13 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 
 import { toursData } from '@/lib/data';
 
-export function FeaturedTours() {
+interface FeaturedToursProps {
+  showAll?: boolean;
+}
+
+export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedToursProps) {
   const [selectedTour, setSelectedTour] = useState<typeof toursData[0] | null>(null);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(initialShowAll);
 
   const displayedTours = showAll ? toursData : toursData.slice(0, 4);
 
@@ -41,25 +45,27 @@ export function FeaturedTours() {
         </div>
 
         {/* View All Button */}
-        <div className="mt-12 text-center">
-          {!showAll ? (
-            <button 
-              onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl group"
-            >
-              View All Packages
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </button>
-          ) : (
-            <button 
-              onClick={() => setShowAll(false)}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-white border-2 border-[#003B5C] text-[#003B5C] font-bold rounded-full transition-all hover:bg-gray-50 group"
-            >
-              Show Less
-              <ChevronDown size={18} className="transition-transform group-hover:rotate-180" />
-            </button>
-          )}
-        </div>
+        {!initialShowAll && (
+          <div className="mt-12 text-center">
+            {!showAll ? (
+              <button 
+                onClick={() => setShowAll(true)}
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl group"
+              >
+                View All Packages
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </button>
+            ) : (
+              <button 
+                onClick={() => setShowAll(false)}
+                className="inline-flex items-center gap-2 px-8 py-3 bg-white border-2 border-[#003B5C] text-[#003B5C] font-bold rounded-full transition-all hover:bg-gray-50 group"
+              >
+                Show Less
+                <ChevronDown size={18} className="transition-transform group-hover:rotate-180" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <TourModal

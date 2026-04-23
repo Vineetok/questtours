@@ -1,4 +1,5 @@
 import { api } from './api';
+import type { Ticket } from '@/lib/types';
 
 export interface TicketData {
   subject: string;
@@ -8,19 +9,19 @@ export interface TicketData {
 
 export const ticketService = {
   createTicket: (data: TicketData) => {
-    return api.post<any>('/tickets', data);
+    return api.post<Ticket>('/tickets', data);
   },
   
   getUserTickets: () => {
-    return api.get<any[]>('/tickets/my');
+    return api.get<Ticket[]>('/tickets/my');
   },
   
   getAllTickets: () => {
-    return api.get<any[]>('/tickets/all');
+    return api.get<Ticket[]>('/tickets/all');
   },
   
   updateTicketStatus: (id: number, data: { status?: string, priority?: string }) => {
-    return api.request<any>(`/tickets/${id}`, {
+    return api.request<Ticket>(`/tickets/${id}`, {
       method: 'PATCH',
       body: data
     });

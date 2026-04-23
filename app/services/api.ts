@@ -5,7 +5,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 interface RequestOptions {
   method?: HttpMethod;
   headers?: Record<string, string>;
-  body?: any;
+  body?: unknown;
   isFormData?: boolean;
 }
 
@@ -29,11 +29,10 @@ export async function request<T>(endpoint: string, options: RequestOptions = {})
   };
 
   if (body) {
-    config.body = isFormData ? body : JSON.stringify(body);
+    (config as unknown as { body: unknown }).body = isFormData ? body : JSON.stringify(body);
   }
 
   const fullUrl = `${API_URL}${endpoint}`;
-  console.log(`[API Request] ${method} ${fullUrl}`);
   const response = await fetch(fullUrl, config);
   
   let data;
@@ -55,16 +54,16 @@ export const api = {
   get: <T>(endpoint: string, headers?: Record<string, string>) => 
     request<T>(endpoint, { method: 'GET', headers }),
     
-  post: <T>(endpoint: string, body?: any, isFormData?: boolean, headers?: Record<string, string>) => 
+  post: <T>(endpoint: string, body?: unknown, isFormData?: boolean, headers?: Record<string, string>) => 
     request<T>(endpoint, { method: 'POST', body, isFormData, headers }),
     
-  put: <T>(endpoint: string, body?: any, headers?: Record<string, string>) => 
+  put: <T>(endpoint: string, body?: unknown, headers?: Record<string, string>) => 
     request<T>(endpoint, { method: 'PUT', body, headers }),
     
   delete: <T>(endpoint: string, headers?: Record<string, string>) => 
     request<T>(endpoint, { method: 'DELETE', headers }),
     
-  patch: <T>(endpoint: string, body?: any, headers?: Record<string, string>) => 
+  patch: <T>(endpoint: string, body?: unknown, headers?: Record<string, string>) => 
     request<T>(endpoint, { method: 'PATCH', body, headers }),
 
   request: <T>(endpoint: string, options: RequestOptions = {}) =>

@@ -1,23 +1,6 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { DashboardLayout } from '@/components/dashboard-layout';
-import {
-  TicketPercent,
-  Plus,
-  Copy,
-  ExternalLink,
-  Calendar,
-  Clock,
-  Users,
-  LayoutDashboard,
-  TrendingUp,
-  CreditCard,
-  Tag,
-  Gift,
-  Briefcase,
-  UserCircle
-} from 'lucide-react';
+import { Plus, Copy, ExternalLink, Calendar, Clock, Tag, Gift } from 'lucide-react';
 import { coupons } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';

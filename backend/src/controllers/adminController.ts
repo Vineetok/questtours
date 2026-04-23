@@ -84,8 +84,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
       revenueData: revenueDataResult.rows.map(r => ({ name: r.name, total: parseFloat(r.total) })),
       recentBookings: recentBookingsResult.rows
     });
-  } catch (error: any) {
-    console.error('Error fetching admin stats:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -109,8 +108,7 @@ export const getCustomers = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(customersQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching customers:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -132,8 +130,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(bookingsQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching all bookings:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -154,8 +151,7 @@ export const getSupportRequests = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(supportQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching support requests:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -179,8 +175,7 @@ export const getAgents = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(agentsQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching agents:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -202,8 +197,7 @@ export const getEnquiries = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(enquiriesQuery);
     res.json(result.rows);
-  } catch (error: any) {
-    console.error('Error fetching enquiries:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -223,8 +217,7 @@ export const createEnquiry = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(insertQuery, [firstName, lastName, email, subject, message]);
     res.status(201).json({ message: 'Enquiry submitted successfully', enquiry: result.rows[0] });
-  } catch (error: any) {
-    console.error('Error creating enquiry:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -251,8 +244,7 @@ export const updateEnquiryStatus = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Enquiry status updated', enquiry: result.rows[0] });
-  } catch (error: any) {
-    console.error('Error updating enquiry status:', error.message);
+  } catch (error: unknown) {
     res.status(500).json({ message: 'Server error' });
   }
 };

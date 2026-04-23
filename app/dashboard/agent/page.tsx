@@ -1,18 +1,16 @@
-'use client';
-
-import React from 'react';
+'use client';;
 import { DashboardLayout } from '@/components/dashboard-layout';
+import { useUser } from '@/hooks/use-user';
 import {
   LayoutDashboard,
   Users,
-  Map,
   MessageSquare,
   Calendar,
   CheckCircle2,
   Clock,
   XCircle,
   TrendingUp,
-  IndianRupee
+  IndianRupee,
 } from 'lucide-react';
 import { agentStats, agentBookings } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
@@ -35,11 +33,13 @@ const agentNavItems = [
 ];
 
 export default function AgentDashboard() {
+  const { user } = useUser();
+  
   return (
     <DashboardLayout
       role="agent"
-      userName="Sarah Agent"
-      userEmail="sarah@questagents.com"
+      userName={user?.name || "Agent User"}
+      userEmail={user?.email || "agent@questtours.com"}
       navItems={agentNavItems}
     >
       <div className="space-y-8">

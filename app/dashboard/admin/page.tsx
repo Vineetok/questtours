@@ -3,25 +3,19 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import {
-  LayoutDashboard,
   Users,
-  Map,
   TrendingUp,
   ArrowUpRight,
   ArrowDownRight,
   MoreVertical,
   Plus,
-  CreditCard,
   TicketPercent,
-  UserCircle,
   Briefcase,
-  Mail
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { adminService } from '@/services/adminService';
-import { getUserData } from '@/lib/auth';
-import { toast } from 'sonner';
+import { Booking } from '@/lib/types';
 import {
   Table,
   TableBody,
@@ -32,6 +26,7 @@ import {
 } from '@/components/ui/display/table';
 import { Badge } from '@/components/ui/display/badge';
 import { adminNavItems } from '@/lib/admin-nav-items';
+import { useUser } from '@/hooks/use-user';
 import {
   ResponsiveContainer,
   BarChart,
@@ -44,25 +39,37 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
+interface AdminStats {
+  totalRevenue: number;
+  totalTrips: number;
+  totalCustomers: number;
+  totalAgents: number;
+  trends: {
+    revenue: { trend: 'up' | 'down'; change: string };
+    bookings: { trend: 'up' | 'down'; change: string };
+    customers: { trend: 'up' | 'down'; change: string };
+    agents: { trend: 'up' | 'down'; change: string };
+  };
+  revenueData: { name: string; total: number }[];
+  recentBookings: Booking[];
+}
+
 export default function AdminDashboard() {
-  const [stats, setStats] = React.useState<any>(null);
-  const [revenueData, setRevenueData] = React.useState<any[]>([]);
-  const [recentBookings, setRecentBookings] = React.useState<any[]>([]);
-  const [user, setUser] = React.useState<any>(null);
+  const { user } = useUser();
+  const [stats, setStats] = React.useState<AdminStats | null>(null);
+  const [revenueData, setRevenueData] = React.useState<AdminStats['revenueData']>([]);
+  const [recentBookings, setRecentBookings] = React.useState<Booking[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-
     const fetchDashboardData = async () => {
       try {
         const data = await adminService.getStats();
         setStats(data);
         setRevenueData(data.revenueData || []);
         setRecentBookings(data.recentBookings || []);
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+      } catch (error: unknown) {
+        // Silent fail or toast error
       } finally {
         setLoading(false);
       }
@@ -112,6 +119,7 @@ export default function AdminDashboard() {
       }
     ];
   }, [stats]);
+
   return (
     <DashboardLayout
       role="admin"
@@ -123,7 +131,7 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-            <p className="text-gray-500">Welcome back, here's what's happening today.</p>
+            <p className="text-gray-500">Welcome back, here&apos;s what&apos;s happening today.</p>
           </div>
           <Button className="bg-blue-600 hover:bg-blue-700">
             <Plus className="mr-2 h-4 w-4" /> Add New Tour
@@ -220,10 +228,10 @@ export default function AdminDashboard() {
                 {recentBookings.slice(0, 5).map((booking) => (
                   <div key={booking.id} className="flex items-center gap-4">
                     <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
-                      {booking.customer[0]}
+                      {booking.customer?.[0] || 'U'}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{booking.customer}</p>
+                      <p className="text-sm font-medium truncate">{booking.customer || 'Unknown Customer'}</p>
                       <p className="text-xs text-gray-500 truncate">{booking.tour}</p>
                     </div>
                     <div className="text-right">
@@ -268,7 +276,7 @@ export default function AdminDashboard() {
                 {recentBookings.map((booking) => (
                   <TableRow key={booking.id}>
                     <TableCell className="font-medium">{booking.id}</TableCell>
-                    <TableCell>{booking.customer}</TableCell>
+                    <TableCell>{booking.customer || 'Unknown Customer'}</TableCell>
                     <TableCell>{booking.tour}</TableCell>
                     <TableCell>{booking.date}</TableCell>
                     <TableCell>
@@ -295,4 +303,3 @@ export default function AdminDashboard() {
     </DashboardLayout>
   );
 }
-

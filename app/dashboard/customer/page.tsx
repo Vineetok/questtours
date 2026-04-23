@@ -3,30 +3,20 @@
 import React from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import {
-  LayoutDashboard,
-  Map,
-  History,
-  Star,
-  Calendar as CalendarIcon,
-  Heart,
-  ShieldCheck
-} from 'lucide-react';
+import { Star, Calendar as CalendarIcon, Heart, ShieldCheck } from 'lucide-react';
 import { customerStats, customerBookings, wishlistTours } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { customerNavItems } from '@/lib/customer-nav-items';
 import { Badge } from '@/components/ui/display/badge';
 import Image from 'next/image';
-import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
+import { Booking, Tour } from '@/lib/types';
 
 export default function CustomerDashboard() {
-  const [user, setUser] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    const data = getUserData();
-    setUser(data);
-  }, []);
+  const { user } = useUser();
+  const bookings = customerBookings as Booking[];
+  const wishlist = wishlistTours as Tour[];
 
   return (
     <DashboardLayout
@@ -98,11 +88,11 @@ export default function CustomerDashboard() {
               </Link>
             </CardHeader>
             <CardContent className="space-y-4">
-              {customerBookings.map((booking) => (
+              {bookings.map((booking) => (
                 <div key={booking.id} className="group relative flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
                   <div className="relative h-20 w-24 overflow-hidden rounded-lg">
                     <Image
-                      src={booking.image}
+                      src={booking.image || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"}
                       alt={booking.tour}
                       fill
                       className="object-cover"
@@ -121,7 +111,7 @@ export default function CustomerDashboard() {
                     </p>
                   </div>                  
                   <div className="text-right">
-                    <p className="font-bold text-blue-600 mb-1">₹{(booking.price as any).toLocaleString('en-IN')}</p>
+                    <p className="font-bold text-blue-600 mb-1">₹{(booking.price || 0).toLocaleString('en-IN')}</p>
                     <Link href={`/dashboard/customer/bookings/${booking.id}`}>
                       <Button variant="link" size="sm" className="h-7 p-0 text-blue-600 font-bold hover:no-underline">
                         Details
@@ -143,7 +133,7 @@ export default function CustomerDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {wishlistTours.slice(0, 3).map((tour) => (
+                {wishlist.slice(0, 3).map((tour) => (
                   <div key={tour.id} className="flex items-center gap-3">
                     <div className="h-14 w-14 rounded-xl overflow-hidden shrink-0 relative">
                       <Image
@@ -158,7 +148,7 @@ export default function CustomerDashboard() {
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
                         <span className="text-xs font-semibold">{tour.rating}</span>
-                        <span className="text-xs text-blue-600 font-bold ml-auto">₹{(tour.price as any).toLocaleString('en-IN')}</span>
+                        <span className="text-xs text-blue-600 font-bold ml-auto">₹{tour.price.toLocaleString('en-IN')}</span>
                       </div>
                     </div>
                   </div>

@@ -11,7 +11,6 @@ import {
   Star,
   Users,
   X,
-  Calendar,
   Sparkles,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';

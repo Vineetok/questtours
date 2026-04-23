@@ -4,20 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard,
-  Users,
-  Map,
-  Calendar,
-  Settings,
   LogOut,
   Search,
   Bell,
-  User as UserIcon,
-  Heart,
-  TrendingUp,
-  MessageSquare
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { removeAuthToken } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import {
@@ -57,7 +47,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
   role: 'admin' | 'customer' | 'agent';
   userName: string;
-  userEmail: string;
+  userEmail?: string;
   navItems: NavItem[];
 }
 
@@ -156,7 +146,14 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{userName}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {userEmail}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>

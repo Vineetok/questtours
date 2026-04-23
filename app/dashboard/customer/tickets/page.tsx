@@ -3,23 +3,24 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import {
-  Ticket,
-  Plus,
+    Plus,
   Clock,
   CheckCircle2,
   AlertCircle,
   MessageSquare,
-  Search,
   LayoutDashboard,
   Calendar as CalendarIcon,
   Heart,
   History,
   User as UserIcon,
-  Map
+  Map,
+  Ticket as TicketIcon,
 } from 'lucide-react';
 import { ticketService, TicketData } from '@/services/ticketService';
 import { getUserData } from '@/lib/auth';
+import { useUser } from '@/hooks/use-user';
 import { toast } from 'sonner';
+import type { Ticket } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
@@ -47,13 +48,13 @@ const customerNavItems = [
   { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
   { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
   { title: 'Explore', url: '/destinations', icon: Map },
-  { title: 'Tickets', url: '/dashboard/customer/tickets', icon: Ticket },
+  { title: 'Tickets', url: '/dashboard/customer/tickets', icon: TicketIcon },
 ];
 
 export default function CustomerTicketsPage() {
-  const [tickets, setTickets] = React.useState<any[]>([]);
+  const { user, setUser } = useUser();
+  const [tickets, setTickets] = React.useState<Ticket[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<any>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -65,17 +66,18 @@ export default function CustomerTicketsPage() {
 
   React.useEffect(() => {
     const data = getUserData();
-    setUser(data);
+    if (data) {
+        setUser(data);
+    }
     fetchTickets();
-  }, []);
+  }, [setUser]);
 
   const fetchTickets = async () => {
     setLoading(true);
     try {
       const data = await ticketService.getUserTickets();
       setTickets(data);
-    } catch (error) {
-      console.error('Error fetching tickets:', error);
+    } catch (error: unknown) {
       toast.error('Failed to load tickets');
     } finally {
       setLoading(false);
@@ -91,8 +93,7 @@ export default function CustomerTicketsPage() {
       setOpen(false);
       setFormData({ subject: '', description: '', priority: 'Medium' });
       fetchTickets();
-    } catch (error) {
-      console.error('Error raising ticket:', error);
+    } catch (error: unknown) {
       toast.error('Failed to raise ticket');
     } finally {
       setIsSubmitting(false);
@@ -123,7 +124,7 @@ export default function CustomerTicketsPage() {
               <DialogHeader>
                 <DialogTitle>Raise a New Ticket</DialogTitle>
                 <DialogDescription>
-                  Explain your issue or request in detail. We'll get back to you as soon as possible.
+                  Explain your issue or request in detail. We&apos;ll get back to you as soon as possible.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleCreateTicket} className="space-y-4 mt-4">
@@ -180,7 +181,7 @@ export default function CustomerTicketsPage() {
             <CardHeader className="pb-2">
               <CardDescription>Total Tickets</CardDescription>
               <CardTitle className="text-2xl flex items-center gap-2">
-                <Ticket className="h-5 w-5 text-blue-600" />
+                <TicketIcon className="h-5 w-5 text-blue-600" />
                 {tickets.length}
               </CardTitle>
             </CardHeader>
@@ -220,7 +221,7 @@ export default function CustomerTicketsPage() {
             ) : tickets.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
                 <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p>You haven't raised any tickets yet.</p>
+                <p>You haven&apos;t raised any tickets yet.</p>
               </div>
             ) : (
               <div className="space-y-4">

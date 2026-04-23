@@ -1,0 +1,186 @@
+import { Request, Response } from 'express';
+import pool from '../config/db';
+
+export const getDashboardStats = async (req: Request, res: Response) => {
+  try {
+    // 1. Core Stats with Current vs Last Month for Trends
+    const statsQuery = `
+      SELECT 
+        (SELECT COUNT(*) FROM users WHERE role = 'customer') as total_customers,
+        (SELECT COUNT(*) FROM users WHERE role = 'agent') as total_agents,
+        (SELECT COUNT(*) FROM bookings WHERE status = 'completed' OR status = 'confirmed') as total_trips,
+        (SELECT SUM(amount) FROM bookings WHERE status = 'completed' OR status = 'confirmed') as total_revenue,
+        
+        -- Current month stats for trends
+        (SELECT COUNT(*) FROM users WHERE role = 'customer' AND created_at >= date_trunc('month', current_date)) as cur_month_customers,
+        (SELECT COUNT(*) FROM users WHERE role = 'customer' AND created_at >= date_trunc('month', current_date - interval '1 month') AND created_at < date_trunc('month', current_date)) as last_month_customers,
+        
+        (SELECT COUNT(*) FROM users WHERE role = 'agent' AND created_at >= date_trunc('month', current_date)) as cur_month_agents,
+        (SELECT COUNT(*) FROM users WHERE role = 'agent' AND created_at >= date_trunc('month', current_date - interval '1 month') AND created_at < date_trunc('month', current_date)) as last_month_agents,
+        
+        (SELECT COUNT(*) FROM bookings WHERE (status = 'completed' OR status = 'confirmed') AND booking_date >= date_trunc('month', current_date)) as cur_month_bookings,
+        (SELECT COUNT(*) FROM bookings WHERE (status = 'completed' OR status = 'confirmed') AND booking_date >= date_trunc('month', current_date - interval '1 month') AND booking_date < date_trunc('month', current_date)) as last_month_bookings,
+        
+        (SELECT SUM(amount) FROM bookings WHERE (status = 'completed' OR status = 'confirmed') AND booking_date >= date_trunc('month', current_date)) as cur_month_revenue,
+        (SELECT SUM(amount) FROM bookings WHERE (status = 'completed' OR status = 'confirmed') AND booking_date >= date_trunc('month', current_date - interval '1 month') AND booking_date < date_trunc('month', current_date)) as last_month_revenue
+    `;
+
+    const statsResult = await pool.query(statsQuery);
+    const row = statsResult.rows[0];
+
+    const calculateTrend = (cur: number, last: number) => {
+      if (!last || last === 0) return { trend: 'up', change: cur > 0 ? '100%' : '0%' };
+      const diff = ((cur - last) / last) * 100;
+      return {
+        trend: diff >= 0 ? 'up' : 'down',
+        change: `${Math.abs(Math.round(diff))}%`
+      };
+    };
+
+    // 2. Revenue Data (Last 6 months) for Chart
+    const revenueDataQuery = `
+      SELECT 
+        to_char(m, 'Mon') as name,
+        COALESCE(SUM(b.amount), 0) as total
+      FROM generate_series(
+        date_trunc('month', current_date - interval '5 months'),
+        date_trunc('month', current_date),
+        interval '1 month'
+      ) m
+      LEFT JOIN bookings b ON date_trunc('month', b.booking_date) = m AND (b.status = 'completed' OR b.status = 'confirmed')
+      GROUP BY m
+      ORDER BY m ASC;
+    `;
+    const revenueDataResult = await pool.query(revenueDataQuery);
+
+    // 3. Recent Bookings with details
+    const recentBookingsQuery = `
+      SELECT 
+        'BK-' || LPAD(b.id::text, 3, '0') as id, 
+        COALESCE(u.name, '') as customer, 
+        COALESCE(t.title, '') as tour, 
+        to_char(b.booking_date, 'YYYY-MM-DD') as date, 
+        INITCAP(b.status) as status, 
+        '₹' || TO_CHAR(b.amount, 'FM9,99,999') as amount 
+      FROM bookings b
+      LEFT JOIN users u ON b.user_id = u.id
+      LEFT JOIN tours t ON b.tour_id = t.id
+      ORDER BY b.booking_date DESC
+      LIMIT 10;
+    `;
+    const recentBookingsResult = await pool.query(recentBookingsQuery);
+
+    res.json({
+      totalCustomers: parseInt(row.total_customers),
+      totalAgents: parseInt(row.total_agents),
+      totalTrips: parseInt(row.total_trips),
+      totalRevenue: parseFloat(row.total_revenue || 0),
+      trends: {
+        customers: calculateTrend(parseInt(row.cur_month_customers), parseInt(row.last_month_customers)),
+        agents: calculateTrend(parseInt(row.cur_month_agents), parseInt(row.last_month_agents)),
+        bookings: calculateTrend(parseInt(row.cur_month_bookings), parseInt(row.last_month_bookings)),
+        revenue: calculateTrend(parseFloat(row.cur_month_revenue || 0), parseFloat(row.last_month_revenue || 0))
+      },
+      revenueData: revenueDataResult.rows.map(r => ({ name: r.name, total: parseFloat(r.total) })),
+      recentBookings: recentBookingsResult.rows
+    });
+  } catch (error: any) {
+    console.error('Error fetching admin stats:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getCustomers = async (req: Request, res: Response) => {
+  try {
+    const customersQuery = `
+      SELECT 
+        u.id, 
+        u.name, 
+        u.email, 
+        u.avatar as avatar_url,
+        SUBSTRING(u.name FROM 1 FOR 1) as avatar,
+        'Active' as status,
+        to_char(u.created_at, 'YYYY-MM-DD') as joined,
+        (SELECT COUNT(*) FROM bookings b WHERE b.user_id = u.id) as "totalBookings",
+        '₹' || COALESCE((SELECT TO_CHAR(SUM(amount), 'FM9,99,999') FROM bookings b WHERE b.user_id = u.id AND (b.status = 'completed' OR b.status = 'confirmed')), '0') as "totalSpent"
+      FROM users u
+      WHERE u.role = 'customer'
+      ORDER BY u.created_at DESC;
+    `;
+    const result = await pool.query(customersQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching customers:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getAllBookings = async (req: Request, res: Response) => {
+  try {
+    const bookingsQuery = `
+      SELECT 
+        'BK-' || LPAD(b.id::text, 3, '0') as id, 
+        COALESCE(u.name, '') as customer, 
+        COALESCE(t.title, '') as tour, 
+        to_char(b.booking_date, 'YYYY-MM-DD') as date, 
+        INITCAP(b.status) as status, 
+        '₹' || TO_CHAR(b.amount, 'FM9,99,999') as amount 
+      FROM bookings b
+      LEFT JOIN users u ON b.user_id = u.id
+      LEFT JOIN tours t ON b.tour_id = t.id
+      ORDER BY b.booking_date DESC;
+    `;
+    const result = await pool.query(bookingsQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching all bookings:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getSupportRequests = async (req: Request, res: Response) => {
+  try {
+    const supportQuery = `
+      SELECT 
+        'SR-' || LPAD(s.id::text, 3, '0') as id, 
+        COALESCE(u.name, '') as customer, 
+        s.subject, 
+        s.priority, 
+        s.status, 
+        to_char(s.created_at, 'YYYY-MM-DD') as date
+      FROM support_requests s
+      LEFT JOIN users u ON s.user_id = u.id
+      ORDER BY s.created_at DESC;
+    `;
+    const result = await pool.query(supportQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching support requests:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getAgents = async (req: Request, res: Response) => {
+  try {
+    const agentsQuery = `
+      SELECT 
+        u.id, 
+        u.name, 
+        u.email, 
+        u.avatar as avatar_url,
+        SUBSTRING(u.name FROM 1 FOR 1) as avatar,
+        'Active' as status,
+        to_char(u.created_at, 'YYYY-MM-DD') as joined,
+        (SELECT COUNT(*) FROM tours t WHERE t.location ILIKE '%' || u.name || '%') as "totalTours",
+        '₹' || COALESCE((SELECT TO_CHAR(SUM(amount), 'FM9,99,999') FROM bookings b WHERE b.user_id = u.id AND (b.status = 'completed' OR b.status = 'confirmed')), '0') as "totalEarnings"
+      FROM users u
+      WHERE u.role = 'agent'
+      ORDER BY u.created_at DESC;
+    `;
+    const result = await pool.query(agentsQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching agents:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

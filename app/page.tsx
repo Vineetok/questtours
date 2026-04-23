@@ -3,6 +3,7 @@ import { Hero } from '@/components/hero';
 import { FeaturedTours } from '@/components/featured-tours';
 import { Destinations } from '@/components/destinations';
 import { Features } from '@/components/features';
+import { TravelCategories } from '@/components/travel-categories';
 import { AgentSection } from '@/components/agent-section';
 import { Testimonials } from '@/components/testimonials';
 import { Footer } from '@/components/footer';
@@ -12,9 +13,10 @@ export default function Home() {
     <main className="min-h-screen">
       <Navbar />
       <Hero />
-      <FeaturedTours />
       <Destinations />
+      <FeaturedTours />
       <Features />
+      <TravelCategories />
       <AgentSection />
       <Testimonials />
       <Footer />

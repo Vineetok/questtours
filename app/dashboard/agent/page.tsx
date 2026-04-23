@@ -2,29 +2,29 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Map, 
-  MessageSquare, 
+import {
+  LayoutDashboard,
+  Users,
+  Map,
+  MessageSquare,
   Calendar,
   CheckCircle2,
   Clock,
   XCircle,
   TrendingUp,
-  DollarSign
+  IndianRupee
 } from 'lucide-react';
 import { agentStats, agentBookings } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table';
 
 const agentNavItems = [
@@ -36,9 +36,9 @@ const agentNavItems = [
 
 export default function AgentDashboard() {
   return (
-    <DashboardLayout 
-      role="agent" 
-      userName="Sarah Agent" 
+    <DashboardLayout
+      role="agent"
+      userName="Sarah Agent"
       userEmail="sarah@questagents.com"
       navItems={agentNavItems}
     >
@@ -65,7 +65,7 @@ export default function AgentDashboard() {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
                 <div className="h-4 w-4 text-gray-400">
-                  {stat.label === 'Commision' ? <DollarSign className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
+                  {stat.label === 'Commision' ? <IndianRupee className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
                 </div>
               </CardHeader>
               <CardContent>

@@ -140,11 +140,11 @@
     @apply bg-slate-300;
   }
 
-  .dark ::webkit-scrollbar-thumb {
+  .dark ::-webkit-scrollbar-thumb {
     @apply bg-slate-800;
   }
 
-  .dark ::webkit-scrollbar-thumb:hover {
+  .dark ::-webkit-scrollbar-thumb:hover {
     @apply bg-slate-700;
   }
 }

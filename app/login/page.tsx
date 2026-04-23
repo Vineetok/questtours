@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { Chrome, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { authService } from '@/services/authService';
+import { setAuthToken, setUserData } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,21 +22,19 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const data = await authService.login({ email, password });
 
-    // Hardcoded auth logic
-    if (password === 'admin') {
-      toast.success('Admin login successful!');
-      router.push('/dashboard/admin');
-    } else if (password === 'cust') {
-      toast.success('Customer login successful!');
-      router.push('/dashboard/customer');
-    } else if (password === 'agent') {
-      toast.success('Agent login successful!');
-      router.push('/dashboard/agent');
-    } else {
-      toast.error('Invalid credentials. Hint: use admin/cust/agent as password');
+      toast.success('Login successful!');
+      setAuthToken(data.token);
+      setUserData(data.user);
+      
+      // Redirect based on role from backend
+      const role = data.user.role;
+      router.push(`/dashboard/${role}`);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -42,7 +42,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center px-4" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2042&auto=format&fit=crop")' }}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-      
+
       <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-md shadow-2xl border-none">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
@@ -58,15 +58,15 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email / Role</Label>
-              <Input 
-                id="email" 
-                type="text" 
-                placeholder="admin@quest.com" 
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@quest.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required 
-                className="bg-white/50 border-gray-200" 
+                required
+                className="bg-white/50 border-gray-200"
               />
             </div>
             <div className="space-y-2">
@@ -76,16 +76,16 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Input 
-                id="password" 
-                type="password" 
+              <Input
+                id="password"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required 
-                className="bg-white/50 border-gray-200" 
+                required
+                className="bg-white/50 border-gray-200"
               />
             </div>
-            <Button 
+            <Button
               type="submit"
               disabled={isLoading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-all"
@@ -99,7 +99,7 @@ export default function LoginPage() {
                 'Log In'
               )}
             </Button>
-            
+
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-gray-300"></span>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 <span className="bg-white/90 px-2 text-gray-500">Or continue with</span>
               </div>
             </div>
-            
+
             <Button variant="outline" type="button" className="w-full flex items-center justify-center gap-2 border-gray-200 hover:bg-gray-50">
               <Chrome className="w-4 h-4" />
               Google
@@ -125,4 +125,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

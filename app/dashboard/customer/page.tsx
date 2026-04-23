@@ -9,6 +9,12 @@ import {
   Heart,
   History,
   Star,
+import {
+  LayoutDashboard,
+  Map,
+  Heart,
+  History,
+  Star,
   Calendar as CalendarIcon,
 
   User as UserIcon,
@@ -102,6 +108,8 @@ export default function CustomerDashboard() {
               {customerBookings.map((booking) => (
                 <div key={booking.id} className="group relative flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
                   <div className="relative h-20 w-24 overflow-hidden rounded-lg">
+                    <img
+                      src={booking.image}
                     <img
                       src={booking.image}
                       alt={booking.tour}

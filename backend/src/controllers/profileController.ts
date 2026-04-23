@@ -79,3 +79,27 @@ export const updateProfile = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const getPayments = async (req: Request, res: Response) => {
+  const userId = (req as any).user?.id;
+  
+  try {
+    const query = `
+      SELECT 
+        'TX-' || LPAD(p.id::text, 3, '0') as id,
+        'BK-' || LPAD(p.booking_id::text, 3, '0') as "bookingId",
+        to_char(p.created_at, 'YYYY-MM-DD') as date,
+        '₹' || TO_CHAR(p.amount, 'FM9,99,999') as amount,
+        p.method,
+        p.status
+      FROM payments p
+      WHERE p.user_id = $1
+      ORDER BY p.created_at DESC;
+    `;
+    const result = await pool.query(query, [userId]);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching payments:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

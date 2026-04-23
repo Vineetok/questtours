@@ -3,20 +3,17 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { 
-  LayoutDashboard, 
-  Map, 
-  Heart, 
-  History, 
   Calendar as CalendarIcon,
   Download,
   CreditCard,
   Search,
   Filter,
-  User as UserIcon
+  History
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { customerNavItems } from '@/lib/customer-nav-items';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { Badge } from '@/components/ui/display/badge';
 import { 
   Table, 
   TableBody, 
@@ -24,26 +21,40 @@ import {
   TableHead, 
   TableHeader, 
   TableRow 
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui/display/table';
+import { Input } from '@/components/ui/inputs/input';
 import { getUserData } from '@/lib/auth';
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-];
+import { userService } from '@/services/userService';
+import { toast } from 'sonner';
 
 export default function PaymentsPage() {
   const [user, setUser] = React.useState<any>(null);
+  const [payments, setPayments] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
     const data = getUserData();
     setUser(data);
+    fetchPayments();
   }, []);
+
+  const fetchPayments = async () => {
+    try {
+      const data = await userService.getPayments();
+      setPayments(data);
+    } catch (error) {
+      console.error('Error fetching payments:', error);
+      toast.error('Failed to load payment history');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredPayments = payments.filter(p => 
+    p.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.bookingId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <DashboardLayout 
@@ -68,7 +79,12 @@ export default function PaymentsPage() {
             <div className="flex flex-col md:flex-row md:items-center gap-4 py-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input placeholder="Search transactions..." className="pl-10 h-10 bg-gray-50/50 border-gray-100" />
+                <Input 
+                  placeholder="Search transactions..." 
+                  className="pl-10 h-10 bg-gray-50/50 border-gray-100" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <Button variant="outline" className="h-10 gap-2 font-medium">
                 <Filter className="h-4 w-4" /> Filter
@@ -89,48 +105,68 @@ export default function PaymentsPage() {
                     <TableHead className="font-semibold text-right text-gray-700">Action</TableHead>
                   </TableRow>
                 </TableHeader>
-                {/* <TableBody>
-                  {paymentHistory.map((payment) => (
-                    <TableRow key={payment.id} className="border-gray-100 hover:bg-gray-50/50 transition-colors">
-                      <TableCell className="font-mono text-xs text-gray-500">{payment.id}</TableCell>
-                      <TableCell className="font-medium">{payment.bookingId}</TableCell>
-                      <TableCell className="text-gray-600">{payment.date}</TableCell>
-                      <TableCell className="font-bold text-gray-900">{payment.amount}</TableCell>
-                      <TableCell className="text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <CreditCard className="h-4 w-4 text-gray-400" />
-                          {payment.method}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          className={
-                            payment.status === 'Succeeded' 
-                              ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none'
-                              : payment.status === 'Refunded'
-                              ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 border-none'
-                              : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100 border-none'
-                          }
-                        >
-                          {payment.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" className="h-8 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50">
-                          <Download className="h-4 w-4 mr-1.5" /> Invoice
-                        </Button>
+                <TableBody>
+                  {loading ? (
+                    Array(3).fill(0).map((_, i) => (
+                      <TableRow key={i} className="animate-pulse">
+                        <TableCell><div className="h-4 w-16 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-4 w-16 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-4 w-24 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-4 w-20 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-4 w-24 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-6 w-20 bg-gray-100 rounded"></div></TableCell>
+                        <TableCell><div className="h-8 w-20 bg-gray-100 rounded ml-auto"></div></TableCell>
+                      </TableRow>
+                    ))
+                  ) : filteredPayments.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-10 text-gray-500">
+                        No transactions found.
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody> */}
+                  ) : (
+                    filteredPayments.map((payment) => (
+                      <TableRow key={payment.id} className="border-gray-100 hover:bg-gray-50/50 transition-colors">
+                        <TableCell className="font-mono text-xs text-gray-500">{payment.id}</TableCell>
+                        <TableCell className="font-medium">{payment.bookingId}</TableCell>
+                        <TableCell className="text-gray-600">{payment.date}</TableCell>
+                        <TableCell className="font-bold text-gray-900">{payment.amount}</TableCell>
+                        <TableCell className="text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <CreditCard className="h-4 w-4 text-gray-400" />
+                            {payment.method}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            className={
+                              payment.status === 'Succeeded' 
+                                ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none shadow-none'
+                                : payment.status === 'Refunded'
+                                ? 'bg-blue-100 text-blue-700 hover:bg-blue-100 border-none shadow-none'
+                                : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100 border-none shadow-none'
+                            }
+                          >
+                            {payment.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" className="h-8 px-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50">
+                            <Download className="h-4 w-4 mr-1.5" /> Invoice
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
               </Table>
             </div>
-            {/* {paymentHistory.length === 0 && (
+            {!loading && filteredPayments.length === 0 && (
               <div className="py-20 text-center">
                 <History className="h-12 w-12 text-gray-200 mx-auto mb-4" />
                 <p className="text-gray-500">No transactions found.</p>
               </div>
-            )} */}
+            )}
           </CardContent>
         </Card>
 

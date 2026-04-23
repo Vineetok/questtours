@@ -1,24 +1,13 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import {
-  Users,
-  Search,
-  MoreVertical,
-  LayoutDashboard,
-  TrendingUp,
-  CreditCard,
-  TicketPercent,
-  Briefcase,
-  UserCircle
-} from 'lucide-react';
 import { adminService } from '@/services/adminService';
 import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
-import { supportRequests,recentBookings } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
 import {
   Table,
   TableBody,
@@ -26,21 +15,18 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
+} from '@/components/ui/display/table';
+import { Badge } from '@/components/ui/display/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/display/avatar';
+import { Input } from '@/components/ui/inputs/input';
+import { adminNavItems } from '@/lib/admin-nav-items';
+import {
+  Users,
+  Search,
+  MoreVertical,
+} from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/tabs';
+import { TicketDetailsDialog } from '@/components/ticket-details-dialog';
 
 export default function CustomersPage() {
   const [customerList, setCustomerList] = React.useState<any[]>([]);
@@ -48,6 +34,7 @@ export default function CustomersPage() {
   const [supportList, setSupportList] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [user, setUser] = React.useState<any>(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
     const data = getUserData();
@@ -77,6 +64,20 @@ export default function CustomersPage() {
     fetchData();
   }, []);
 
+  const fetchSupportRequests = async () => {
+    try {
+      const support = await adminService.getSupportRequests();
+      setSupportList(support);
+    } catch (error) {
+      console.error('Error fetching support requests:', error);
+    }
+  };
+
+  const filteredCustomers = customerList.filter(customer => 
+    customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <DashboardLayout
       role="admin"
@@ -105,6 +106,8 @@ export default function CustomersPage() {
                 <Input
                   placeholder="Search customers..."
                   className="pl-9 bg-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <Button className="bg-blue-600 hover:bg-blue-700">Add Customer</Button>
@@ -135,14 +138,14 @@ export default function CustomersPage() {
                           <TableCell><div className="h-6 w-10 bg-gray-100 rounded ml-auto"></div></TableCell>
                         </TableRow>
                       ))
-                    ) : customerList.length === 0 ? (
+                    ) : filteredCustomers.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={6} className="text-center py-10 text-gray-500">
-                          No customers found.
+                          No customers found matching "{searchQuery}".
                         </TableCell>
                       </TableRow>
                     ) : (
-                      customerList.map((customer) => (
+                      filteredCustomers.map((customer) => (
                         <TableRow key={customer.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
@@ -294,7 +297,13 @@ export default function CustomersPage() {
                         }>
                           {request.status}
                         </Badge>
-                        <Button variant="link" className="text-blue-600 text-sm h-auto p-0">View Details</Button>
+                        <TicketDetailsDialog 
+                          ticket={request}
+                          onUpdate={fetchSupportRequests}
+                          trigger={
+                            <Button variant="link" className="text-blue-600 text-sm h-auto p-0">View Details</Button>
+                          }
+                        />
                       </div>
                     </CardContent>
                   </Card>
@@ -306,3 +315,4 @@ export default function CustomersPage() {
     </DashboardLayout>
   );
 }
+

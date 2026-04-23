@@ -21,9 +21,9 @@ import {
   User as UserIcon
 } from 'lucide-react';
 import { customerBookings } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { Badge } from '@/components/ui/display/badge';
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -34,7 +34,7 @@ import {
   AlertDialogHeader, 
   AlertDialogTitle, 
   AlertDialogTrigger 
-} from '@/components/ui/alert-dialog';
+} from '@/components/ui/overlays/alert-dialog';
 import { toast } from 'sonner';
 
 const customerNavItems = [

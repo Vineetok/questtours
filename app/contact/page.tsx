@@ -1,9 +1,50 @@
+'use client';
+
+import React from 'react';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/inputs/button';
+import { enquiryService } from '@/services/enquiryService';
+import { toast } from 'sonner';
 
 export default function ContactPage() {
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await enquiryService.submitEnquiry(formData);
+      toast.success('Your message has been sent successfully!');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error submitting enquiry:', error);
+      toast.error('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
@@ -35,7 +76,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Our Office</h3>
-                    <p className="text-gray-500">123 Travel Boulevard, Suite 400<br />New Delhi, DL 110001, India</p>
+                    <p className="text-gray-500">Quest Tours GTS No. 1663,Shop No 1,Bhavani Chambers,Ramkhind Galli,Belgaum-590001.</p>
                   </div>
                 </div>
                 
@@ -45,7 +86,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Phone Number</h3>
-                    <p className="text-gray-500">+91 98765 43210<br />Toll Free: 1800 123 4567</p>
+                    <p className="text-gray-500">0831-2407073</p>
                   </div>
                 </div>
 
@@ -55,7 +96,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Email Address</h3>
-                    <p className="text-gray-500">hello@questtours.com<br />support@questtours.com</p>
+                    <p className="text-gray-500">enquiry@questtours.in</p>
                   </div>
                 </div>
 
@@ -74,31 +115,75 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
               <h2 className="text-2xl font-bold text-[#003B5C] mb-6">Send us a Message</h2>
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" id="firstName" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" placeholder="John" />
+                    <input 
+                      type="text" 
+                      id="firstName" 
+                      required
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" 
+                      placeholder="First" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</label>
-                    <input type="text" id="lastName" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" placeholder="Doe" />
+                    <input 
+                      type="text" 
+                      id="lastName" 
+                      required
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" 
+                      placeholder="Last" 
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
-                  <input type="email" id="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" placeholder="john@example.com" />
+                  <input 
+                    type="email" 
+                    id="email" 
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" 
+                    placeholder="name@example.com" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="subject" className="text-sm font-medium text-gray-700">Subject</label>
-                  <input type="text" id="subject" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" placeholder="How can we help you?" />
+                  <input 
+                    type="text" 
+                    id="subject" 
+                    required
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all" 
+                    placeholder="How can we help you?" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-gray-700">Message</label>
-                  <textarea id="message" rows={5} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all resize-none" placeholder="Your message here..."></textarea>
+                  <textarea 
+                    id="message" 
+                    rows={5} 
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003B5C] focus:border-transparent transition-all resize-none" 
+                    placeholder="Your message here..."
+                  ></textarea>
                 </div>
-                <Button type="button" className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 h-auto text-lg rounded-xl shadow-lg hover:shadow-xl transition-all">
-                  Send Message
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 h-auto text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </form>
             </div>
@@ -111,3 +196,4 @@ export default function ContactPage() {
     </main>
   );
 }
+

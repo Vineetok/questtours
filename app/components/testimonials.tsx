@@ -38,7 +38,7 @@ const testimonials = [
 ];
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/overlays/dialog';
 
 export function Testimonials() {
   const [selectedTestimonial, setSelectedTestimonial] = useState<typeof testimonials[0] | null>(null);
@@ -141,3 +141,4 @@ export function Testimonials() {
     </section>
   );
 }
+

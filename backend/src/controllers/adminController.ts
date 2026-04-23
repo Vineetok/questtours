@@ -142,13 +142,13 @@ export const getSupportRequests = async (req: Request, res: Response) => {
   try {
     const supportQuery = `
       SELECT 
-        'SR-' || LPAD(s.id::text, 3, '0') as id, 
+        'T-' || LPAD(s.id::text, 3, '0') as id, 
         COALESCE(u.name, '') as customer, 
         s.subject, 
         s.priority, 
         s.status, 
         to_char(s.created_at, 'YYYY-MM-DD') as date
-      FROM support_requests s
+      FROM tickets s
       LEFT JOIN users u ON s.user_id = u.id
       ORDER BY s.created_at DESC;
     `;
@@ -181,6 +181,78 @@ export const getAgents = async (req: Request, res: Response) => {
     res.json(result.rows);
   } catch (error: any) {
     console.error('Error fetching agents:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getEnquiries = async (req: Request, res: Response) => {
+  try {
+    const enquiriesQuery = `
+      SELECT 
+        id,
+        first_name as "firstName",
+        last_name as "lastName",
+        email,
+        subject,
+        message,
+        status,
+        to_char(created_at, 'YYYY-MM-DD HH24:MI') as date
+      FROM enquiries
+      ORDER BY created_at DESC;
+    `;
+    const result = await pool.query(enquiriesQuery);
+    res.json(result.rows);
+  } catch (error: any) {
+    console.error('Error fetching enquiries:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const createEnquiry = async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, email, subject, message } = req.body;
+    
+    if (!firstName || !lastName || !email || !subject || !message) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const insertQuery = `
+      INSERT INTO enquiries (first_name, last_name, email, subject, message)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
+    `;
+    const result = await pool.query(insertQuery, [firstName, lastName, email, subject, message]);
+    res.status(201).json({ message: 'Enquiry submitted successfully', enquiry: result.rows[0] });
+  } catch (error: any) {
+    console.error('Error creating enquiry:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const updateEnquiryStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ message: 'Status is required' });
+    }
+
+    const updateQuery = `
+      UPDATE enquiries 
+      SET status = $1 
+      WHERE id = $2 
+      RETURNING *;
+    `;
+    const result = await pool.query(updateQuery, [status, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Enquiry not found' });
+    }
+
+    res.json({ message: 'Enquiry status updated', enquiry: result.rows[0] });
+  } catch (error: any) {
+    console.error('Error updating enquiry status:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 };

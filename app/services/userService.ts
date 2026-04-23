@@ -12,4 +12,8 @@ export const userService = {
   uploadAvatar: (formData: FormData) => {
     return api.post<any>('/profile/avatar', formData, true);
   },
+  
+  getPayments: () => {
+    return api.get<any[]>('/profile/payments');
+  },
 };

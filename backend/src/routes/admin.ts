@@ -4,7 +4,10 @@ import {
   getCustomers, 
   getAllBookings, 
   getSupportRequests,
-  getAgents
+  getAgents,
+  getEnquiries,
+  createEnquiry,
+  updateEnquiryStatus
 } from '../controllers/adminController';
 import { auth } from '../middleware/auth';
 
@@ -43,5 +46,20 @@ router.get('/bookings', auth, isAdmin, getAllBookings);
 // @desc    Get all support requests
 // @access  Private (Admin only)
 router.get('/support-requests', auth, isAdmin, getSupportRequests);
+
+// @route   GET api/admin/enquiries
+// @desc    Get all user enquiries
+// @access  Private (Admin only)
+router.get('/enquiries', auth, isAdmin, getEnquiries);
+
+// @route   POST api/admin/enquiries
+// @desc    Submit a new enquiry
+// @access  Public
+router.post('/enquiries', createEnquiry);
+
+// @route   PATCH api/admin/enquiries/:id
+// @desc    Update enquiry status
+// @access  Private (Admin only)
+router.patch('/enquiries/:id', auth, isAdmin, updateEnquiryStatus);
 
 export default router;

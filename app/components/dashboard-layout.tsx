@@ -18,6 +18,8 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { removeAuthToken } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -32,10 +34,10 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from '@/components/ui/navigation/sidebar';
+import { Input } from '@/components/ui/inputs/input';
+import { Button } from '@/components/ui/inputs/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/display/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,7 +45,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/display/dropdown-menu';
 
 interface NavItem {
   title: string;
@@ -61,6 +63,13 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, role, userName, userEmail, navItems }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    removeAuthToken();
+    router.push('/login');
+  };
 
   return (
     <SidebarProvider>
@@ -101,10 +110,13 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Logout">
-                  <Link href="/login" className="text-red-600 hover:text-red-700 hover:bg-red-50">
-                    <LogOut />
+                  <button 
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                  >
+                    <LogOut className="h-4 w-4" />
                     <span>Logout</span>
-                  </Link>
+                  </button>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -149,11 +161,12 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">
-                    <Link href="/login" className="flex items-center w-full">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </Link>
+                  <DropdownMenuItem 
+                    className="text-red-600 focus:text-red-700 focus:bg-red-50 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -168,3 +181,4 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
     </SidebarProvider>
   );
 }
+

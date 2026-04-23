@@ -3,39 +3,27 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
+import { customerNavItems } from '@/lib/customer-nav-items';
 import { 
-  LayoutDashboard, 
-  Map, 
-  Heart, 
-  History, 
-  Calendar as CalendarIcon,
   Star,
   Trash2,
   ArrowRight,
   Plane,
   Search,
   SearchX,
-  User as UserIcon,
-  X
+  X,
+  Heart,
+  Map
 } from 'lucide-react';
 import { wishlistTours } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { Badge } from '@/components/ui/display/badge';
+import { Input } from '@/components/ui/inputs/input';
 import { TourModal } from '@/components/tour-modal';
 import { toast } from 'sonner';
 import { getUserData } from '@/lib/auth';
 import Image from 'next/image';
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-];
 
 export default function WishlistPage() {
   const [items, setItems] = useState(wishlistTours);
@@ -211,3 +199,4 @@ export default function WishlistPage() {
     </DashboardLayout>
   );
 }
+

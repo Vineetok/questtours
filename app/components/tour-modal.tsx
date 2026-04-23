@@ -14,8 +14,8 @@ import {
   Calendar,
   Sparkles,
 } from 'lucide-react';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
+import { Button } from '@/components/ui/inputs/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -192,3 +192,4 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
     </Dialog>
   );
 }
+

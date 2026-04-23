@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/inputs/button';
 import Link from 'next/link';
 
 export function Navbar() {
@@ -177,3 +177,4 @@ export function Navbar() {
     </nav>
   );
 }
+

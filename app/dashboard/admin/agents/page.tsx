@@ -16,8 +16,8 @@ import {
 import { adminService } from '@/services/adminService';
 import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
 import {
   Table,
   TableBody,
@@ -25,25 +25,17 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
+} from '@/components/ui/display/table';
+import { Badge } from '@/components/ui/display/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/display/avatar';
+import { Input } from '@/components/ui/inputs/input';
+import { adminNavItems } from '@/lib/admin-nav-items';
 
 export default function AgentsPage() {
   const [agentList, setAgentList] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [user, setUser] = React.useState<any>(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   React.useEffect(() => {
     const data = getUserData();
@@ -66,6 +58,11 @@ export default function AgentsPage() {
     fetchData();
   }, []);
 
+  const filteredAgents = agentList.filter(agent => 
+    (agent.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (agent.email || '').toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <DashboardLayout
       role="admin"
@@ -85,6 +82,8 @@ export default function AgentsPage() {
             <Input
               placeholder="Search agents..."
               className="pl-9 bg-white"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <Button className="bg-blue-600 hover:bg-blue-700">Add New Agent</Button>
@@ -115,14 +114,14 @@ export default function AgentsPage() {
                       <TableCell><div className="h-6 w-10 bg-gray-100 rounded ml-auto"></div></TableCell>
                     </TableRow>
                   ))
-                ) : agentList.length === 0 ? (
+                ) : filteredAgents.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-10 text-gray-500">
-                      No agents found.
+                      No agents found matching "{searchQuery}".
                     </TableCell>
                   </TableRow>
                 ) : (
-                  agentList.map((agent) => (
+                  filteredAgents.map((agent) => (
                     <TableRow key={agent.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -163,3 +162,4 @@ export default function AgentsPage() {
     </DashboardLayout>
   );
 }
+

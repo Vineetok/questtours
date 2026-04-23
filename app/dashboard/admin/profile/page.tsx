@@ -2,26 +2,8 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { 
-  LayoutDashboard, 
-  Users, 
-  TrendingUp, 
-  CreditCard, 
-  TicketPercent,
-  UserCircle,
-  Briefcase
-} from 'lucide-react';
+import { adminNavItems } from '@/lib/admin-nav-items';
 import { ProfileView } from '@/components/profile-view';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
 
 export default function AdminProfilePage() {
   return (

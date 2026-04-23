@@ -13,24 +13,17 @@ import {
   ExternalLink,
   Download,
   User as UserIcon
+  Download
 } from 'lucide-react';
 import { customerBookings } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { Badge } from '@/components/ui/display/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/tabs';
+import { customerNavItems } from '@/lib/customer-nav-items';
 import { toast } from 'sonner';
 import { getUserData } from '@/lib/auth';
 import Image from 'next/image';
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-];
 
 export default function BookingsPage() {
   const [user, setUser] = React.useState<any>(null);
@@ -212,3 +205,4 @@ function EmptyBookings({ message }: { message: string }) {
     </div>
   );
 }
+

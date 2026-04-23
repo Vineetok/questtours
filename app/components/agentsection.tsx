@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/inputs/button';
 
 export function AgentSection() {
   return (
@@ -51,3 +51,4 @@ export function AgentSection() {
     </section>
   );
 }
+

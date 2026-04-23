@@ -15,10 +15,10 @@ import {
   Info,
   ChevronRight
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/inputs/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Input } from '@/components/ui/inputs/input';
+import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
 
 export default function BookingPage() {

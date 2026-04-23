@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { User,  Shield,  LogOut, Camera, Check } from 'lucide-react';
-import { Card} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card} from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
 import { userService } from '@/services/userService';
 import { getUserData, removeAuthToken, updateUserAvatar, updateUserData, getFullAvatarUrl } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
@@ -284,3 +284,4 @@ export function ProfileView() {
     </div>
   );
 }
+

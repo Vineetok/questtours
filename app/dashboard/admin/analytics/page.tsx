@@ -18,8 +18,9 @@ import {
   UserCircle
 } from 'lucide-react';
 import { destinationPerformance, revenueData } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { adminNavItems } from '@/lib/admin-nav-items';
 import {
   ResponsiveContainer,
   BarChart,
@@ -34,16 +35,6 @@ import {
   PieChart,
   Pie
 } from 'recharts';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
 
 export default function AnalyticsPage() {
   return (
@@ -255,3 +246,4 @@ export default function AnalyticsPage() {
     </DashboardLayout>
   );
 }
+

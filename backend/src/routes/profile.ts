@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
-import { uploadAvatar, getProfile, updateProfile } from '../controllers/profileController';
+import { uploadAvatar, getProfile, updateProfile, getPayments } from '../controllers/profileController';
 import { auth } from '../middleware/auth';
 
 const router = Router();
@@ -41,6 +41,11 @@ router.get('/', auth, getProfile);
 // @desc    Update user profile
 // @access  Private
 router.put('/', auth, updateProfile);
+
+// @route   GET api/profile/payments
+// @desc    Get current user's payments
+// @access  Private
+router.get('/payments', auth, getPayments);
 
 // @route   POST api/profile/avatar
 // @desc    Upload user avatar

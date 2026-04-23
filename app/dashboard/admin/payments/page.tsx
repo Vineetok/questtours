@@ -3,25 +3,19 @@
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import {
-  CreditCard,
   ArrowUpRight,
   ArrowDownLeft,
   Search,
   Filter,
   Download,
-  Users,
-  LayoutDashboard,
-  TrendingUp,
-  TicketPercent,
   CheckCircle2,
   Clock,
   AlertCircle,
-  Briefcase,
-  UserCircle
 } from 'lucide-react';
 import { transactions } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { adminNavItems } from '@/lib/admin-nav-items';
 import {
   Table,
   TableBody,
@@ -29,19 +23,9 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
+} from '@/components/ui/display/table';
+import { Badge } from '@/components/ui/display/badge';
+import { Input } from '@/components/ui/inputs/input';
 
 export default function PaymentsPage() {
   return (
@@ -191,3 +175,4 @@ export default function PaymentsPage() {
     </DashboardLayout>
   );
 }
+

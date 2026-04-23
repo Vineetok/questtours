@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/inputs/button';
+import { Input } from '@/components/ui/inputs/input';
 import { Calendar, Users, MapPin, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,7 +18,7 @@ const heroSlides = [
     title: 'Create Memories That',
     highlight: 'Last Forever',
     highlightColor: 'text-cyan-400',
-    subtitle: 'From mountain peaks to ocean shores, find your perfect getaway with ArthaVenture.',
+    subtitle: 'From mountain peaks to ocean shores, find your perfect getaway with QuestTours.',
   },
   {
     image: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=1600&q=80',
@@ -180,3 +180,4 @@ export function Hero() {
     </section>
   );
 }
+

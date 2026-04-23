@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import profileRoutes from './routes/profile';
 import adminRoutes from './routes/admin';
+import ticketRoutes from './routes/tickets';
 import path from 'path';
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/tickets', ticketRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('QuestTours API is running');

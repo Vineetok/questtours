@@ -15,9 +15,9 @@ import {
   IndianRupee
 } from 'lucide-react';
 import { agentStats, agentBookings } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { Badge } from '@/components/ui/display/badge';
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
+} from '@/components/ui/display/table';
 
 const agentNavItems = [
   { title: 'Dashboard', url: '/dashboard/agent', icon: LayoutDashboard },
@@ -186,3 +186,4 @@ export default function AgentDashboard() {
     </DashboardLayout>
   );
 }
+

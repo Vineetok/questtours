@@ -14,10 +14,11 @@ import {
   CreditCard,
   TicketPercent,
   UserCircle,
-  Briefcase
+  Briefcase,
+  Mail
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
 import { adminService } from '@/services/adminService';
 import { getUserData } from '@/lib/auth';
 import { toast } from 'sonner';
@@ -28,8 +29,9 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+} from '@/components/ui/display/table';
+import { Badge } from '@/components/ui/display/badge';
+import { adminNavItems } from '@/lib/admin-nav-items';
 import {
   ResponsiveContainer,
   BarChart,
@@ -40,16 +42,7 @@ import {
   Tooltip,
   Cell
 } from 'recharts';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const [stats, setStats] = React.useState<any>(null);
@@ -303,6 +296,3 @@ export default function AdminDashboard() {
   );
 }
 
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
-}

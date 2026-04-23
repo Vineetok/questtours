@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { X, Mail, Lock, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/inputs/button';
+import { Input } from '@/components/ui/inputs/input';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -80,3 +80,4 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     </div>
   );
 }
+

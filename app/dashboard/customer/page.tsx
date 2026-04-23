@@ -6,28 +6,19 @@ import { DashboardLayout } from '@/components/dashboard-layout';
 import {
   LayoutDashboard,
   Map,
-  Heart,
   History,
   Star,
   Calendar as CalendarIcon,
-  User as UserIcon,
+  Heart,
   ShieldCheck
 } from 'lucide-react';
 import { customerStats, customerBookings, wishlistTours } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { customerNavItems } from '@/lib/customer-nav-items';
+import { Badge } from '@/components/ui/display/badge';
 import Image from 'next/image';
 import { getUserData } from '@/lib/auth';
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-];
 
 export default function CustomerDashboard() {
   const [user, setUser] = React.useState<any>(null);
@@ -213,3 +204,4 @@ export default function CustomerDashboard() {
     </DashboardLayout>
   );
 }
+

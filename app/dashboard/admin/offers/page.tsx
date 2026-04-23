@@ -19,8 +19,9 @@ import {
   UserCircle
 } from 'lucide-react';
 import { coupons } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
+import { Button } from '@/components/ui/inputs/button';
+import { adminNavItems } from '@/lib/admin-nav-items';
 import {
   Table,
   TableBody,
@@ -28,19 +29,9 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+} from '@/components/ui/display/table';
+import { Badge } from '@/components/ui/display/badge';
 import { toast } from 'sonner';
-
-const adminNavItems = [
-  { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
-  { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
-  { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },
-  { title: 'Payments', url: '/dashboard/admin/payments', icon: CreditCard },
-  { title: 'Offers', url: '/dashboard/admin/offers', icon: TicketPercent },
-  { title: 'Analytics', url: '/dashboard/admin/analytics', icon: TrendingUp },
-  { title: 'Profile', url: '/dashboard/admin/profile', icon: UserCircle },
-];
 
 export default function OffersPage() {
   const copyToClipboard = (text: string) => {
@@ -208,3 +199,4 @@ export default function OffersPage() {
     </DashboardLayout>
   );
 }
+

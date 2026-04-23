@@ -4,10 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-// import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
-
 
 const popularDestinations = [
   {

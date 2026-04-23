@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Calendar, User, Clock, Share2, ArrowRight } from 'lucide-react';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
 
 interface BlogModalProps {
   isOpen: boolean;

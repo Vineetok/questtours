@@ -18,13 +18,15 @@ import {
   User as UserIcon,
   X
 } from 'lucide-react';
-import { wishlistTours, userProfile } from '@/lib/mock-data';
+import { wishlistTours } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { TourModal } from '@/components/tour-modal';
 import { toast } from 'sonner';
+import { getUserData } from '@/lib/auth';
+import Image from 'next/image';
 
 const customerNavItems = [
   { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
@@ -39,6 +41,12 @@ export default function WishlistPage() {
   const [items, setItems] = useState(wishlistTours);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTour, setSelectedTour] = useState<any | null>(null);
+  const [user, setUser] = useState<any>(null);
+
+  React.useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+  }, []);
 
   const handleRemove = (id: string, name: string) => {
     setItems(items.filter(item => item.id !== id));
@@ -59,8 +67,8 @@ export default function WishlistPage() {
   return (
     <DashboardLayout 
       role="customer" 
-      userName={userProfile.name} 
-      userEmail={userProfile.email}
+      userName={user?.name || "Customer User"} 
+      userEmail={user?.email || "customer@example.com"}
       navItems={customerNavItems}
     >
       <div className="space-y-8">
@@ -94,10 +102,11 @@ export default function WishlistPage() {
             {filteredItems.map((tour) => (
               <Card key={tour.id} className="group overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 bg-white ring-1 ring-gray-100">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img 
+                  <Image 
                     src={tour.image} 
                     alt={tour.name} 
-                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                     <Button 
@@ -119,8 +128,8 @@ export default function WishlistPage() {
                 <CardHeader className="pb-4 pt-6">
                   <div className="space-y-1">
                     <div className="flex justify-between items-start">
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate pr-2">{tour.name || tour.title}</h3>
-                      <p className="text-xl font-black text-blue-600 shrink-0">Rs. {tour.price.toLocaleString('en-IN')}</p>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate pr-2">{tour.name}</h3>
+                      <p className="text-xl font-black text-blue-600 shrink-0">₹{(tour.price as any).toLocaleString('en-IN')}</p>
                     </div>
                     <CardDescription className="flex items-center gap-1.5 text-gray-500 font-medium">
                       <Map className="h-3.5 w-3.5" /> {tour.location}

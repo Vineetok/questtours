@@ -14,7 +14,6 @@ import {
   Filter,
   User as UserIcon
 } from 'lucide-react';
-import { paymentHistory } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +26,7 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
+import { getUserData } from '@/lib/auth';
 
 const customerNavItems = [
   { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
@@ -38,11 +38,18 @@ const customerNavItems = [
 ];
 
 export default function PaymentsPage() {
+  const [user, setUser] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+  }, []);
+
   return (
     <DashboardLayout 
       role="customer" 
-      userName="John Traveler" 
-      userEmail="john@example.com"
+      userName={user?.name || "Customer User"} 
+      userEmail={user?.email || "customer@example.com"}
       navItems={customerNavItems}
     >
       <div className="space-y-6">
@@ -82,7 +89,7 @@ export default function PaymentsPage() {
                     <TableHead className="font-semibold text-right text-gray-700">Action</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                {/* <TableBody>
                   {paymentHistory.map((payment) => (
                     <TableRow key={payment.id} className="border-gray-100 hover:bg-gray-50/50 transition-colors">
                       <TableCell className="font-mono text-xs text-gray-500">{payment.id}</TableCell>
@@ -115,15 +122,15 @@ export default function PaymentsPage() {
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
+                </TableBody> */}
               </Table>
             </div>
-            {paymentHistory.length === 0 && (
+            {/* {paymentHistory.length === 0 && (
               <div className="py-20 text-center">
                 <History className="h-12 w-12 text-gray-200 mx-auto mb-4" />
                 <p className="text-gray-500">No transactions found.</p>
               </div>
-            )}
+            )} */}
           </CardContent>
         </Card>
 

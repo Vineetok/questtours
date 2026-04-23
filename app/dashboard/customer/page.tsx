@@ -9,21 +9,16 @@ import {
   Heart,
   History,
   Star,
-import {
-  LayoutDashboard,
-  Map,
-  Heart,
-  History,
-  Star,
   Calendar as CalendarIcon,
-
   User as UserIcon,
   ShieldCheck
 } from 'lucide-react';
-import { customerStats, customerBookings, wishlistTours, userProfile } from '@/lib/mock-data';
+import { customerStats, customerBookings, wishlistTours } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
+import { getUserData } from '@/lib/auth';
 
 const customerNavItems = [
   { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
@@ -35,18 +30,25 @@ const customerNavItems = [
 ];
 
 export default function CustomerDashboard() {
+  const [user, setUser] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+  }, []);
+
   return (
     <DashboardLayout
       role="customer"
-      userName={userProfile.name}
-      userEmail={userProfile.email}
+      userName={user?.name || "Customer User"}
+      userEmail={user?.email || "customer@example.com"}
       navItems={customerNavItems}
     >
       <div className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Travel Dashboard</h1>
-            <p className="text-gray-500">Welcome back, {userProfile.name.split(' ')[0]}! You have one upcoming trip to Alpine Escape.</p>
+            <p className="text-gray-500">Welcome back, {user?.name?.split(' ')[0] || 'Traveler'}! You have one upcoming trip to Alpine Escape.</p>
           </div>
           <Link href="/destinations">
             <Button className="bg-blue-600 hover:bg-blue-700 h-11 px-6 rounded-lg shadow-lg shadow-blue-200">
@@ -108,12 +110,11 @@ export default function CustomerDashboard() {
               {customerBookings.map((booking) => (
                 <div key={booking.id} className="group relative flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
                   <div className="relative h-20 w-24 overflow-hidden rounded-lg">
-                    <img
-                      src={booking.image}
-                    <img
+                    <Image
                       src={booking.image}
                       alt={booking.tour}
-                      className="object-cover w-full h-full"
+                      fill
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -127,9 +128,9 @@ export default function CustomerDashboard() {
                     <p className="text-sm text-gray-500 flex items-center gap-1 mt-0.5">
                       <CalendarIcon className="h-3 w-3 opacity-60" /> {booking.date}
                     </p>
-                  </div>
+                  </div>                  
                   <div className="text-right">
-                    <p className="font-bold text-blue-600 mb-1">{booking.price}</p>
+                    <p className="font-bold text-blue-600 mb-1">₹{(booking.price as any).toLocaleString('en-IN')}</p>
                     <Link href={`/dashboard/customer/bookings/${booking.id}`}>
                       <Button variant="link" size="sm" className="h-7 p-0 text-blue-600 font-bold hover:no-underline">
                         Details
@@ -153,15 +154,20 @@ export default function CustomerDashboard() {
               <CardContent className="space-y-4">
                 {wishlistTours.slice(0, 3).map((tour) => (
                   <div key={tour.id} className="flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-xl overflow-hidden shrink-0">
-                      <img src={tour.image} alt={tour.name} className="h-full w-full object-cover" />
+                    <div className="h-14 w-14 rounded-xl overflow-hidden shrink-0 relative">
+                      <Image
+                        src={tour.image}
+                        alt={tour.name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-bold text-gray-900 truncate">{tour.name}</h4>
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
                         <span className="text-xs font-semibold">{tour.rating}</span>
-                        <span className="text-xs text-blue-600 font-bold ml-auto">{tour.price}</span>
+                        <span className="text-xs text-blue-600 font-bold ml-auto">₹{(tour.price as any).toLocaleString('en-IN')}</span>
                       </div>
                     </div>
                   </div>

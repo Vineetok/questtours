@@ -20,6 +20,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { getUserData } from '@/lib/auth';
+import Image from 'next/image';
 
 const customerNavItems = [
   { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
@@ -31,14 +33,21 @@ const customerNavItems = [
 ];
 
 export default function BookingsPage() {
+  const [user, setUser] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+  }, []);
+
   const upcomingBookings = customerBookings.filter(b => b.status === 'Confirmed' || b.status === 'Pending');
   const pastBookings = customerBookings.filter(b => b.status === 'Completed' || b.status === 'Cancelled');
 
   return (
     <DashboardLayout 
       role="customer" 
-      userName="John Traveler" 
-      userEmail="john@example.com"
+      userName={user?.name || "Customer User"} 
+      userEmail={user?.email || "customer@example.com"}
       navItems={customerNavItems}
     >
       <div className="space-y-6">
@@ -122,11 +131,12 @@ function BookingCard({ booking }: { booking: any }) {
   return (
     <Card className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow bg-white">
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-64 h-48 md:h-auto relative">
-          <img 
+        <div className="md:w-64 h-48 md:h-auto relative overflow-hidden">
+          <Image 
             src={booking.image} 
             alt={booking.tour}
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
           />
           <div className="absolute top-4 left-4">
             <Badge className={booking.status === 'Confirmed' ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none' : 'bg-gray-100 text-gray-700 hover:bg-gray-100 border-none'}>

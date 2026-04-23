@@ -106,7 +106,7 @@ export default function AdminDashboard() {
                       fontSize={12} 
                       tickLine={false} 
                       axisLine={false}
-                      tickFormatter={(value) => `$${value}`}
+                      tickFormatter={(value) => `Rs. ${value}`}
                     />
                     <Tooltip 
                       cursor={{fill: '#f5f5f5'}}

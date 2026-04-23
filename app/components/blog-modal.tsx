@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { X, Calendar, User, Clock, Share2, ArrowRight } from 'lucide-react';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
+import { Calendar, User, Clock, Share2, ArrowRight } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 interface BlogModalProps {
   isOpen: boolean;
@@ -21,17 +21,33 @@ interface BlogModalProps {
 export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
   if (!post) return null;
 
+  const handlePlanClick = () => {
+    onClose();
+    // Smooth scroll to plans section
+    const plansSection = document.getElementById('plans');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleShare = () => {
+    // Share functionality here
+    if (navigator.share) {
+      navigator.share({
+        title: post.title,
+        text: post.excerpt,
+        url: window.location.href,
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[100vw] sm:max-w-[95vw] lg:max-w-[900px] h-[100dvh] sm:h-[90vh] p-0 overflow-hidden border-none bg-white rounded-none sm:rounded-[32px] shadow-2xl">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-all hover:bg-black/40 sm:right-6 sm:top-6"
-        >
-          <X size={20} />
-        </button>
-
         <div className="flex flex-col h-full overflow-y-auto">
           {/* Header Image */}
           <div className="relative h-[30vh] sm:h-[40vh] w-full shrink-0">
@@ -93,20 +109,22 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
               </div>
             </DialogDescription>
 
-            {/* Footer / Share */}
+            {/* Footer */}
             <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6 pb-10">
               <div className="flex items-center gap-4">
                 <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Share this Story:</span>
-                <div className="flex gap-2">
-                  {[1, 2, 3].map((i) => (
-                    <button key={i} className="p-2 bg-gray-100 text-gray-500 hover:bg-blue-600 hover:text-white rounded-full transition-all">
-                      <Share2 size={16} />
-                    </button>
-                  ))}
-                </div>
+                <button 
+                  onClick={handleShare}
+                  className="p-2 bg-gray-100 text-gray-500 hover:bg-blue-600 hover:text-white rounded-full transition-all"
+                >
+                  <Share2 size={16} />
+                </button>
               </div>
               
-              <button className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all group">
+              <button 
+                onClick={handlePlanClick}
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all group"
+              >
                 Plan This Adventure
                 <ArrowRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
               </button>
@@ -117,4 +135,3 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
     </Dialog>
   );
 }
-

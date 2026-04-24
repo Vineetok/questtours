@@ -1,13 +1,12 @@
-CREATE TABLE IF NOT EXISTS tours (
+CREATE TABLE IF NOT EXISTS plans (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
-    location VARCHAR(100),
     image VARCHAR(255),
     duration VARCHAR(50),
-    rating DECIMAL(3, 2) DEFAULT 5.0,
-    tag VARCHAR(50),
+    location VARCHAR(100),
+    itinerary JSONB NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

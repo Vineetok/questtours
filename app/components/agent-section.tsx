@@ -32,7 +32,7 @@ export function AgentSection() {
               ))}
             </div>
 
-            <Link href="/signup">
+            <Link href="/signup?role=agent">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6 rounded-xl w-full sm:w-auto">
                 Join as Agent
               </Button>

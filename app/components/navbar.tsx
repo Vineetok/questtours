@@ -38,8 +38,8 @@ export function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-12 ml-12">
-            <Link href="/" className="text-white hover:text-blue-400 transition-colors text-base font-medium">
+          <div className="hidden md:flex items-center gap-4 lg:gap-8 ml-8">
+            <Link href="/" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
               Home
             </Link>
             <Link 
@@ -60,32 +60,32 @@ export function Navbar() {
             >
               Categories
             </Link>
-            <Link href="/about" className="text-white hover:text-blue-400 transition-colors text-base font-medium">
+            <Link href="/about" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
               About
             </Link>
-            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors text-base font-medium">
+            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
               Blog
             </Link>
-            <Link href="/contact" className="text-white hover:text-blue-400 transition-colors text-base font-medium">
+            <Link href="/contact" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
               Contact
             </Link>
           </div>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center gap-6 flex-shrink-0 ml-auto">
-            <Link href="/signup?role=agent">
-              <Button variant="ghost" className="text-white hover:text-blue-400 font-medium text-base">
-                Become an Agent
-              </Button>
-            </Link>
+          <div className="hidden md:flex items-center gap-3 lg:gap-6 flex-shrink-0 ml-auto">
             <Link href="/login">
-              <Button variant="ghost" className="text-white hover:bg-white/10 font-medium text-base">
+              <Button className="bg-blue-600/20 hover:bg-blue-600/40 text-white border border-blue-400/30 font-medium md:text-sm lg:text-base backdrop-blur-sm">
                 Login
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 text-base">
+              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 md:text-sm lg:text-base">
                 Sign Up
+              </Button>
+            </Link>
+            <Link href="/signup?role=agent">
+              <Button className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-medium shadow-lg shadow-indigo-900/20 md:text-sm lg:text-base">
+                Become a Partner
               </Button>
             </Link>
           </div>
@@ -152,19 +152,19 @@ export function Navbar() {
               Contact
             </Link>
             <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
-              <Link href="/signup?role=agent" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" className="w-full text-blue-400 hover:bg-white/10 justify-center h-12">
-                  Become an Agent
-                </Button>
-              </Link>
               <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" className="w-full text-white hover:bg-white/10 justify-center h-12">
+                <Button className="w-full bg-blue-600/20 hover:bg-blue-600/40 text-white border border-blue-400/30 justify-center h-12">
                   Login
                 </Button>
               </Link>
               <Link href="/signup" className="w-full" onClick={() => setIsOpen(false)}>
                 <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white h-12">
                   Sign Up
+                </Button>
+              </Link>
+              <Link href="/signup?role=agent" className="w-full" onClick={() => setIsOpen(false)}>
+                <Button className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white h-12">
+                  Become a Partner
                 </Button>
               </Link>
             </div>

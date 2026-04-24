@@ -1,21 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TourCard } from './tour-card';
 import { TourModal } from './tour-modal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
-
-import { toursData } from '@/lib/data';
+import { adminService } from '@/services/adminService';
+import { Tour } from '@/lib/types';
+import { toursData } from '@/lib/data'; 
 
 interface FeaturedToursProps {
   showAll?: boolean;
 }
 
 export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedToursProps) {
-  const [selectedTour, setSelectedTour] = useState<typeof toursData[0] | null>(null);
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedTour, setSelectedTour] = useState<any | null>(null);
   const [showAll, setShowAll] = useState(initialShowAll);
 
-  const displayedTours = showAll ? toursData : toursData.slice(0, 4);
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const data = await adminService.getTours();
+        setTours(data || []);
+      } catch (error) {
+        console.error('Failed to fetch tours');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTours();
+  }, []);
+
+  const displayedTours = showAll ? tours : tours.slice(0, 4);
+
+  if (!isLoading && tours.length === 0) return null;
 
   return (
     <section id="tours" className="py-12 sm:py-16 lg:py-20 bg-gray-50/50">
@@ -35,13 +54,29 @@ export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedTours
 
         {/* Tours Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {displayedTours.map((tour) => (
-            <TourCard
-              key={tour.id}
-              {...tour}
-              onClick={() => setSelectedTour(tour)}
-            />
-          ))}
+          {isLoading ? (
+            [1, 2, 3, 4].map(i => (
+              <div key={i} className="h-[400px] bg-gray-100 rounded-[2rem] animate-pulse"></div>
+            ))
+          ) : (
+            displayedTours.map((tour) => (
+              <TourCard
+                key={tour.id}
+                image={tour.image}
+                location={tour.location}
+                title={tour.title || tour.name || ''}
+                price={tour.price}
+                originalPrice={tour.originalPrice}
+                discount={tour.discount}
+                rating={tour.rating}
+                reviews={tour.reviews || 0}
+                duration={tour.duration || ''}
+                maxPeople={tour.groupSize}
+                tag={tour.tag}
+                onClick={() => setSelectedTour(tour)}
+              />
+            ))
+          )}
         </div>
 
         {/* View All Button */}

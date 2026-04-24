@@ -1,13 +1,25 @@
 import { Router } from 'express';
 import {
-  getDashboardStats,
-  getCustomers,
-  getAllBookings,
-  getSupportRequests,
-  getAgents,
   getEnquiries,
   createEnquiry,
-  updateEnquiryStatus
+  updateEnquiryStatus,
+  getTours,
+  addTour,
+  updateTour,
+  deleteTour,
+  getPackages,
+  addPackage,
+  updatePackage,
+  deletePackage,
+  getPlans,
+  addPlan,
+  updatePlan,
+  deletePlan,
+  getDashboardStats,
+  getSupportRequests,
+  getAllBookings,
+  getAgents,
+  getCustomers
 } from '../controllers/adminController';
 import { auth } from '../middleware/auth';
 
@@ -61,9 +73,24 @@ router.get('/enquiries', auth, isAdmin, getEnquiries);
 // @access  Public
 router.post('/enquiries', createEnquiry);
 
-// @route   PATCH api/admin/enquiries/:id
-// @desc    Update enquiry status
-// @access  Private (Admin only)
 router.patch('/enquiries/:id', auth, isAdmin, updateEnquiryStatus);
+
+// Tours
+router.get('/tours', auth, isAdmin, getTours);
+router.post('/tours', auth, isAdmin, addTour);
+router.put('/tours/:id', auth, isAdmin, updateTour);
+router.delete('/tours/:id', auth, isAdmin, deleteTour);
+
+// Packages
+router.get('/packages', auth, isAdmin, getPackages);
+router.post('/packages', auth, isAdmin, addPackage);
+router.put('/packages/:id', auth, isAdmin, updatePackage);
+router.delete('/packages/:id', auth, isAdmin, deletePackage);
+
+// Plans
+router.get('/plans', auth, isAdmin, getPlans);
+router.post('/plans', auth, isAdmin, addPlan);
+router.put('/plans/:id', auth, isAdmin, updatePlan);
+router.delete('/plans/:id', auth, isAdmin, deletePlan);
 
 export default router;

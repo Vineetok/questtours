@@ -27,7 +27,7 @@ export function ProfileView() {
         setUser(updatedUser);
         setFormData({ name: updatedUser.name, email: updatedUser.email });
       }
-    } catch (error: unknown) {
+    } catch {
       // Error handled by toast if needed, but fetchProfile is usually silent on background refresh
     }
   }, [setUser]);
@@ -35,12 +35,18 @@ export function ProfileView() {
   useEffect(() => {
     // Sync form data once when user is loaded
     if (user && !formData.name) {
-      setFormData({ name: user.name, email: user.email });
+      const timer = setTimeout(() => {
+        setFormData({ name: user.name, email: user.email });
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [user, formData.name]);
 
   useEffect(() => {
-    fetchProfile();
+    const timer = setTimeout(() => {
+      fetchProfile();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchProfile]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +77,7 @@ export function ProfileView() {
       if (user) {
         setUser({ ...user, avatar: avatarUrl! });
       }
-    } catch (error: unknown) {
+    } catch {
       toast.error('An error occurred during upload');
     } finally {
       setUploading(false);
@@ -96,7 +102,7 @@ export function ProfileView() {
       const updatedUser = updateUserData(data.user);
       setUser(updatedUser);
       setIsEditing(false);
-    } catch (error: unknown) {
+    } catch {
       toast.error('An error occurred during update');
     } finally {
       setSaving(false);

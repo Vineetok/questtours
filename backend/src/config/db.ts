@@ -14,7 +14,7 @@ const pool = new Pool({
 pool.on('connect', () => {
 });
 
-pool.on('error', (_err) => {
+pool.on('error', () => {
   process.exit(-1);
 });
 

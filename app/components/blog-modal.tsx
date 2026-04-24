@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Calendar, User, Clock, Share2, ArrowRight } from 'lucide-react';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
 
 interface BlogModalProps {
   isOpen: boolean;
@@ -87,25 +87,27 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
               </div>
             </div>
 
-            <DialogDescription className="text-lg text-gray-600 leading-relaxed space-y-6">
-              <p className="font-medium text-gray-900 text-xl italic border-l-4 border-blue-600 pl-4 py-1">
-                &quot;{post.excerpt}&quot;
-              </p>
-              
-              <div className="space-y-4">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <DialogDescription asChild>
+              <div className="text-lg text-gray-600 leading-relaxed space-y-6">
+                <p className="font-medium text-gray-900 text-xl italic border-l-4 border-blue-600 pl-4 py-1">
+                  &quot;{post.excerpt}&quot;
                 </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <h3 className="text-2xl font-bold text-[#003B5C] pt-4">Why This Destination Matters</h3>
-                <p>
-                  Exploring the hidden corners of our world brings a perspective that no guidebook can offer. Whether it&apos;s the mystical waterfalls of Bali or the quiet canals of Venice, every journey is a chance to reconnect with the beauty of nature and human culture.
-                </p>
-                <p>
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                </p>
+                
+                <div className="space-y-4">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                  <p>
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  </p>
+                  <h3 className="text-2xl font-bold text-[#003B5C] pt-4">Why This Destination Matters</h3>
+                  <p>
+                    Exploring the hidden corners of our world brings a perspective that no guidebook can offer. Whether it&apos;s the mystical waterfalls of Bali or the quiet canals of Venice, every journey is a chance to reconnect with the beauty of nature and human culture.
+                  </p>
+                  <p>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                  </p>
+                </div>
               </div>
             </DialogDescription>
 

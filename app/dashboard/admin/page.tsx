@@ -68,8 +68,8 @@ export default function AdminDashboard() {
         setStats(data);
         setRevenueData(data.revenueData || []);
         setRecentBookings(data.recentBookings || []);
-      } catch (error: unknown) {
-        // Silent fail or toast error
+      } catch {
+        toast.error('Failed to load dashboard data');
       } finally {
         setLoading(false);
       }

@@ -28,31 +28,26 @@ export default function AgentsPage() {
   const [loading, setLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  React.useEffect(() => {
-    let isMounted = true;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await adminService.getAgents();
-        if (isMounted) {
-          setAgentList(data);
-        }
-      } catch (error: unknown) {
-        if (isMounted) {
-          toast.error('Connection error');
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchData();
-    return () => { isMounted = false; };
+  const fetchData = React.useCallback(async () => {
+    setLoading(true);
+    try {
+      const {agents} = await adminService.getAgents();
+      setAgentList(agents);
+    } catch {
+      toast.error("Failed to fetch agents");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const filteredAgents = agentList.filter(agent => 
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchData]);
+
+  const filteredAgents = agentList.filter(agent =>
     (agent.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (agent.email || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -156,3 +151,4 @@ export default function AgentsPage() {
     </DashboardLayout>
   );
 }
+

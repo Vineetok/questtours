@@ -6,8 +6,10 @@ export function useUser() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    setUser(getUserData());
+    const timer = setTimeout(() => {
+      setMounted(true);
+      setUser(getUserData());
+    }, 0);
 
     // Optional: Listen for changes to sync across tabs/components
     const handleStorageChange = () => {
@@ -15,7 +17,10 @@ export function useUser() {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   return { user, setUser, mounted };

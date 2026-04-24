@@ -37,7 +37,7 @@ export default function ContactPage() {
         subject: '',
         message: ''
       });
-    } catch (error: unknown) {
+    } catch {
       toast.error('Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);

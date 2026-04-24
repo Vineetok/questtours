@@ -31,7 +31,7 @@ export const adminService = {
   },
   
   getAgents: () => {
-    return api.get<Agent[]>('/admin/agents');
+    return api.get<{agents:Agent[]}>('/admin/agents');
   },
   
   getCustomers: () => {

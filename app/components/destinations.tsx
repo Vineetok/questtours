@@ -1,10 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 // import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
 
@@ -66,12 +64,13 @@ interface DestinationsProps {
 
 export function Destinations({ showAll = false }: DestinationsProps) {
   const [isAllOpen, setIsAllOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
-  const handleViewPlan = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsAuthOpen(true);
-  };
+  // const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  // const handleViewPlan = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   setIsAuthOpen(true);
+  // };
 
   return (
     <section id="destinations" className="py-12 sm:py-16 lg:py-20 bg-white">
@@ -104,7 +103,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                   <Button 
                     className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                    onClick={() => setIsAuthOpen(true)}
+                    onClick={() => {}}
                   >
                     View Plan
                   </Button>
@@ -117,11 +116,11 @@ export function Destinations({ showAll = false }: DestinationsProps) {
             {/* Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
               {popularDestinations.map((dest) => (
-                <div
-                  key={dest.id}
-                  className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
-                  onClick={() => setIsAuthOpen(true)}
-                >
+                  <div
+                    key={dest.id}
+                    className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
+                    onClick={() => {}}
+                  >
                   <Image
                     src={dest.image}
                     alt={dest.name}
@@ -142,14 +141,14 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <p className="text-white/80 text-sm">
                       {dest.packages} Tour Packages
                     </p>
-                    <div className="mt-4">
-                      <Button 
-                        className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
-                        onClick={handleViewPlan}
-                      >
-                        View Plan
-                      </Button>
-                    </div>
+                  <div className="mt-4">
+                    <Button 
+                      className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View Plan
+                    </Button>
+                  </div>
                   </div>
                 </div>
               ))}
@@ -203,7 +202,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                     <Button 
                       className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                      onClick={() => setIsAuthOpen(true)}
+                      onClick={() => {}}
                     >
                       View Plan
                     </Button>

@@ -33,7 +33,7 @@ export default function AdminTicketsPage() {
     try {
       const data = await ticketService.getAllTickets();
       setTickets(data);
-    } catch (error: unknown) {
+    } catch {
       toast.error('Failed to load tickets');
     } finally {
       setLoading(false);
@@ -41,7 +41,10 @@ export default function AdminTicketsPage() {
   }, []);
 
   React.useEffect(() => {
-    fetchTickets();
+    const timer = setTimeout(() => {
+      fetchTickets();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchTickets]);
 
   const filteredTickets = tickets.filter(ticket => 

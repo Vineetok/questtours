@@ -45,7 +45,7 @@ export default function CustomersPage() {
       setBookingList(bookings);
       setSupportList(support);
 
-    } catch (error: unknown) {
+    } catch {
       toast.error('Connection error');
     } finally {
       setLoading(false);
@@ -53,14 +53,17 @@ export default function CustomersPage() {
   }, []);
 
   React.useEffect(() => {
-    fetchData();
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchData]);
 
   const fetchSupportRequests = async () => {
     try {
       const support = await adminService.getSupportRequests();
       setSupportList(support);
-    } catch (error: unknown) {
+    } catch {
       // Silent fail
     }
   };

@@ -64,6 +64,18 @@ export default function CustomerTicketsPage() {
     priority: 'Medium'
   });
 
+  const fetchTickets = async () => {
+    setLoading(true);
+    try {
+      const data = await ticketService.getUserTickets();
+      setTickets(data);
+    } catch {
+      toast.error('Failed to load tickets');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   React.useEffect(() => {
     const data = getUserData();
     if (data) {
@@ -71,18 +83,6 @@ export default function CustomerTicketsPage() {
     }
     fetchTickets();
   }, [setUser]);
-
-  const fetchTickets = async () => {
-    setLoading(true);
-    try {
-      const data = await ticketService.getUserTickets();
-      setTickets(data);
-    } catch (error: unknown) {
-      toast.error('Failed to load tickets');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleCreateTicket = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +93,7 @@ export default function CustomerTicketsPage() {
       setOpen(false);
       setFormData({ subject: '', description: '', priority: 'Medium' });
       fetchTickets();
-    } catch (error: unknown) {
+    } catch {
       toast.error('Failed to raise ticket');
     } finally {
       setIsSubmitting(false);

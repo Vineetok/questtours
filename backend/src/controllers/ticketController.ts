@@ -18,7 +18,7 @@ export const createTicket = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(insertQuery, [userId, subject, description, priority || 'Medium']);
     res.status(201).json({ message: 'Ticket raised successfully', ticket: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -36,7 +36,7 @@ export const getUserTickets = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(ticketsQuery, [userId]);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -54,7 +54,7 @@ export const getAllTickets = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(ticketsQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -93,7 +93,7 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Ticket updated successfully', ticket: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };

@@ -84,7 +84,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
       revenueData: revenueDataResult.rows.map(r => ({ name: r.name, total: parseFloat(r.total) })),
       recentBookings: recentBookingsResult.rows
     });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -108,7 +108,7 @@ export const getCustomers = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(customersQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -130,7 +130,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(bookingsQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -151,7 +151,7 @@ export const getSupportRequests = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(supportQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -168,14 +168,21 @@ export const getAgents = async (req: Request, res: Response) => {
         'Active' as status,
         to_char(u.created_at, 'YYYY-MM-DD') as joined,
         (SELECT COUNT(*) FROM tours t WHERE t.location ILIKE '%' || u.name || '%') as "totalTours",
-        '₹' || COALESCE((SELECT TO_CHAR(SUM(amount), 'FM9,99,999') FROM bookings b WHERE b.user_id = u.id AND (b.status = 'completed' OR b.status = 'confirmed')), '0') as "totalEarnings"
+        '₹' || COALESCE((
+          SELECT TO_CHAR(SUM(b.amount), 'FM9,99,999') 
+          FROM bookings b 
+          JOIN tours t ON b.tour_id = t.id 
+          WHERE t.location ILIKE '%' || u.name || '%' 
+          AND (b.status = 'completed' OR b.status = 'confirmed')
+        ), '0') as "totalEarnings"
       FROM users u
       WHERE u.role = 'agent'
       ORDER BY u.created_at DESC;
     `;
     const result = await pool.query(agentsQuery);
-    res.json(result.rows);
-  } catch (error: unknown) {
+    res.json({ agents: result.rows });
+  } catch (error) {
+    console.error('Error fetching agents:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -197,7 +204,7 @@ export const getEnquiries = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(enquiriesQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -217,7 +224,7 @@ export const createEnquiry = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(insertQuery, [firstName, lastName, email, subject, message]);
     res.status(201).json({ message: 'Enquiry submitted successfully', enquiry: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -244,7 +251,7 @@ export const updateEnquiryStatus = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Enquiry status updated', enquiry: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };

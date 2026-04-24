@@ -16,7 +16,13 @@ export function parseCSV<T>(csvString: string): T[] {
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
       if (char === '"') {
-        inQuotes = !inQuotes;
+        // Handle escaped double quotes ("")
+        if (inQuotes && line[i + 1] === '"') {
+          cur += '"';
+          i++; // Skip the next quote
+        } else {
+          inQuotes = !inQuotes;
+        }
       } else if (char === ',' && !inQuotes) {
         result.push(cur.trim());
         cur = '';
@@ -32,30 +38,33 @@ export function parseCSV<T>(csvString: string): T[] {
   const result: T[] = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
+    if (!lines[i].trim()) continue; // Skip empty lines
+    const values = splitLine(lines[i]);
+    if (values.length < headers.length) continue; // Skip malformed lines
 
-    const values = splitLine(line);
     const obj: any = {};
 
     headers.forEach((header, index) => {
       let value = values[index] || '';
       
       // Remove surrounding quotes if they exist
-      if (value.startsWith('"') && value.endsWith('"')) {
-        value = value.substring(1, value.length - 1);
-      }
+      value = value.trim().replace(/^"|"$/g, '');
 
       // Handle JSON strings (for itineraries)
       if (value.startsWith('[') && value.endsWith(']')) {
         try {
-          // Replace single quotes with double quotes for valid JSON
-          const jsonStr = value.replace(/'/g, '"');
-          obj[header] = JSON.parse(jsonStr);
+          // Try parsing directly first
+          obj[header] = JSON.parse(value);
         } catch (e) {
-          obj[header] = value;
+          try {
+            // Fallback: Replace single quotes with double quotes for valid JSON
+            const jsonStr = value.replace(/'/g, '"');
+            obj[header] = JSON.parse(jsonStr);
+          } catch (e2) {
+            obj[header] = value;
+          }
         }
-      } else if (!isNaN(Number(value)) && value !== '') {
+      } else if (!isNaN(Number(value)) && value !== '' && !header.toLowerCase().includes('duration')) {
         obj[header] = Number(value);
       } else {
         obj[header] = value;

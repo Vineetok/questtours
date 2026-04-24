@@ -78,6 +78,19 @@ export default function PackagesManagementPage() {
     }
   };
 
+  const handleBulkDelete = async (ids: (string | number)[]) => {
+    if (confirm(`Are you sure you want to delete ${ids.length} packages?`)) {
+      try {
+        await Promise.all(ids.map(id => adminService.deletePackage(id)));
+        toast.success(`${ids.length} packages deleted successfully`);
+        fetchPackages();
+      } catch (error) {
+        toast.error('Failed to delete some packages');
+        fetchPackages();
+      }
+    }
+  };
+
   const handleSavePackage = async () => {
     if (!editingPkg?.title || !editingPkg?.price) {
       toast.error('Please fill in required fields');
@@ -201,6 +214,7 @@ export default function PackagesManagementPage() {
           columns={columns}
           onEdit={handleEditPackage}
           onDelete={handleDeletePackage}
+          onBulkDelete={handleBulkDelete}
           isLoading={isLoading}
         />
 

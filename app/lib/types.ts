@@ -25,6 +25,7 @@ export interface Plan {
   duration: string;
   itinerary: Day[];
   location: string;
+  theme?: string;
 }
 
 export interface Package {

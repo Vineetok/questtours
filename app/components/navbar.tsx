@@ -1,175 +1,297 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/inputs/button';
+import { Menu, X, ChevronDown, Globe, MapPin, Plane } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isToursOpen, setIsToursOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+    setIsToursOpen(false);
+  }, [pathname]);
+
+  const internationalTours = [
+    'Japan', 'Dubai', 'Singapore Thailand Malaysia', 'Europe', 'Egypt',
+    'Australia Newzealand', 'Vietnam', 'Malaysia Hongkong',
+    'Srilanka & Maldives', 'Bhutan', 'Nepal'
+  ];
+
+  const domesticTours = [
+    'Andaman', 'Darjeeling Gangtok Pelling', 'Gujarat', 'Himachal Pradesh',
+    'Karnataka', 'Kashmir', 'Kerala', 'Madhya Pradesh', 'Rajasthan',
+    'Tamilnadu', 'Uttaranchal', 'North East', 'Pilgrims Tours',
+    'Andhra Pradesh', 'West Bengal & Sikkim', 'Orrisa'
+  ];
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/destinations', label: 'Destinations' },
+    { href: '/categories', label: 'Categories' },
+    // { href: '/trains', label: 'Trains' },
+    // { href: '/buses', label: 'Buses' },
+    // { href: '/insurance', label: 'Insurance' },
+    { href: '/about', label: 'About' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
+  const isActive = (href: string) => pathname === href;
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-[#003B5C] shadow-lg' 
-        : 'bg-black/40 backdrop-blur-md border-b border-white/10'
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      isScrolled
+        ? 'bg-slate-950/95 backdrop-blur-2xl shadow-2xl shadow-black/30 border-b border-white/5'
+        : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-md border-b border-white/10'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center h-[70px]">
+
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-white tracking-tight">
-              Quest<span className="text-blue-500">Tours</span>
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="flex items-center gap-2 flex-shrink-0 group"
+          >
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
+              <Plane size={18} className="text-white -rotate-45" />
+            </div>
+            <span className="text-xl font-black text-white tracking-tight">
+              Quest<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Tours</span>
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-8 ml-8">
-            <Link href="/" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
+          <div className="hidden lg:flex items-center gap-1 ml-10 flex-1">
+            <Link
+              href="/"
+              className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+                isActive('/')
+                  ? 'text-white bg-white/10'
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+            >
               Home
             </Link>
-            <Link 
-              href="/tours" 
-              className="text-white hover:text-blue-400 transition-colors text-base font-medium cursor-pointer"
+
+            {/* Tours Mega Menu */}
+            <div
+              className="relative"
+              onMouseEnter={() => setIsToursOpen(true)}
+              onMouseLeave={() => setIsToursOpen(false)}
             >
-              Tours
-            </Link>
-            <Link 
-              href="/destinations" 
-              className="text-white hover:text-blue-400 transition-colors text-base font-medium cursor-pointer"
-            >
-              Destinations
-            </Link>
-            <Link 
-              href="/categories" 
-              className="text-white hover:text-blue-400 transition-colors text-base font-medium cursor-pointer"
-            >
-              Categories
-            </Link>
-            <Link href="/about" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
-              About
-            </Link>
-            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
-              Blog
-            </Link>
-            <Link href="/contact" className="text-white hover:text-blue-400 transition-colors md:text-sm lg:text-base font-medium">
-              Contact
-            </Link>
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+                Tours
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+
+              {/* Mega Menu */}
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ${
+                isToursOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
+              }`}>
+                <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-black/20 border border-slate-100 overflow-hidden min-w-[520px] flex p-8 gap-10">
+                  {/* International Column */}
+                  <div className="flex-1">
+                    <h3 className="flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.25em] mb-5">
+                      <div className="h-6 w-6 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <Globe size={12} className="text-blue-600" />
+                      </div>
+                      International
+                    </h3>
+                    <div className="space-y-2.5">
+                      {internationalTours.map((tour) => (
+                        <Link
+                          key={tour}
+                          href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
+                          className="block text-slate-600 hover:text-blue-600 text-sm font-semibold transition-colors leading-snug"
+                          onClick={() => setIsToursOpen(false)}
+                        >
+                          {tour}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-px bg-slate-100" />
+
+                  {/* Domestic Column */}
+                  <div className="flex-1">
+                    <h3 className="flex items-center gap-2 text-emerald-600 font-black text-[10px] uppercase tracking-[0.25em] mb-5">
+                      <div className="h-6 w-6 bg-emerald-50 rounded-lg flex items-center justify-center">
+                        <MapPin size={12} className="text-emerald-600" />
+                      </div>
+                      Domestic
+                    </h3>
+                    <div className="space-y-2.5">
+                      {domesticTours.map((tour) => (
+                        <Link
+                          key={tour}
+                          href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
+                          className="block text-slate-600 hover:text-emerald-600 text-sm font-semibold transition-colors leading-snug"
+                          onClick={() => setIsToursOpen(false)}
+                        >
+                          {tour}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Rest of nav links */}
+            {navLinks.slice(1).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+                  isActive(link.href)
+                    ? 'text-white bg-white/10'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3 lg:gap-6 flex-shrink-0 ml-auto">
+          <div className="hidden lg:flex items-center gap-2 ml-auto flex-shrink-0">
+            <Link href="/signup?role=agent">
+              <button className="px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+                Become an Agent
+              </button>
+            </Link>
             <Link href="/login">
-              <Button className="bg-blue-600/20 hover:bg-blue-600/40 text-white border border-blue-400/30 font-medium md:text-sm lg:text-base backdrop-blur-sm">
+              <button className="px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
                 Login
-              </Button>
+              </button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 md:text-sm lg:text-base">
+              <button className="px-5 py-2.5 text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-200 hover:scale-105">
                 Sign Up
-              </Button>
-            </Link>
-            <Link href="/signup?role=agent">
-              <Button className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-medium shadow-lg shadow-indigo-900/20 md:text-sm lg:text-base">
-                Become a Partner
-              </Button>
+              </button>
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white p-2"
+            className="lg:hidden ml-auto text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
+            aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden bg-black/90 backdrop-blur-xl border-t border-white/10 py-6 px-4 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
-            <Link
-              href="/"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/tours"
-              onClick={() => setIsOpen(false)}
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
+      {/* Mobile Navigation */}
+      <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
+        isOpen ? 'max-h-[85vh] opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh]">
+          <Link
+            href="/"
+            className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+              isActive('/') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            Home
+          </Link>
+
+          {/* Mobile Tours Accordion */}
+          <div>
+            <button
+              onClick={() => setIsToursOpen(!isToursOpen)}
+              className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
             >
               Tours
-            </Link>
-            <Link
-              href="/destinations"
-              onClick={() => setIsOpen(false)}
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
-            >
-              Destinations
-            </Link>
-            <Link
-              href="/categories"
-              onClick={() => setIsOpen(false)}
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
-            >
-              Categories
-            </Link>
-            <Link
-              href="/about"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              About
-            </Link>
-            <Link
-              href="/blog"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              Blog
-            </Link>
-            <Link
-              href="/contact"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </Link>
-            <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
-              <Link href="/login" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-blue-600/20 hover:bg-blue-600/40 text-white border border-blue-400/30 justify-center h-12">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/signup" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white h-12">
-                  Sign Up
-                </Button>
-              </Link>
-              <Link href="/signup?role=agent" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white h-12">
-                  Become a Partner
-                </Button>
-              </Link>
+              <ChevronDown size={16} className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
+              <div className="px-4 py-3 ml-2 border-l border-white/10 space-y-4">
+                <div>
+                  <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-2">🌏 International</p>
+                  <div className="space-y-2">
+                    {internationalTours.map(tour => (
+                      <Link
+                        key={tour}
+                        href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
+                        className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
+                      >
+                        {tour}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">📍 Domestic</p>
+                  <div className="space-y-2">
+                    {domesticTours.map(tour => (
+                      <Link
+                        key={tour}
+                        href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
+                        className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
+                      >
+                        {tour}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        )}
+
+          {/* Mobile nav links */}
+          {navLinks.slice(1).map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                isActive(link.href) ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {/* Mobile CTA Buttons */}
+          <div className="pt-4 border-t border-white/5 space-y-2">
+            <Link href="/signup?role=agent" className="block">
+              <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
+                Become an Agent
+              </button>
+            </Link>
+            <Link href="/login" className="block">
+              <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
+                Login
+              </button>
+            </Link>
+            <Link href="/signup" className="block">
+              <button className="w-full px-4 py-3 rounded-xl text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 transition-all">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     </nav>
   );

@@ -97,20 +97,21 @@ export function TravelCategories() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-[#003B5C] mb-4">
-            Find Your Perfect Trip Style
+        <div className="flex flex-col items-center text-center mb-16 space-y-4">
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+            Trip Discovery
+          </span>
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Find Your Perfect <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Trip Style</span>
           </h2>
-          <p className="text-gray-500 text-lg leading-relaxed">
-            Whether you&apos;re seeking adventure, romance, or family fun — we have the <br className="hidden md:block" />
-            perfect tour category for every traveler.
+          <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
+            Whether you&apos;re seeking adventure, romance, or family fun — we have the perfect tour category for every traveler.
           </p>
-          
+        </div>  
           {/* Decorative left-aligned line matching screenshot */}
           <div className="w-full max-w-4xl mt-6 relative">
              <div className="absolute left-0 w-16 h-[2px] bg-gradient-to-r from-[#003B5C] to-cyan-600"></div>
           </div>
-        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {categories.map((cat, i) => (
@@ -123,22 +124,20 @@ export function TravelCategories() {
             >
               <button
                 onClick={() => setActiveCategory(cat.slug)}
-                className="w-full h-full flex flex-col items-center p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 bg-white transition-all duration-300 focus:outline-none"
+                className="w-full h-full flex flex-col items-center p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-900/10 hover:border-blue-100 bg-white transition-all duration-500 group focus:outline-none hover:-translate-y-1"
               >
                 {/* Icon (Emoji) */}
-                <div className="text-5xl mb-4 transform hover:scale-110 transition-transform duration-300">
+                <div className="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-500 drop-shadow-xl">
                   {cat.icon}
                 </div>
-
                 {/* Name */}
-                <h3 className="text-base font-bold text-[#003B5C] mb-1">
+                <h3 className="text-lg font-black text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
                   {cat.name}
                 </h3>
-
                 {/* Count */}
-                <p className="text-xs text-gray-400 font-medium">
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-full group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
                   {cat.count} Packages
-                </p>
+                </div>
               </button>
             </motion.div>
           ))}

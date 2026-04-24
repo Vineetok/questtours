@@ -6,7 +6,7 @@ import { TourModal } from './tour-modal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { adminService } from '@/services/adminService';
 import { Tour } from '@/lib/types';
-import { toursData } from '@/lib/data'; 
+import { toast } from 'sonner';
 
 interface FeaturedToursProps {
   showAll?: boolean;
@@ -23,8 +23,8 @@ export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedTours
       try {
         const data = await adminService.getTours();
         setTours(data || []);
-      } catch (error) {
-        console.error('Failed to fetch tours');
+      } catch {
+        toast.error('Failed to fetch tours');
       } finally {
         setIsLoading(false);
       }
@@ -40,14 +40,14 @@ export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedTours
     <section id="tours" className="py-12 sm:py-16 lg:py-20 bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16 space-y-3">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-widest">
-            Featured Packages
+        <div className="text-center mb-12 sm:mb-16 space-y-4">
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+            Curated Experiences
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#003B5C]">
-            Handpicked Tour Packages
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Handpicked Tour <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Packages</span>
           </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Our most popular tours carefully crafted to deliver the perfect balance of adventure, comfort, and value.
           </p>
         </div>

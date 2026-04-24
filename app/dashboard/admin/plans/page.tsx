@@ -88,6 +88,19 @@ export default function PlansManagementPage() {
     }
   };
 
+  const handleBulkDelete = async (ids: (string | number)[]) => {
+    if (confirm(`Are you sure you want to delete ${ids.length} plans?`)) {
+      try {
+        await Promise.all(ids.map(id => adminService.deletePlan(id)));
+        toast.success(`${ids.length} plans deleted successfully`);
+        fetchPlans();
+      } catch (error) {
+        toast.error('Failed to delete some plans');
+        fetchPlans();
+      }
+    }
+  };
+
   const handleSavePlan = async () => {
     if (!editingPlan?.title || !editingPlan?.price) {
       toast.error('Please fill in required fields');
@@ -227,6 +240,7 @@ export default function PlansManagementPage() {
           columns={columns}
           onEdit={handleEditPlan}
           onDelete={handleDeletePlan}
+          onBulkDelete={handleBulkDelete}
           isLoading={isLoading}
         />
 

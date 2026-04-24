@@ -8,17 +8,19 @@ import { AgentSection } from '@/components/agent-section';
 import { Testimonials } from '@/components/testimonials';
 import { FeaturedPlans } from '@/components/featured-plans';
 import { FeaturedPackages } from '@/components/featured-packages';
+import { InsuranceSection } from '@/components/insurance-section';
 import { Footer } from '@/components/footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="relative bg-[#F8FAFC]">
       <Navbar />
       <Hero />
       <Destinations />
       <FeaturedPlans />
       <FeaturedTours />
       <FeaturedPackages />
+      <InsuranceSection />
       <Features />
       <TravelCategories />
       <AgentSection />

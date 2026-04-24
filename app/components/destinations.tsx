@@ -76,14 +76,14 @@ export function Destinations({ showAll = false }: DestinationsProps) {
     <section id="destinations" className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16 space-y-3">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-widest">
+        <div className="text-center mb-12 sm:mb-16 space-y-4">
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
             Top Destinations
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#003B5C]">
-            Explore Popular Destinations
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Popular</span> Destinations
           </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             From the snow-capped Himalayas to sun-kissed beaches, discover handpicked destinations that promise extraordinary experiences.
           </p>
         </div>

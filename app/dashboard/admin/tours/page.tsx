@@ -79,6 +79,19 @@ export default function ToursManagementPage() {
     }
   };
 
+  const handleBulkDelete = async (ids: (string | number)[]) => {
+    if (confirm(`Are you sure you want to delete ${ids.length} tours?`)) {
+      try {
+        await Promise.all(ids.map(id => adminService.deleteTour(id)));
+        toast.success(`${ids.length} tours deleted successfully`);
+        fetchTours();
+      } catch (error) {
+        toast.error('Failed to delete some tours');
+        fetchTours();
+      }
+    }
+  };
+
   const handleSaveTour = async () => {
     if (!editingTour?.title || !editingTour?.price) {
       toast.error('Please fill in required fields');
@@ -194,6 +207,7 @@ export default function ToursManagementPage() {
           columns={columns}
           onEdit={handleEditTour}
           onDelete={handleDeleteTour}
+          onBulkDelete={handleBulkDelete}
           isLoading={isLoading}
         />
 

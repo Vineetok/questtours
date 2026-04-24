@@ -33,13 +33,13 @@ export function FeaturedPlans() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-4">
-            <span className="text-blue-600 font-black text-xs uppercase tracking-[0.2em] bg-blue-50 px-4 py-1.5 rounded-full">
+            <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em] bg-blue-50 px-4 py-1.5 rounded-full">
               Exclusive Itineraries
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-[#003B5C] tracking-tight">
-              Curated Travel Plans
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+              Curated <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travel Plans</span>
             </h2>
-            <p className="text-gray-500 text-lg max-w-2xl">
+            <p className="text-slate-500 text-lg max-w-2xl leading-relaxed">
               Professional day-by-day itineraries designed to give you the ultimate travel experience without the stress of planning.
             </p>
           </div>

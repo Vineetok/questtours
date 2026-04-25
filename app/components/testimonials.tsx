@@ -52,7 +52,7 @@ export function Testimonials() {
             Traveler Stories
           </span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travelers</span> Say
+            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Travelers</span> Say
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Real experiences from thousands of happy travelers who explored the world with us.

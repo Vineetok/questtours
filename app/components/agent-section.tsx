@@ -15,7 +15,7 @@ export function AgentSection() {
                 Partner With Us
               </span>
               <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-                Become a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travel Agent</span>
+                Become a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Travel Agent</span>
               </h2>
               <p className="text-lg text-slate-500 leading-relaxed">
                 Turn your passion for travel into a profitable business. Earn commissions by listing and promoting your tours on our platform.

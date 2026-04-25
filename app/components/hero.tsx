@@ -101,7 +101,7 @@ export function Hero() {
                 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight"
               >
                 {heroSlides[currentSlide].title}<br />
-                <span className={heroSlides[currentSlide].highlightColor || 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic'}>
+                <span className={heroSlides[currentSlide].highlightColor || 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400'}>
                   {heroSlides[currentSlide].highlight}
                 </span>
               </motion.h1>

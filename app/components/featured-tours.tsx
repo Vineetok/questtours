@@ -45,7 +45,7 @@ export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedTours
             Curated Experiences
           </span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-            Handpicked Tour <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Packages</span>
+            Handpicked Tour <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Packages</span>
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Our most popular tours carefully crafted to deliver the perfect balance of adventure, comfort, and value.

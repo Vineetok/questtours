@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/inputs/input';
 import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
 
 export default function BookingPage() {
   const params = useParams();
@@ -205,7 +206,7 @@ export default function BookingPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-slate-400 font-medium">Passengers</span>
-                      <span className="font-black">{passengers} x Rs. {tour.price.toLocaleString()}</span>
+                      <span className="font-black">{passengers} x {formatCurrency(tour.price)}</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-slate-400 font-medium">Taxes & Fees</span>
@@ -214,7 +215,7 @@ export default function BookingPage() {
                     <div className="pt-4 border-t border-white/10 flex justify-between items-end">
                       <div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Price</p>
-                        <p className="text-3xl font-black text-white">Rs. {(passengers * tour.price).toLocaleString()}</p>
+                        <p className="text-3xl font-black text-white">{formatCurrency(passengers * tour.price)}</p>
                       </div>
                       <ChevronRight className="h-6 w-6 text-white/20" />
                     </div>

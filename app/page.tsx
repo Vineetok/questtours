@@ -20,9 +20,9 @@ export default function Home() {
       <FeaturedPlans />
       <FeaturedTours />
       <FeaturedPackages />
-      <InsuranceSection />
       <Features />
       <TravelCategories />
+            <InsuranceSection />
       <AgentSection />
       <Testimonials />
       <Footer />

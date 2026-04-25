@@ -7,7 +7,7 @@ import { useUser } from '@/hooks/use-user';
 import { Plan } from '@/lib/types';
 import { adminService } from '@/services/adminService'; // Reusing service for demo
 import { 
-  Clock, 
+   
   MapPin, 
   Calendar, 
   ChevronRight, 
@@ -19,6 +19,7 @@ import { Card, CardContent } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
 import { 
   Dialog,
   DialogContent,
@@ -40,7 +41,7 @@ export default function CustomerDashboard() {
     try {
       const data = await adminService.getPlans();
       setPlans(data || []);
-    } catch (error) {
+    } catch  {
       console.error('Failed to fetch itineraries');
     } finally {
       setIsLoading(false);
@@ -66,7 +67,7 @@ export default function CustomerDashboard() {
              </div>
              <div>
                 <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Next Trip In</p>
-                <p className="text-sm font-bold text-gray-900">12 Days to Himachal</p>
+                <p className="text-sm font-bold text-gray-900">12 Days to Himachal </p>
              </div>
           </div>
         </div>
@@ -233,7 +234,7 @@ export default function CustomerDashboard() {
                 <div className="p-8 md:p-10 bg-gray-50 border-t border-gray-100 flex items-center justify-between shrink-0">
                   <div>
                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Total Trip Value</p>
-                     <p className="text-3xl font-black text-blue-600">₹{selectedPlan.price.toLocaleString('en-IN')}</p>
+                     <p className="text-3xl font-black text-blue-600">{formatCurrency(selectedPlan.price)}</p>
                   </div>
                   <Button className="bg-slate-900 text-white hover:bg-slate-800 h-14 px-10 rounded-full font-black text-base shadow-xl">
                     Download PDF Itinerary

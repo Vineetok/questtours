@@ -9,7 +9,6 @@ export interface RecentBooking {
   status: string;
   amount: string;
 }
-
 export interface AdminStats {
   totalCustomers: number;
   totalAgents: number;

@@ -9,7 +9,7 @@ import { PlanCard } from '@/components/plan-card';
 import { adminService } from '@/services/adminService';
 import { Plan } from '@/lib/types';
 import { MapPin, Loader2, Search } from 'lucide-react';
-import { Button } from 'react-day-picker';
+import {Button} from '@/components/ui/inputs/button';
 import { toast } from 'sonner';
 
 function ToursContent() {
@@ -31,7 +31,7 @@ function ToursContent() {
       try {
         const plansData = await adminService.getPlans();
         setPlans(plansData || []);
-      } catch (error) {
+      } catch  {
         toast.error('Failed to fetch data');
       } finally {
         setIsLoading(false);

@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import {  MapPin, Star,  CheckCircle2 } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 interface PlanCardProps {
   plan: {
     id: string | number;
@@ -85,7 +86,7 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
           <div className="text-right">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Starting from</p>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black text-slate-900">₹{plan.price.toLocaleString('en-IN')}</span>
+              <span className="text-2xl font-black text-slate-900">{formatCurrency(plan.price)}</span>
               <span className="text-xs font-bold text-slate-400">/ person</span>
             </div>
           </div>

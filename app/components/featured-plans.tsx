@@ -7,6 +7,7 @@ import { Clock, MapPin, ChevronRight, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatCurrency } from '@/lib/utils';
 
 export function FeaturedPlans() {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -89,7 +90,7 @@ export function FeaturedPlans() {
                   <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Starting From</span>
-                      <span className="text-2xl font-black text-[#003B5C]">₹{plan.price.toLocaleString('en-IN')}</span>
+                      <span className="text-2xl font-black text-[#003B5C]">{formatCurrency(plan.price)}</span>
                     </div>
                     <Link href="/login">
                        <Button className="bg-blue-600 hover:bg-blue-700 h-12 w-12 rounded-2xl flex items-center justify-center p-0 shadow-lg shadow-blue-200">

@@ -16,7 +16,7 @@ import {
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
 import { Button } from '@/components/ui/inputs/button';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
 interface TourModalProps {
   isOpen: boolean;
@@ -171,7 +171,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Total Price</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-black text-slate-900">
-                      ₹{Number(tour.price).toLocaleString('en-IN')}
+                      {formatCurrency(tour.price)}
                     </span>
                     <span className="text-sm font-medium text-slate-500">/ person</span>
                   </div>

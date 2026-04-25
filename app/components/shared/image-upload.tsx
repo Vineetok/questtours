@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/inputs/button';
+import { Upload, X, Loader2 } from 'lucide-react';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import Image from 'next/image';
 

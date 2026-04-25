@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/inputs/button';
 import { parseCSV } from '@/lib/csv-parser';
 import { toast } from 'sonner';
 
+
 interface CSVUploadButtonProps<T> {
   onUpload: (data: T[]) => Promise<void>;
   label?: string;

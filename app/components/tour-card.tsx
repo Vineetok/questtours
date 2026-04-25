@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Clock, Users, Star, Heart, MapPin } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 interface TourCardProps {
   image: string;
@@ -105,12 +106,12 @@ export function TourCard({
           <div className="text-right">
             {numericOriginalPrice && (
               <p className="text-xs text-gray-400 line-through mb-0.5">
-                ₹{numericOriginalPrice.toLocaleString('en-IN')}
+                {formatCurrency(numericOriginalPrice)}
               </p>
             )}
             <p className="text-xl font-black text-[#003B5C]">
               <span className="text-sm font-bold text-gray-400 mr-1">From</span>
-              ₹{numericPrice.toLocaleString('en-IN')}
+              {formatCurrency(numericPrice)}
             </p>
           </div>
         </div>

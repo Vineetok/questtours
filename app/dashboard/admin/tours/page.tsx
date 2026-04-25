@@ -7,12 +7,12 @@ import { useUser } from '@/hooks/use-user';
 import { Tour } from '@/lib/types';
 import { adminService } from '@/services/adminService';
 import { DataManagementTable } from '@/components/admin/data-management-table';
-import { CSVUploadButton } from '@/components/admin/csv-upload-button';
 import { ImageUpload } from '@/components/shared/image-upload';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 import { Textarea } from '@/components/ui/inputs/textarea';
 import { Plus, Search, Map, Clock, Star } from 'lucide-react';
+import { ConfirmDialog } from '@/components/ui/overlays/confirm-dialog';
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/overlays/dialog';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
+
 
 export default function ToursManagementPage() {
   const { user } = useUser();
@@ -31,13 +33,26 @@ export default function ToursManagementPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTour, setEditingTour] = useState<Partial<Tour> | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    isLoading: boolean;
+  }>({
+    isOpen: false,
+    title: '',
+    description: '',
+    onConfirm: () => {},
+    isLoading: false,
+  });
 
   const fetchTours = async () => {
     setIsLoading(true);
     try {
       const data = await adminService.getTours();
       setTours(data || []);
-    } catch (error) {
+    } catch  {
       toast.error('Failed to fetch tours');
     } finally {
       setIsLoading(false);
@@ -67,29 +82,49 @@ export default function ToursManagementPage() {
     setIsDialogOpen(true);
   };
 
-  const handleDeleteTour = async (tour: Tour) => {
-    if (confirm(`Are you sure you want to delete "${tour.title}"?`)) {
-      try {
-        await adminService.deleteTour(tour.id);
-        toast.success('Tour deleted successfully');
-        fetchTours();
-      } catch (error) {
-        toast.error('Failed to delete tour');
+  const handleDeleteTour = (tour: Tour) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Delete Tour',
+      description: `Are you sure you want to delete "${tour.title || tour.name}"? This action cannot be undone.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await adminService.deleteTour(tour.id);
+          toast.success('Tour deleted successfully');
+          fetchTours();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete tour');
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
-  const handleBulkDelete = async (ids: (string | number)[]) => {
-    if (confirm(`Are you sure you want to delete ${ids.length} tours?`)) {
-      try {
-        await Promise.all(ids.map(id => adminService.deleteTour(id)));
-        toast.success(`${ids.length} tours deleted successfully`);
-        fetchTours();
-      } catch (error) {
-        toast.error('Failed to delete some tours');
-        fetchTours();
+  const handleBulkDelete = (ids: (string | number)[]) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Bulk Delete Tours',
+      description: `Are you sure you want to delete ${ids.length} tours? This action cannot be undone.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await Promise.all(ids.map(id => adminService.deleteTour(id)));
+          toast.success(`${ids.length} tours deleted successfully`);
+          fetchTours();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete some tours');
+          fetchTours();
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
   const handleSaveTour = async () => {
@@ -108,21 +143,11 @@ export default function ToursManagementPage() {
       }
       setIsDialogOpen(false);
       fetchTours();
-    } catch (error) {
+    } catch  {
       toast.error('Failed to save tour');
     }
   };
 
-  const handleBulkUpload = async (data: any[]) => {
-    try {
-      for (const item of data) {
-        await adminService.addTour(item);
-      }
-      fetchTours();
-    } catch (error) {
-      toast.error('Error during bulk upload');
-    }
-  };
 
   const filteredTours = tours.filter(tour => 
     (tour.title || tour.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -166,7 +191,7 @@ export default function ToursManagementPage() {
     {
       header: 'Price',
       accessor: (tour: Tour) => (
-        <span className="font-bold text-blue-600">₹{tour.price.toLocaleString('en-IN')}</span>
+        <span className="font-bold text-blue-600">{formatCurrency(tour.price)}</span>
       )
     }
   ];
@@ -185,7 +210,6 @@ export default function ToursManagementPage() {
             <p className="text-gray-500 mt-1">Add, edit or bulk upload individual tour activities.</p>
           </div>
           <div className="flex items-center gap-3">
-            <CSVUploadButton onUpload={handleBulkUpload} label="Bulk Upload Tours" />
             <Button onClick={handleAddTour} className="bg-blue-600 hover:bg-blue-700 h-11 px-6 rounded-xl shadow-lg shadow-blue-200 gap-2">
               <Plus className="h-4 w-4" /> Add Tour
             </Button>
@@ -307,6 +331,15 @@ export default function ToursManagementPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <ConfirmDialog 
+          isOpen={confirmConfig.isOpen}
+          onClose={() => setConfirmConfig(prev => ({ ...prev, isOpen: false }))}
+          onConfirm={confirmConfig.onConfirm}
+          title={confirmConfig.title}
+          description={confirmConfig.description}
+          isLoading={confirmConfig.isLoading}
+        />
       </div>
     </DashboardLayout>
   );

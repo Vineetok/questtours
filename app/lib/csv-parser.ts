@@ -42,7 +42,7 @@ export function parseCSV<T>(csvString: string): T[] {
     const values = splitLine(lines[i]);
     if (values.length < headers.length) continue; // Skip malformed lines
 
-    const obj: any = {};
+    const obj: unknown = {};
 
     headers.forEach((header, index) => {
       let value = values[index] || '';
@@ -64,8 +64,14 @@ export function parseCSV<T>(csvString: string): T[] {
             obj[header] = value;
           }
         }
-      } else if (!isNaN(Number(value)) && value !== '' && !header.toLowerCase().includes('duration')) {
-        obj[header] = Number(value);
+      } else if (value !== '' && !header.toLowerCase().includes('duration')) {
+        // Handle numeric strings that might contain commas (Indian standards)
+        const cleanValue = value.replace(/,/g, '');
+        if (!isNaN(Number(cleanValue)) && cleanValue !== '') {
+          obj[header] = Number(cleanValue);
+        } else {
+          obj[header] = value;
+        }
       } else {
         obj[header] = value;
       }

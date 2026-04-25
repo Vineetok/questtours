@@ -7,11 +7,11 @@ import { useUser } from '@/hooks/use-user';
 import { Package } from '@/lib/types';
 import { adminService } from '@/services/adminService';
 import { DataManagementTable } from '@/components/admin/data-management-table';
-import { CSVUploadButton } from '@/components/admin/csv-upload-button';
 import { ImageUpload } from '@/components/shared/image-upload';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 import { Plus, Search, Package as PackageIcon, Clock, MapPin, Percent } from 'lucide-react';
+import { ConfirmDialog } from '@/components/ui/overlays/confirm-dialog';
 import {
   Dialog,
   DialogContent,
@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/overlays/dialog";
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
+
 
 export default function PackagesManagementPage() {
   const { user } = useUser();
@@ -30,13 +32,26 @@ export default function PackagesManagementPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPkg, setEditingPkg] = useState<Partial<Package> | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    isLoading: boolean;
+  }>({
+    isOpen: false,
+    title: '',
+    description: '',
+    onConfirm: () => {},
+    isLoading: false,
+  });
 
   const fetchPackages = async () => {
     setIsLoading(true);
     try {
       const data = await adminService.getPackages();
       setPackages(data || []);
-    } catch (error) {
+    } catch  {
       toast.error('Failed to fetch packages');
     } finally {
       setIsLoading(false);
@@ -66,29 +81,49 @@ export default function PackagesManagementPage() {
     setIsDialogOpen(true);
   };
 
-  const handleDeletePackage = async (pkg: Package) => {
-    if (confirm(`Are you sure you want to delete "${pkg.title}"?`)) {
-      try {
-        await adminService.deletePackage(pkg.id);
-        toast.success('Package deleted successfully');
-        fetchPackages();
-      } catch (error) {
-        toast.error('Failed to delete package');
+  const handleDeletePackage = (pkg: Package) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Delete Package',
+      description: `Are you sure you want to delete "${pkg.title}"? This action cannot be undone.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await adminService.deletePackage(pkg.id);
+          toast.success('Package deleted successfully');
+          fetchPackages();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete package');
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
-  const handleBulkDelete = async (ids: (string | number)[]) => {
-    if (confirm(`Are you sure you want to delete ${ids.length} packages?`)) {
-      try {
-        await Promise.all(ids.map(id => adminService.deletePackage(id)));
-        toast.success(`${ids.length} packages deleted successfully`);
-        fetchPackages();
-      } catch (error) {
-        toast.error('Failed to delete some packages');
-        fetchPackages();
+  const handleBulkDelete = (ids: (string | number)[]) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Bulk Delete',
+      description: `Are you sure you want to delete ${ids.length} packages? This action cannot be undone.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await Promise.all(ids.map(id => adminService.deletePackage(id)));
+          toast.success(`${ids.length} packages deleted successfully`);
+          fetchPackages();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete some packages');
+          fetchPackages();
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
   const handleSavePackage = async () => {
@@ -107,21 +142,11 @@ export default function PackagesManagementPage() {
       }
       setIsDialogOpen(false);
       fetchPackages();
-    } catch (error) {
+    } catch  {
       toast.error('Failed to save package');
     }
   };
 
-  const handleBulkUpload = async (data: any[]) => {
-    try {
-      for (const item of data) {
-        await adminService.addPackage(item);
-      }
-      fetchPackages();
-    } catch (error) {
-      toast.error('Error during bulk upload');
-    }
-  };
 
   const filteredPackages = packages.filter(pkg => 
     pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -159,9 +184,9 @@ export default function PackagesManagementPage() {
       header: 'Price',
       accessor: (pkg: Package) => (
         <div className="flex flex-col">
-          <span className="font-bold text-blue-600">₹{pkg.price.toLocaleString('en-IN')}</span>
+          <span className="font-bold text-blue-600">{formatCurrency(pkg.price)}</span>
           {pkg.originalPrice && (
-            <span className="text-[10px] text-gray-400 line-through">₹{pkg.originalPrice.toLocaleString('en-IN')}</span>
+            <span className="text-[10px] text-gray-400 line-through">{formatCurrency(pkg.originalPrice)}</span>
           )}
         </div>
       )
@@ -192,7 +217,6 @@ export default function PackagesManagementPage() {
             <p className="text-gray-500 mt-1">Bundle tours into attractive holiday packages.</p>
           </div>
           <div className="flex items-center gap-3">
-            <CSVUploadButton onUpload={handleBulkUpload} label="Bulk Upload Packages" />
             <Button onClick={handleAddPackage} className="bg-blue-600 hover:bg-blue-700 h-11 px-6 rounded-xl shadow-lg shadow-blue-200 gap-2">
               <Plus className="h-4 w-4" /> Add Package
             </Button>
@@ -304,6 +328,15 @@ export default function PackagesManagementPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <ConfirmDialog 
+          isOpen={confirmConfig.isOpen}
+          onClose={() => setConfirmConfig(prev => ({ ...prev, isOpen: false }))}
+          onConfirm={confirmConfig.onConfirm}
+          title={confirmConfig.title}
+          description={confirmConfig.description}
+          isLoading={confirmConfig.isLoading}
+        />
       </div>
     </DashboardLayout>
   );

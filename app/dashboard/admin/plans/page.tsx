@@ -1,28 +1,28 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { adminNavItems } from '@/lib/admin-nav-items';
 import { useUser } from '@/hooks/use-user';
-import { Plan, Day } from '@/lib/types';
+import { Plan } from '@/lib/types';
 import { adminService } from '@/services/adminService';
 import { DataManagementTable } from '@/components/admin/data-management-table';
-import { CSVUploadButton } from '@/components/admin/csv-upload-button';
 import { ImageUpload } from '@/components/shared/image-upload';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 import { Textarea } from '@/components/ui/inputs/textarea';
 import { 
-  Plus, 
-  Search, 
-  LayoutList, 
-  Clock, 
-  MapPin, 
+  GripVertical,
+  Clock,
+  MapPin,
+  Plus,
   Calendar,
-  X,
+  Search,
+  LayoutList,
   ChevronRight,
-  GripVertical
+  X
 } from 'lucide-react';
+import { ConfirmDialog } from '@/components/ui/overlays/confirm-dialog';
 import {
   Dialog,
   DialogContent,
@@ -33,6 +33,15 @@ import {
 } from '@/components/ui/overlays/dialog';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
+
+interface Day {
+  day: number;
+  title: string;
+  activities: string[];
+  meals: string;
+  stay: string;
+}
 
 export default function PlansManagementPage() {
   const { user } = useUser();
@@ -41,19 +50,31 @@ export default function PlansManagementPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Partial<Plan> | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    isLoading: boolean;
+  }>({
+    isOpen: false,
+    title: '',
+    description: '',
+    onConfirm: () => {},
+    isLoading: false,
+  });
 
   const fetchPlans = async () => {
     setIsLoading(true);
     try {
       const data = await adminService.getPlans();
       setPlans(data || []);
-    } catch (error) {
+    } catch  {
       toast.error('Failed to fetch plans');
     } finally {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     fetchPlans();
   }, []);
@@ -76,29 +97,49 @@ export default function PlansManagementPage() {
     setIsDialogOpen(true);
   };
 
-  const handleDeletePlan = async (plan: Plan) => {
-    if (confirm(`Are you sure you want to delete "${plan.title}"?`)) {
-      try {
-        await adminService.deletePlan(plan.id);
-        toast.success('Plan deleted successfully');
-        fetchPlans();
-      } catch (error) {
-        toast.error('Failed to delete plan');
+  const handleDeletePlan = (plan: Plan) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Delete Travel Plan',
+      description: `Are you sure you want to delete "${plan.title}"? This will permanently remove the itinerary.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await adminService.deletePlan(plan.id);
+          toast.success('Plan deleted successfully');
+          fetchPlans();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete plan');
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
-  const handleBulkDelete = async (ids: (string | number)[]) => {
-    if (confirm(`Are you sure you want to delete ${ids.length} plans?`)) {
-      try {
-        await Promise.all(ids.map(id => adminService.deletePlan(id)));
-        toast.success(`${ids.length} plans deleted successfully`);
-        fetchPlans();
-      } catch (error) {
-        toast.error('Failed to delete some plans');
-        fetchPlans();
+  const handleBulkDelete = (ids: (string | number)[]) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Bulk Delete Plans',
+      description: `Are you sure you want to delete ${ids.length} plans? This action cannot be undone.`,
+      isLoading: false,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isLoading: true }));
+        try {
+          await Promise.all(ids.map(id => adminService.deletePlan(id)));
+          toast.success(`${ids.length} plans deleted successfully`);
+          fetchPlans();
+          setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        } catch {
+          toast.error('Failed to delete some plans');
+          fetchPlans();
+        } finally {
+          setConfirmConfig(prev => ({ ...prev, isLoading: false }));
+        }
       }
-    }
+    });
   };
 
   const handleSavePlan = async () => {
@@ -117,21 +158,11 @@ export default function PlansManagementPage() {
       }
       setIsDialogOpen(false);
       fetchPlans();
-    } catch (error) {
+    } catch  {
       toast.error('Failed to save plan');
     }
   };
 
-  const handleBulkUpload = async (data: any[]) => {
-    try {
-      for (const item of data) {
-        await adminService.addPlan(item);
-      }
-      fetchPlans();
-    } catch (error) {
-      toast.error('Error during bulk upload');
-    }
-  };
 
   const addItineraryDay = () => {
     if (!editingPlan) return;
@@ -148,7 +179,7 @@ export default function PlansManagementPage() {
     });
   };
 
-  const updateDay = (index: number, field: keyof Day, value: any) => {
+  const updateDay = (index: number, field: keyof Day, value: Day[keyof Day]) => {
     if (!editingPlan?.itinerary) return;
     const updatedItinerary = [...editingPlan.itinerary];
     updatedItinerary[index] = { ...updatedItinerary[index], [field]: value };
@@ -190,7 +221,7 @@ export default function PlansManagementPage() {
     {
       header: 'Price',
       accessor: (plan: Plan) => (
-        <span className="font-bold text-blue-600">₹{plan.price.toLocaleString('en-IN')}</span>
+        <span className="font-bold text-blue-600">{formatCurrency(plan.price)}</span>
       )
     },
     {
@@ -218,7 +249,6 @@ export default function PlansManagementPage() {
             <p className="text-gray-500 mt-1">Create and manage detailed itineraries for your customers.</p>
           </div>
           <div className="flex items-center gap-3">
-            <CSVUploadButton onUpload={handleBulkUpload} label="Bulk Upload Plans" />
             <Button onClick={handleAddPlan} className="bg-blue-600 hover:bg-blue-700 h-11 px-6 rounded-xl shadow-lg shadow-blue-200 gap-2">
               <Plus className="h-4 w-4" /> Add New Plan
             </Button>
@@ -409,6 +439,15 @@ export default function PlansManagementPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <ConfirmDialog 
+          isOpen={confirmConfig.isOpen}
+          onClose={() => setConfirmConfig(prev => ({ ...prev, isOpen: false }))}
+          onConfirm={confirmConfig.onConfirm}
+          title={confirmConfig.title}
+          description={confirmConfig.description}
+          isLoading={confirmConfig.isLoading}
+        />
       </div>
     </DashboardLayout>
   );

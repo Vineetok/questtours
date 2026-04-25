@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/overlays/dialog';
 import { Button } from '@/components/ui/inputs/button';
-import Link from 'next/link';
 import { cn, formatCurrency } from '@/lib/utils';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -65,6 +64,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
         {/* Fixed Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close"
           className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-md transition-all hover:bg-black/40 hover:scale-110 active:scale-95 sm:right-6 sm:top-6"
         >
           <X size={20} />

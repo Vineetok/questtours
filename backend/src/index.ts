@@ -6,6 +6,9 @@ import profileRoutes from './routes/profile';
 import adminRoutes from './routes/admin';
 import ticketRoutes from './routes/tickets';
 import bookingRoutes from './routes/bookings';
+import tourRoutes from './routes/tours';
+import packageRoutes from './routes/packages';
+import planRoutes from './routes/plans';
 import path from 'path';
 
 dotenv.config();
@@ -26,6 +29,9 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/tours', tourRoutes);
+app.use('/api/packages', packageRoutes);
+app.use('/api/plans', planRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('QuestTours API is running');

@@ -71,7 +71,8 @@ export function TourCard({
           <span className="text-sm font-bold drop-shadow-md">{location}</span>
         </div>
         
-        <button className="absolute bottom-4 right-4 p-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white hover:text-red-500 transition-all border border-white/20">
+        <button aria-label="Add to wishlist" className="absolute bottom-4 right-4 p-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white hover:text-red-500 transition-all border border-white/20
+        ">
           <Heart size={16} />
         </button>
       </div>

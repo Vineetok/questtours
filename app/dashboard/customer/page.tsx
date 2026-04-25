@@ -175,6 +175,7 @@ export default function CustomerDashboard() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <button 
                     onClick={() => setSelectedPlan(null)}
+                    aria-label="Close"
                     className="absolute top-6 right-6 p-2 bg-black/20 backdrop-blur-md text-white rounded-full hover:bg-black/40 transition-colors"
                   >
                     <ChevronRight size={24} className="rotate-180" />

@@ -47,9 +47,6 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/destinations', label: 'Destinations' },
-    { href: '/categories', label: 'Categories' },
-    { href: '/contact', label: 'Contact' },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -299,7 +296,18 @@ export function Navbar() {
                 </div>
               </div>
             </div>
-          </div>
+
+            {/* Contact Link */}
+            <Link
+              href="/contact"
+              className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+                isActive('/contact')
+                  ? 'text-white bg-white/10'
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              Contact
+            </Link>
 
           {/* Desktop CTA Buttons */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
@@ -393,6 +401,31 @@ export function Navbar() {
               </div>
             </div>
 
+            {/* Mobile Gallery Accordion */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setIsGalleryOpen(!isGalleryOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+              >
+                Gallery
+                <ChevronDown size={16} className={`transition-transform duration-300 ${isGalleryOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isGalleryOpen && (
+                <div className="ml-4 pl-3 border-l border-white/10 space-y-1">
+                  {galleryOptions.map((option) => (
+                    <Link
+                      key={option.name}
+                      href={option.href}
+                      className="block px-3 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {option.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Mobile About with Sub-menu */}
             <div className="space-y-2">
               <button
@@ -417,6 +450,16 @@ export function Navbar() {
               )}
             </div>
 
+            {/* Mobile Contact Link */}
+            <Link
+              href="/contact"
+              className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                isActive('/contact') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              Contact
+            </Link>
+
             {/* Mobile CTA Buttons */}
             <div className="pt-4 border-t border-white/5 space-y-2">
               <Link href="/signup?role=agent" className="block">
@@ -438,6 +481,7 @@ export function Navbar() {
           </div>
         </div>
       </div>
+      </div>
     </nav>
-  );
-}
+  )
+  };

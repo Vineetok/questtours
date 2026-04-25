@@ -58,7 +58,7 @@ export function DashboardLayout({ children, role, userName, userEmail, navItems 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     removeAuthToken();
-    router.push('/login');
+    router.push('/');
   };
 
   return (

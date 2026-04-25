@@ -54,19 +54,19 @@ export const adminService = {
   },
 
   // Tours Management
-  getTours: () => api.get<Tour[]>('/admin/tours'),
+  getTours: () => api.get<Tour[]>('/tours'),
   addTour: (tour: Partial<Tour>) => api.post<Tour>('/admin/tours', tour),
   updateTour: (id: string | number, tour: Partial<Tour>) => api.put<Tour>(`/admin/tours/${id}`, tour),
   deleteTour: (id: string | number) => api.delete<{ message: string }>(`/admin/tours/${id}`),
 
   // Packages Management
-  getPackages: () => api.get<Package[]>('/admin/packages'),
+  getPackages: () => api.get<Package[]>('/packages'),
   addPackage: (pkg: Partial<Package>) => api.post<Package>('/admin/packages', pkg),
   updatePackage: (id: string | number, pkg: Partial<Package>) => api.put<Package>(`/admin/packages/${id}`, pkg),
   deletePackage: (id: string | number) => api.delete<{ message: string }>(`/admin/packages/${id}`),
 
   // Plans (Itineraries) Management
-  getPlans: () => api.get<Plan[]>('/admin/plans'),
+  getPlans: () => api.get<Plan[]>('/plans'),
   addPlan: (plan: Partial<Plan>) => api.post<Plan>('/admin/plans', plan),
   updatePlan: (id: string | number, plan: Partial<Plan>) => api.put<Plan>(`/admin/plans/${id}`, plan),
   deletePlan: (id: string | number) => api.delete<{ message: string }>(`/admin/plans/${id}`),

@@ -52,8 +52,8 @@ export default function ToursManagementPage() {
     try {
       const data = await adminService.getTours();
       setTours(data || []);
-    } catch  {
-      toast.error('Failed to fetch tours');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to fetch tours');
     } finally {
       setIsLoading(false);
     }

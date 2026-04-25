@@ -54,6 +54,7 @@ export function CSVUploadButton<T>({ onUpload, label = "Upload CSV", disabled }:
       <input
         type="file"
         accept=".csv"
+        aria-label="CSV File Input"
         className="hidden"
         ref={fileInputRef}
         onChange={handleFileChange}

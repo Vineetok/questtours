@@ -111,7 +111,7 @@ export function ProfileView() {
 
   const handleLogout = () => {
     removeAuthToken();
-    router.push('/login');
+    router.push('/');
   };
 
   if (!user) {
@@ -163,6 +163,7 @@ export function ProfileView() {
                 type="file" 
                 id="photo-upload" 
                 className="hidden" 
+                aria-label="Upload Profile Picture"
                 onChange={handleImageChange}
                 disabled={uploading}
                 accept="image/*"

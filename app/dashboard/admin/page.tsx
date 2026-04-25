@@ -27,6 +27,7 @@ import {
 import { Badge } from '@/components/ui/display/badge';
 import { adminNavItems } from '@/lib/admin-nav-items';
 import { useUser } from '@/hooks/use-user';
+import { toast } from 'sonner';
 import {
   ResponsiveContainer,
   BarChart,

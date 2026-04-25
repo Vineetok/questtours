@@ -23,13 +23,11 @@ export function Footer() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#tours" className="flex items-center gap-2 px-8 py-3.5 bg-[white] text-black rounded-full font-bold transition-all shadow-lg hover:shadow-xl w-full sm:w-auto justify-center group">
+            <a href="#tours" className="flex items-center gap-2 px-8 py-3.5 bg-white text-[#003B5C] rounded-full font-bold transition-all shadow-lg hover:shadow-xl w-full sm:w-auto justify-center group">
               Explore Packages 
               <ArrowRight size={18} className="transform group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="/contact" className="px-8 py-3.5 bg-white text-black
-            
-            rounded-full font-bold transition-all shadow-lg hover:shadow-xl w-full sm:w-auto text-center border-2 border-transparent">
+            <a href="/contact" className="px-8 py-3.5 bg-[#003B5C] text-white rounded-full font-bold transition-all shadow-lg hover:shadow-xl w-full sm:w-auto text-center">
               Talk to Expert
             </a>
           </div>

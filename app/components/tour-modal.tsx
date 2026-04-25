@@ -17,11 +17,15 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/compone
 import { Button } from '@/components/ui/inputs/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { BookingChecklistModal } from './booking-checklist-modal';
 
 interface TourModalProps {
   isOpen: boolean;
   onClose: () => void;
   tour: {
+    id?: string | number;
     image: string;
     location: string;
     title: string;
@@ -36,6 +40,9 @@ interface TourModalProps {
 }
 
 export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
+  const router = useRouter();
+  const [showChecklist, setShowChecklist] = useState(false);
+
   if (!tour) return null;
 
   const highlights = tour.highlights || [
@@ -177,17 +184,34 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
                   </div>
                 </div>
 
-                <Link href="/signup" className="flex-1 sm:flex-none">
-                  <Button className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 text-base font-bold text-white transition-all hover:shadow-lg hover:shadow-sky-200 active:scale-[0.98] sm:min-w-[200px]">
+                <div className="flex-1 sm:flex-none">
+                  <Button 
+                    onClick={() => setShowChecklist(true)}
+                    className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 text-base font-bold text-white transition-all hover:shadow-lg hover:shadow-sky-200 active:scale-[0.98] sm:min-w-[200px]"
+                  >
                     Reserve Now
                     <ArrowRight size={18} className="ml-2" />
                   </Button>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </DialogContent>
+
+      <BookingChecklistModal 
+        isOpen={showChecklist} 
+        onClose={() => setShowChecklist(false)} 
+        onProceed={() => {
+          setShowChecklist(false);
+          if (tour?.id) {
+            router.push(`/tours/${tour.id}/book`);
+          } else {
+            // Fallback for mocked tours without an explicit ID in the type
+            router.push('/tours/1/book');
+          }
+        }} 
+      />
     </Dialog>
   );
 }

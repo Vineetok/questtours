@@ -44,12 +44,22 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-md shadow-2xl border-none">
-          <Link 
-          href="/" 
+          <button 
+          type="button"
+          onClick={() => {
+            if (window.history.length > 2) {
+              router.back();
+            } else {
+              window.close();
+              setTimeout(() => {
+                router.push('/');
+              }, 300);
+            }
+          }}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100/50 rounded-full transition-all z-20"
         >
           <X size={20} />
-        </Link>
+        </button>
         <CardHeader className="space-y-1">
          
           <div className="flex justify-center mb-4">

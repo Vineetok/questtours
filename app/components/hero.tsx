@@ -109,8 +109,8 @@ export function Hero() {
           </AnimatePresence>
 
           {/* Search Bar */}
-          <div className="bg-white/60 rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-700">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+          <div className="bg-white/60 rounded-2xl p-4 border border-gray-100 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* Destination */}
               <div className="relative text-left">
                 <label className="text-gray-700 text-sm font-bold block mb-2">
@@ -167,14 +167,6 @@ export function Hero() {
               </div>
             </div>
           </div>
-
-          {/* CTA Button */}
-          <Button 
-            onClick={handleScrollToTours}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-lg px-8 py-6 rounded-xl cursor-pointer"
-          >
-            Explore Tours
-          </Button>
         </div>
       </div>
     </section>

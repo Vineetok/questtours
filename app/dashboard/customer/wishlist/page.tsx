@@ -15,12 +15,16 @@ import { toast } from 'sonner';
 import { Tour } from '@/lib/types';
 import { useUser } from '@/hooks/use-user';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { BookingChecklistModal } from '@/components/booking-checklist-modal';
 
 export default function WishlistPage() {
   const { user } = useUser();
+  const router = useRouter();
   const [items, setItems] = useState<Tour[]>(wishlistTours);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
+  const [checklistTourId, setChecklistTourId] = useState<string | null>(null);
 
   const handleRemove = (id: string, name: string) => {
     setItems(items.filter(item => item.id !== id));
@@ -84,7 +88,7 @@ export default function WishlistPage() {
                       variant="destructive" 
                       size="icon" 
                       className="h-9 w-9 rounded-xl bg-white text-red-500 hover:bg-red-500 hover:text-white border-none shadow-lg"
-                      onClick={() => handleRemove(tour.id, tour.name)}
+                      onClick={() => handleRemove(String(tour.id), tour.name)}
                     >
                       <Trash2 className="h-4.5 w-4.5" />
                     </Button>
@@ -108,13 +112,14 @@ export default function WishlistPage() {
                   </div>
                 </CardHeader>
                 <CardFooter className="px-6 pb-6 pt-2 flex gap-3">
-                  <Link href={`/tours/${tour.id}/book`} className="flex-1">
+                  <div className="flex-1">
                     <Button 
+                      onClick={() => setChecklistTourId(String(tour.id))}
                       className="w-full bg-gray-900 hover:bg-blue-600 text-white rounded-xl h-11 font-bold transition-all group/btn"
                     >
                       Book Now <Plane className="ml-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1" />
                     </Button>
-                  </Link>
+                  </div>
                   <Link href={`/tours/${tour.id}`}>
                     <Button 
                       variant="outline" 
@@ -177,7 +182,18 @@ export default function WishlistPage() {
       <TourModal
         isOpen={!!selectedTour}
         onClose={() => setSelectedTour(null)}
-        tour={selectedTour}
+        tour={selectedTour ? { ...selectedTour, title: selectedTour.name, reviews: 124 } : null}
+      />
+
+      <BookingChecklistModal
+        isOpen={!!checklistTourId}
+        onClose={() => setChecklistTourId(null)}
+        onProceed={() => {
+          if (checklistTourId) {
+            router.push(`/tours/${checklistTourId}/book`);
+            setChecklistTourId(null);
+          }
+        }}
       />
     </DashboardLayout>
   );

@@ -112,11 +112,11 @@ export function Destinations({ showAll = false }: DestinationsProps) {
         ) : (
           <>
             {/* Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
               {popularDestinations.map((dest) => (
                 <div
                   key={dest.id}
-                  className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
+                  className={`group relative overflow-hidden rounded-2xl h-[280px] sm:h-[320px] lg:h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
                   onClick={() => setIsAuthOpen(true)}
                 >
                   <Image
@@ -212,9 +212,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
         </div>
       )}
 
-      {/* Auth Modal */}
-      {/* <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
-      {/* <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
+      {/* Auth Modal placeholder - handled by individual page auth */}
     </section>
   );
 }

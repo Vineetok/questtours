@@ -25,7 +25,12 @@ export default function BookingsPage() {
     // Simulating data fetch
     const loadBookings = () => {
       if (isMounted) {
-        setBookings(customerBookings as Booking[]);
+        // Read any newly created bookings from local storage
+        const localBookingsStr = localStorage.getItem('quest_tours_bookings');
+        const localBookings = localBookingsStr ? JSON.parse(localBookingsStr) : [];
+        
+        // Combine with static mock data
+        setBookings([...localBookings, ...customerBookings] as Booking[]);
         setLoading(false);
       }
     };
@@ -73,7 +78,7 @@ export default function BookingsPage() {
               ))
             ) : upcomingBookings.length > 0 ? (
               upcomingBookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking} />
+                <BookingCard key={booking.id} booking={booking as any} />
               ))
             ) : (
               <EmptyBookings message="No upcoming trips. Ready to explore?" />
@@ -87,7 +92,7 @@ export default function BookingsPage() {
               ))
             ) : pastBookings.length > 0 ? (
               pastBookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking} />
+                <BookingCard key={booking.id} booking={booking as any} />
               ))
             ) : (
               <EmptyBookings message="Your travel history is empty." />

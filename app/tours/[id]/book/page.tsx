@@ -23,6 +23,7 @@ import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { useUser } from '@/hooks/use-user';
+import { formatCurrency } from '@/lib/utils';
 
 export default function BookingPage() {
   const params = useParams();
@@ -392,7 +393,7 @@ export default function BookingPage() {
             <div className="sticky top-24 space-y-6">
               <Card className="border-none shadow-xl bg-slate-900 text-white rounded-[2.5rem] overflow-hidden">
                 <div className="h-40 relative">
-                  <Image src={tour.image} alt={tour.title || tour.name} fill className="object-cover opacity-60" />
+                  <Image src={tour.image} alt={tour.title || tour.name || 'Tour image'} fill className="object-cover opacity-60" />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900" />
                   <div className="absolute bottom-4 left-6">
                     <p className="text-[10px] font-black uppercase tracking-widest text-sky-400 mb-1">{tour.location}</p>

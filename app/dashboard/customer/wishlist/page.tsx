@@ -17,6 +17,7 @@ import { useUser } from '@/hooks/use-user';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { BookingChecklistModal } from '@/components/booking-checklist-modal';
+import { formatCurrency } from '@/lib/utils';
 
 export default function WishlistPage() {
   const { user } = useUser();
@@ -34,7 +35,7 @@ export default function WishlistPage() {
 
 
   const filteredItems = items.filter(item => 
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -79,7 +80,7 @@ export default function WishlistPage() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image 
                     src={tour.image} 
-                    alt={tour.name} 
+                    alt={tour.name ?? 'Tour image'} 
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -88,7 +89,7 @@ export default function WishlistPage() {
                       variant="destructive" 
                       size="icon" 
                       className="h-9 w-9 rounded-xl bg-white text-red-500 hover:bg-red-500 hover:text-white border-none shadow-lg"
-                      onClick={() => handleRemove(String(tour.id), tour.name)}
+                      onClick={() => handleRemove(String(tour.id), tour.name ?? 'this tour')}
                     >
                       <Trash2 className="h-4.5 w-4.5" />
                     </Button>
@@ -182,7 +183,7 @@ export default function WishlistPage() {
       <TourModal
         isOpen={!!selectedTour}
         onClose={() => setSelectedTour(null)}
-        tour={selectedTour ? { ...selectedTour, title: selectedTour.name, reviews: 124 } : null}
+        tour={selectedTour ? { ...selectedTour, title: selectedTour.name ?? '', reviews: 124 } : null}
       />
 
       <BookingChecklistModal

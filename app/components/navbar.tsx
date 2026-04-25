@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Globe, MapPin, Plane } from 'lucide-react';
-import { Menu, X, ChevronDown, Globe, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/inputs/button';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/inputs/button';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isToursOpen, setIsToursOpen] = useState(false);
   const pathname = usePathname();
-  const [isToursOpen, setIsToursOpen] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isDomesticOpen, setIsDomesticOpen] = useState(false);
   const [isInternationalOpen, setIsInternationalOpen] = useState(false);
@@ -51,11 +49,6 @@ export function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/destinations', label: 'Destinations' },
     { href: '/categories', label: 'Categories' },
-    // { href: '/trains', label: 'Trains' },
-    // { href: '/buses', label: 'Buses' },
-    // { href: '/insurance', label: 'Insurance' },
-    { href: '/about', label: 'About' },
-    { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
   ];
 
@@ -67,19 +60,6 @@ export function Navbar() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10 h-16 sm:h-20" />
     );
   }
-
-  const internationalTours = [
-    'Japan', 'Dubai', 'Singapore Thailand Malaysia', 'Europe', 'Egypt', 
-    'Australia Newzealand', 'Veitnaam', 'Malaysia Hongkong', 
-    'Srilanka & Maldives', 'Bhutan', 'Nepal'
-  ];
-
-  const domesticTours = [
-    'Andaman', 'Darjeeling Gangtok Pelling', 'Gujarat', 'Himachal Pradesh', 
-    'Karnataka', 'Kashmir', 'Kerala', 'Madhya Pradesh', 'Rajasthan', 
-    'Tamilnadu', 'Uttaranchal', 'North East', 'Pilgrims Tours', 
-    'Andhra Pradesh', 'West Bengal & Sikkim', 'Orrisa'
-  ];
 
   const domesticGalleryCategories = [
     { name: 'All Photos', href: '/gallery/domestic' },
@@ -121,8 +101,7 @@ export function Navbar() {
         : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-md border-b border-white/10'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-[70px]">
-
+        <div className="flex items-center justify-between h-[70px]">
           {/* Logo */}
           <Link
             href="/"
@@ -137,17 +116,20 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1 ml-10 flex-1">
-            <Link
-              href="/"
-              className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
-                isActive('/')
-                  ? 'text-white bg-white/10'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Home
-            </Link>
+          <div className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+                  isActive(link.href)
+                    ? 'text-white bg-white/10'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
 
             {/* Tours Mega Menu */}
             <div
@@ -218,93 +200,19 @@ export function Navbar() {
               </div>
             </div>
 
-            {/* Rest of nav links */}
-            {navLinks.slice(1).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
-                  isActive(link.href)
-                    ? 'text-white bg-white/10'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            
-            {/* Tours with Mega Menu */}
-            <div 
-              className="relative group h-full flex items-center"
-              onMouseEnter={() => setIsToursOpen(true)}
-              onMouseLeave={() => setIsToursOpen(false)}
-            >
-              <button className="flex items-center gap-1 text-white hover:text-blue-400 transition-colors text-base font-medium h-full">
-                Tours <ChevronDown size={16} className={`transition-transform duration-200 ${isToursOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {/* Mega Menu Dropdown */}
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-300 ${
-                isToursOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-4 invisible'
-              }`}>
-                <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden min-w-[500px] flex p-8 gap-12">
-                  {/* International Column */}
-                  <div className="flex-1">
-                    <h3 className="flex items-center gap-2 text-sky-600 font-black text-xs uppercase tracking-widest mb-6">
-                      <Globe size={14} /> International Tours
-                    </h3>
-                    <div className="grid gap-3">
-                      {internationalTours.map((tour) => (
-                        <Link 
-                          key={tour} 
-                          href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
-                          className="text-slate-600 hover:text-sky-600 transition-colors text-sm font-semibold"
-                        >
-                          {tour}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Domestic Column */}
-                  <div className="flex-1">
-                    <h3 className="flex items-center gap-2 text-emerald-600 font-black text-xs uppercase tracking-widest mb-6">
-                      <MapPin size={14} /> Domestic Tours
-                    </h3>
-                    <div className="grid grid-cols-1 gap-3">
-                      {domesticTours.map((tour) => (
-                        <Link 
-                          key={tour} 
-                          href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
-                          className="text-slate-600 hover:text-emerald-600 transition-colors text-sm font-semibold"
-                        >
-                          {tour}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Link 
-              href="/destinations" 
-              className="text-white hover:text-blue-400 transition-colors text-base font-medium cursor-pointer"
-            >
-              Destinations
-            </Link>
-
             {/* Gallery Dropdown */}
             <div 
-              className="relative group h-full flex items-center"
+              className="relative h-full flex items-center"
               onMouseEnter={() => setIsGalleryOpen(true)}
               onMouseLeave={() => {
                 setIsGalleryOpen(false);
                 setIsDomesticOpen(false);
+                setIsInternationalOpen(false);
               }}
             >
-              <button className="flex items-center gap-1 text-white hover:text-blue-400 transition-colors text-base font-medium h-full">
-                Gallery <ChevronDown size={16} className={`transition-transform duration-200 ${isGalleryOpen ? 'rotate-180' : ''}`} />
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+                Gallery 
+                <ChevronDown size={14} className={`transition-transform duration-200 ${isGalleryOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <div className={`absolute top-full left-0 pt-2 transition-all duration-300 ${
@@ -317,7 +225,6 @@ export function Navbar() {
                         <div 
                           className="flex items-center justify-between text-slate-600 hover:text-sky-600 transition-colors text-sm font-semibold p-2 hover:bg-slate-50 rounded-lg cursor-pointer"
                           onMouseEnter={() => {
-                            // Reset other menus
                             setIsDomesticOpen(false);
                             setIsInternationalOpen(false);
                             option.setState?.(true);
@@ -364,20 +271,15 @@ export function Navbar() {
               </div>
             </div>
 
-            <Link 
-              href="/categories" 
-              className="text-white hover:text-blue-400 transition-colors text-base font-medium cursor-pointer"
-            >
-              Categories
-            </Link>
             {/* About Dropdown */}
             <div 
               className="relative h-full"
               onMouseEnter={() => setIsAboutOpen(true)}
               onMouseLeave={() => setIsAboutOpen(false)}
             >
-              <button className="flex items-center gap-1 text-white hover:text-blue-400 transition-colors text-base font-medium h-full">
-                About <ChevronDown size={16} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+                About 
+                <ChevronDown size={14} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <div className={`absolute top-full left-0 pt-2 transition-all duration-300 ${
@@ -397,263 +299,115 @@ export function Navbar() {
                 </div>
               </div>
             </div>
-            <Link href="/contact" className="text-white hover:text-blue-400 transition-colors text-base font-medium">
-              Contact
-            </Link>
           </div>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-2 ml-auto flex-shrink-0">
-          <div className="hidden md:flex items-center gap-4 flex-shrink-0 ml-auto">
+          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
             <Link href="/signup?role=agent">
-              <button className="px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
               <Button variant="ghost" className="text-white hover:text-blue-400 font-medium text-sm lg:text-base">
                 Become an Agent
-              </button>
+              </Button>
             </Link>
             <Link href="/login">
-              <button className="px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
               <Button variant="ghost" className="text-white hover:bg-white/10 font-medium text-sm lg:text-base">
                 Login
-              </button>
+              </Button>
             </Link>
             <Link href="/signup">
-              <button className="px-5 py-2.5 text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-200 hover:scale-105">
               <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 text-sm lg:text-base px-6">
                 Sign Up
-              </button>
+              </Button>
             </Link>
           </div>
 
           {/* Mobile Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden ml-auto text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
+            className="lg:hidden text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Navigation */}
-      <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
-        isOpen ? 'max-h-[85vh] opacity-100' : 'max-h-0 opacity-0'
-      }`}>
-        <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh]">
-          <Link
-            href="/"
-            className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-              isActive('/') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            Home
-          </Link>
+        {/* Mobile Navigation */}
+        <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
+          isOpen ? 'max-h-[85vh] opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh]">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                  isActive(link.href) ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
 
-          {/* Mobile Tours Accordion */}
-          <div>
-            <button
-              onClick={() => setIsToursOpen(!isToursOpen)}
-              className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
-            >
-              Tours
-              <ChevronDown size={16} className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`} />
-            </button>
+            {/* Mobile Tours Accordion */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setIsToursOpen(!isToursOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+              >
+                Tours
+                <ChevronDown size={16} className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`} />
+              </button>
 
-            <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
-              <div className="px-4 py-3 ml-2 border-l border-white/10 space-y-4">
-                <div>
-                  <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-2">🌏 International</p>
-                  <div className="space-y-2">
-                    {internationalTours.map(tour => (
-                      <Link
-                        key={tour}
-                        href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
-                        className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
-                      >
-                        {tour}
-                      </Link>
-                    ))}
+              <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
+                <div className="px-4 py-3 ml-2 border-l border-white/10 space-y-4">
+                  <div>
+                    <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-2">🌏 International</p>
+                    <div className="space-y-2">
+                      {internationalTours.map(tour => (
+                        <Link
+                          key={tour}
+                          href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
+                          className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {tour}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">📍 Domestic</p>
-                  <div className="space-y-2">
-                    {domesticTours.map(tour => (
-                      <Link
-                        key={tour}
-                        href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
-                        className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
-                      >
-                        {tour}
-                      </Link>
-                    ))}
+                  <div>
+                    <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">📍 Domestic</p>
+                    <div className="space-y-2">
+                      {domesticTours.map(tour => (
+                        <Link
+                          key={tour}
+                          href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
+                          className="block text-slate-400 hover:text-white text-sm font-semibold transition-colors"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {tour}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Mobile nav links */}
-          {navLinks.slice(1).map((link) => (
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden bg-black/90 backdrop-blur-xl border-t border-white/10 py-6 px-4 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300 max-h-[80vh] overflow-y-auto">
-            <Link
-              href="/"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              Home
-            </Link>
-            
-            {/* Mobile Tours with Sub-menu */}
-            <div className="space-y-2">
-              <button 
-                onClick={() => setIsToursOpen(!isToursOpen)}
-                className="flex items-center justify-between w-full text-white text-lg hover:text-blue-400 transition-colors py-2"
-              >
-                Tours <ChevronDown size={18} className={isToursOpen ? 'rotate-180' : ''} />
-              </button>
-              
-              {isToursOpen && (
-                <div className="pl-4 space-y-4 py-2 border-l border-white/10 ml-2">
-                  <div>
-                    <h4 className="text-sky-400 text-xs font-black uppercase tracking-widest mb-3">International</h4>
-                    <div className="grid grid-cols-1 gap-2">
-                      {internationalTours.map(tour => (
-                        <Link 
-                          key={tour} 
-                          href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
-                          className="text-slate-300 text-sm hover:text-white"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {tour}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-emerald-400 text-xs font-black uppercase tracking-widest mb-3">Domestic</h4>
-                    <div className="grid grid-cols-1 gap-2">
-                      {domesticTours.map(tour => (
-                        <Link 
-                          key={tour} 
-                          href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
-                          className="text-slate-300 text-sm hover:text-white"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {tour}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link
-              href="/destinations"
-              onClick={() => setIsOpen(false)}
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2 cursor-pointer"
-            >
-              Destinations
-            </Link>
-
-            {/* Mobile Gallery with Sub-menu */}
-            <div className="space-y-2">
-              <button 
-                onClick={() => setIsGalleryOpen(!isGalleryOpen)}
-                className="flex items-center justify-between w-full text-white text-lg hover:text-blue-400 transition-colors py-2"
-              >
-                Gallery <ChevronDown size={18} className={isGalleryOpen ? 'rotate-180' : ''} />
-              </button>
-              
-              {isGalleryOpen && (
-                <div className="pl-4 space-y-4 py-2 border-l border-white/10 ml-2 flex flex-col">
-                  {galleryOptions.map((option) => (
-                    <div key={option.name} className="space-y-2">
-                      {option.hasSubmenu ? (
-                        <>
-                          <button 
-                            onClick={() => option.setState?.(!option.state)}
-                            className="flex items-center justify-between w-full text-slate-300 text-sm hover:text-white py-1"
-                          >
-                            {option.name} <ChevronDown size={14} className={option.state ? 'rotate-180' : ''} />
-                          </button>
-                          {option.state && (
-                            <div className="pl-4 space-y-2 border-l border-white/5 ml-2 flex flex-col">
-                              {option.categories?.map((cat) => (
-                                <Link 
-                                  key={cat.name} 
-                                  href={cat.href}
-                                  className="text-slate-400 text-xs hover:text-white py-1 font-bold"
-                                  onClick={() => setIsOpen(false)}
-                                >
-                                  {cat.name}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <Link 
-                          href={option.href}
-                          className="text-slate-300 text-sm hover:text-white py-1"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {option.name}
-                        </Link>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-                isActive(link.href) ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          {/* Mobile CTA Buttons */}
-          <div className="pt-4 border-t border-white/5 space-y-2">
-            <Link href="/signup?role=agent" className="block">
-              <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
-                Become an Agent
-              </button>
-            </Link>
-            <Link href="/login" className="block">
-              <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
-                Login
-              </button>
-            </Link>
-            <Link href="/signup" className="block">
-              <button className="w-full px-4 py-3 rounded-xl text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 transition-all">
-                Sign Up
-              </button>
             {/* Mobile About with Sub-menu */}
             <div className="space-y-2">
-              <button 
+              <button
                 onClick={() => setIsAboutOpen(!isAboutOpen)}
-                className="flex items-center justify-between w-full text-white text-lg hover:text-blue-400 transition-colors py-2"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
               >
-                About <ChevronDown size={18} className={isAboutOpen ? 'rotate-180' : ''} />
+                About <ChevronDown size={16} className={`transition-transform duration-300 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
-              
               {isAboutOpen && (
-                <div className="pl-4 space-y-4 py-2 border-l border-white/10 ml-2 flex flex-col">
+                <div className="ml-4 pl-3 border-l border-white/10 space-y-1">
                   {aboutOptions.map((option) => (
-                    <Link 
-                      key={option.name} 
+                    <Link
+                      key={option.name}
                       href={option.href}
-                      className="text-slate-300 text-sm hover:text-white py-1"
+                      className="block px-3 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       {option.name}
@@ -662,17 +416,28 @@ export function Navbar() {
                 </div>
               )}
             </div>
-            <Link
-              href="/contact"
-              className="block text-white text-lg hover:text-blue-400 transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </Link>
+
+            {/* Mobile CTA Buttons */}
+            <div className="pt-4 border-t border-white/5 space-y-2">
+              <Link href="/signup?role=agent" className="block">
+                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
+                  Become an Agent
+                </button>
+              </Link>
+              <Link href="/login" className="block">
+                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
+                  Login
+                </button>
+              </Link>
+              <Link href="/signup" className="block">
+                <button className="w-full px-4 py-3 rounded-xl text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 transition-all">
+                  Sign Up
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     </nav>
   );
 }
-

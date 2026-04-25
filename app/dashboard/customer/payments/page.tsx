@@ -41,7 +41,7 @@ export default function CustomerPaymentsPage() {
         if (isMounted) {
           setPayments(data);
         }
-      } catch (error: unknown) {
+      } catch {
         if (isMounted) {
           toast.error('Failed to load payment history');
         }

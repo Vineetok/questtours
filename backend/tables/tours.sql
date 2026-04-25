@@ -4,7 +4,10 @@ CREATE TABLE IF NOT EXISTS tours (
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
     location VARCHAR(100),
-    image_url VARCHAR(255),
+    image VARCHAR(255),
+    duration VARCHAR(50),
+    rating DECIMAL(3, 2) DEFAULT 5.0,
+    tag VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

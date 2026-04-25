@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
+// import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
 
 const popularDestinations = [
@@ -63,25 +63,26 @@ interface DestinationsProps {
 
 export function Destinations({ showAll = false }: DestinationsProps) {
   const [isAllOpen, setIsAllOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
-  const handleViewPlan = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsAuthOpen(true);
-  };
+  // const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  // const handleViewPlan = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   setIsAuthOpen(true);
+  // };
 
   return (
     <section id="destinations" className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16 space-y-3">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-widest">
+        <div className="text-center mb-12 sm:mb-16 space-y-4">
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
             Top Destinations
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#003B5C]">
-            Explore Popular Destinations
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Popular</span> Destinations
           </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             From the snow-capped Himalayas to sun-kissed beaches, discover handpicked destinations that promise extraordinary experiences.
           </p>
         </div>
@@ -101,7 +102,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                   <Button 
                     className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                    onClick={() => setIsAuthOpen(true)}
+                    onClick={() => {}}
                   >
                     View Plan
                   </Button>
@@ -114,11 +115,11 @@ export function Destinations({ showAll = false }: DestinationsProps) {
             {/* Bento Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
               {popularDestinations.map((dest) => (
-                <div
-                  key={dest.id}
-                  className={`group relative overflow-hidden rounded-2xl h-[280px] sm:h-[320px] lg:h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
-                  onClick={() => setIsAuthOpen(true)}
-                >
+                  <div
+                    key={dest.id}
+                    className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
+                    onClick={() => {}}
+                  >
                   <Image
                     src={dest.image}
                     alt={dest.name}
@@ -139,14 +140,14 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <p className="text-white/80 text-sm">
                       {dest.packages} Tour Packages
                     </p>
-                    <div className="mt-4">
-                      <Button 
-                        className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
-                        onClick={handleViewPlan}
-                      >
-                        View Plan
-                      </Button>
-                    </div>
+                  <div className="mt-4">
+                    <Button 
+                      className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View Plan
+                    </Button>
+                  </div>
                   </div>
                 </div>
               ))}
@@ -200,7 +201,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                     <Button 
                       className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                      onClick={() => setIsAuthOpen(true)}
+                      onClick={() => {}}
                     >
                       View Plan
                     </Button>

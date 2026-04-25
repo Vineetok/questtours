@@ -35,11 +35,14 @@ export function Features() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16 space-y-4">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            Why Choose Us?
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+            Our Excellence
+          </span>
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">QuestTours?</span>
           </h2>
-          <p className="text-lg text-gray-600 text-balance">
-            Experience the difference with our premium travel services
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Experience the difference with our premium travel services and dedicated support.
           </p>
         </div>
 
@@ -50,15 +53,15 @@ export function Features() {
             return (
               <div
                 key={feature.id}
-                className="p-6 sm:p-8 bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-blue-200"
+                className="p-8 bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-300 hover:border-blue-200 group hover:-translate-y-1"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600" />
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Icon className="w-7 h-7 text-blue-600" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-black text-slate-900 mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
+                <p className="text-slate-500 text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>

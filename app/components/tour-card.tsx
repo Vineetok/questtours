@@ -2,18 +2,19 @@
 
 import Image from 'next/image';
 import { Clock, Users, Star, Heart, MapPin } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 interface TourCardProps {
   image: string;
   location: string;
   title: string;
-  price: number;
-  originalPrice?: number;
+  price: number | string;
+  originalPrice?: number | string;
   discount?: string;
-  rating: number;
-  reviews: number;
+  rating?: number | string;
+  reviews?: number | string;
   duration: string;
-  maxPeople: number;
+  maxPeople?: number | string;
   tag?: string;
   onClick?: () => void;
 }
@@ -25,13 +26,16 @@ export function TourCard({
   price,
   originalPrice,
   discount,
-  rating,
-  reviews,
+  rating = 5.0,
+  reviews = 0,
   duration,
   maxPeople,
   tag,
   onClick,
 }: TourCardProps) {
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  const numericOriginalPrice = typeof originalPrice === 'string' ? parseFloat(originalPrice) : originalPrice;
+  const numericRating = typeof rating === 'string' ? parseFloat(rating) : rating;
   return (
     <div
       onClick={onClick}
@@ -83,29 +87,31 @@ export function TourCard({
             <Clock size={16} className="text-blue-500" />
             <span>{duration}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Users size={16} className="text-blue-500" />
-            <span>Max {maxPeople}</span>
-          </div>
+          {maxPeople && (
+            <div className="flex items-center gap-1.5">
+              <Users size={16} className="text-blue-500" />
+              <span>Max {maxPeople}</span>
+            </div>
+          )}
         </div>
 
         {/* Footer: Rating & Price */}
         <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <Star size={16} className="fill-blue-400 text-blue-400" />
-            <span className="font-bold text-[#003B5C]">{rating}</span>
-            <span className="text-gray-400 text-xs">({reviews})</span>
+            <span className="font-bold text-[#003B5C]">{numericRating}</span>
+            {reviews !== undefined && <span className="text-gray-400 text-xs">({reviews})</span>}
           </div>
 
           <div className="text-right">
-            {originalPrice && (
+            {numericOriginalPrice && (
               <p className="text-xs text-gray-400 line-through mb-0.5">
-                ₹{originalPrice.toLocaleString('en-IN')}
+                {formatCurrency(numericOriginalPrice)}
               </p>
             )}
             <p className="text-xl font-black text-[#003B5C]">
               <span className="text-sm font-bold text-gray-400 mr-1">From</span>
-              ₹{price.toLocaleString('en-IN')}
+              {formatCurrency(numericPrice)}
             </p>
           </div>
         </div>

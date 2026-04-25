@@ -8,17 +8,55 @@ export interface User {
   avatar?: string | null;
 }
 
+export interface Day {
+  day: number;
+  title: string;
+  activities: string[];
+  meals?: string;
+  stay?: string;
+}
+
+export interface Plan {
+  id: string | number;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  duration: string;
+  itinerary: Day[];
+  location: string;
+  theme?: string;
+}
+
+export interface Package {
+  id: string | number;
+  title: string;
+  description: string;
+  price: number;
+  originalPrice?: number;
+  discount?: string;
+  image: string;
+  duration: string;
+  location: string;
+  rating?: number;
+}
+
 export interface Tour {
   id: string | number;
-  name: string;
+  name?: string;
   title?: string;
   location: string;
   price: number;
+  originalPrice?: number;
+  discount?: string;
   rating: number;
+  reviews?: number;
   image: string;
   description?: string;
   duration?: string;
   groupSize?: string;
+  tag?: string;
+  highlights?: string[];
 }
 
 export interface Booking {

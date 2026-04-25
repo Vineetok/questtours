@@ -104,7 +104,7 @@ export default function WishlistPage() {
                   <div className="space-y-1">
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate pr-2">{tour.name}</h3>
-                      <p className="text-xl font-black text-blue-600 shrink-0">₹{tour.price.toLocaleString('en-IN')}</p>
+                      <p className="text-xl font-black text-blue-600 shrink-0">{formatCurrency(tour.price)}</p>
                     </div>
                     <CardDescription className="flex items-center gap-1.5 text-gray-500 font-medium">
                       <Map className="h-3.5 w-3.5" /> {tour.location}

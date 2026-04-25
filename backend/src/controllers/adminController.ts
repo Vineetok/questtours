@@ -84,7 +84,7 @@ export const getDashboardStats = async (req: Request, res: Response) => {
       revenueData: revenueDataResult.rows.map(r => ({ name: r.name, total: parseFloat(r.total) })),
       recentBookings: recentBookingsResult.rows
     });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -108,7 +108,7 @@ export const getCustomers = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(customersQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -130,7 +130,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(bookingsQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -151,7 +151,7 @@ export const getSupportRequests = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(supportQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -168,14 +168,21 @@ export const getAgents = async (req: Request, res: Response) => {
         'Active' as status,
         to_char(u.created_at, 'YYYY-MM-DD') as joined,
         (SELECT COUNT(*) FROM tours t WHERE t.location ILIKE '%' || u.name || '%') as "totalTours",
-        '₹' || COALESCE((SELECT TO_CHAR(SUM(amount), 'FM9,99,999') FROM bookings b WHERE b.user_id = u.id AND (b.status = 'completed' OR b.status = 'confirmed')), '0') as "totalEarnings"
+        '₹' || COALESCE((
+          SELECT TO_CHAR(SUM(b.amount), 'FM9,99,999') 
+          FROM bookings b 
+          JOIN tours t ON b.tour_id = t.id 
+          WHERE t.location ILIKE '%' || u.name || '%' 
+          AND (b.status = 'completed' OR b.status = 'confirmed')
+        ), '0') as "totalEarnings"
       FROM users u
       WHERE u.role = 'agent'
       ORDER BY u.created_at DESC;
     `;
     const result = await pool.query(agentsQuery);
-    res.json(result.rows);
-  } catch (error: unknown) {
+    res.json({ agents: result.rows });
+  } catch (error) {
+    console.error('Error fetching agents:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -197,7 +204,7 @@ export const getEnquiries = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(enquiriesQuery);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -217,7 +224,7 @@ export const createEnquiry = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(insertQuery, [firstName, lastName, email, subject, message]);
     res.status(201).json({ message: 'Enquiry submitted successfully', enquiry: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -244,7 +251,157 @@ export const updateEnquiryStatus = async (req: Request, res: Response) => {
     }
 
     res.json({ message: 'Enquiry status updated', enquiry: result.rows[0] });
-  } catch (error: unknown) {
+  } catch {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// --- TOURS ---
+export const getTours = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query('SELECT * FROM tours ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error in getTours:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const addTour = async (req: Request, res: Response) => {
+  try {
+    const { title, description, price, location, image, duration, rating, tag } = req.body;
+    const result = await pool.query(
+      'INSERT INTO tours (title, description, price, location, image, duration, rating, tag) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [title, description, price, location, image, duration, rating, tag]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in addTour:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const updateTour = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, description, price, location, image, duration, rating, tag } = req.body;
+    const result = await pool.query(
+      'UPDATE tours SET title=$1, description=$2, price=$3, location=$4, image=$5, duration=$6, rating=$7, tag=$8, updated_at=CURRENT_TIMESTAMP WHERE id=$9 RETURNING *',
+      [title, description, price, location, image, duration, rating, tag, id]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in updateTour:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const deleteTour = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM tours WHERE id = $1', [id]);
+    res.json({ message: 'Tour deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// --- PACKAGES ---
+export const getPackages = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query('SELECT * FROM packages ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error in getPackages:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const addPackage = async (req: Request, res: Response) => {
+  try {
+    const { title, description, price, originalPrice, discount, location, image, duration } = req.body;
+    const result = await pool.query(
+      'INSERT INTO packages (title, description, price, original_price, discount, location, image, duration) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [title, description, price, originalPrice, discount, location, image, duration]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in addPackage:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const updatePackage = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, description, price, originalPrice, discount, location, image, duration } = req.body;
+    const result = await pool.query(
+      'UPDATE packages SET title=$1, description=$2, price=$3, original_price=$4, discount=$5, location=$6, image=$7, duration=$8, updated_at=CURRENT_TIMESTAMP WHERE id=$9 RETURNING *',
+      [title, description, price, originalPrice, discount, location, image, duration, id]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in updatePackage:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const deletePackage = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM packages WHERE id = $1', [id]);
+    res.json({ message: 'Package deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// --- PLANS (ITINERARIES) ---
+export const getPlans = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query('SELECT * FROM plans ORDER BY created_at DESC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error in getPlans:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const addPlan = async (req: Request, res: Response) => {
+  try {
+    const { title, description, price, image, duration, location, itinerary } = req.body;
+    const result = await pool.query(
+      'INSERT INTO plans (title, description, price, image, duration, location, itinerary) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [title, description, price, image, duration, location, JSON.stringify(itinerary)]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in addPlan:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const updatePlan = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, description, price, image, duration, location, itinerary } = req.body;
+    const result = await pool.query(
+      'UPDATE plans SET title=$1, description=$2, price=$3, image=$4, duration=$5, location=$6, itinerary=$7, updated_at=CURRENT_TIMESTAMP WHERE id=$8 RETURNING *',
+      [title, description, price, image, duration, location, JSON.stringify(itinerary), id]
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error in updatePlan:', error);
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
+  }
+};
+
+export const deletePlan = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM plans WHERE id = $1', [id]);
+    res.json({ message: 'Plan deleted' });
+  } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 };

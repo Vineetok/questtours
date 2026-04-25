@@ -29,9 +29,9 @@ interface TourModalProps {
     image: string;
     location: string;
     title: string;
-    price: number;
-    rating: number;
-    reviews: number;
+    price: number | string;
+    rating: number | string;
+    reviews: number | string;
     description?: string;
     highlights?: string[];
     duration?: string;
@@ -104,10 +104,10 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
               <div className="mt-4 flex items-center gap-3">
                 <div className="flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-black">
                   <Star size={12} className="fill-current" />
-                  {tour.rating.toFixed(1)}
+                  {Number(tour.rating || 5.0).toFixed(1)}
                 </div>
                 <span className="text-sm font-medium text-white/80">
-                  {tour.reviews} traveler reviews
+                  {tour.reviews || 0} traveler reviews
                 </span>
               </div>
             </div>
@@ -178,7 +178,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Total Price</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-black text-slate-900">
-                      ₹{tour.price.toLocaleString('en-IN')}
+                      {formatCurrency(tour.price)}
                     </span>
                     <span className="text-sm font-medium text-slate-500">/ person</span>
                   </div>

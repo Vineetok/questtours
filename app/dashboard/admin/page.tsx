@@ -37,7 +37,7 @@ import {
   Tooltip,
   Cell
 } from 'recharts';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
 interface AdminStats {
   totalRevenue: number;
@@ -68,8 +68,8 @@ export default function AdminDashboard() {
         setStats(data);
         setRevenueData(data.revenueData || []);
         setRecentBookings(data.recentBookings || []);
-      } catch (error: unknown) {
-        // Silent fail or toast error
+      } catch {
+        toast.error('Failed to load dashboard data');
       } finally {
         setLoading(false);
       }
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
     return [
       {
         label: 'Total Revenue',
-        value: `₹${stats.totalRevenue.toLocaleString()}`,
+        value: formatCurrency(stats.totalRevenue),
         change: stats.trends.revenue.change,
         trend: stats.trends.revenue.trend,
         icon: TrendingUp,
@@ -200,7 +200,8 @@ export default function AdminDashboard() {
                       fontSize={12}
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `Rs. ${value}`}
+                                             tickFormatter={(value) => formatCurrency(value)}
+
                     />
                     <Tooltip
                       cursor={{ fill: '#f5f5f5' }}
@@ -235,7 +236,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-gray-500 truncate">{booking.tour}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium">{booking.amount}</p>
+                      <p className="text-sm font-medium">{formatCurrency(booking.amount)}</p>
                       <Badge variant={booking.status === 'Confirmed' ? 'default' : 'secondary'} className="text-[10px] h-4">
                         {booking.status}
                       </Badge>
@@ -287,7 +288,7 @@ export default function AdminDashboard() {
                         {booking.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">{booking.amount}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(booking.amount)}</TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon">
                         <MoreVertical className="h-4 w-4" />

@@ -1,47 +1,82 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TourCard } from './tour-card';
 import { TourModal } from './tour-modal';
 import { ArrowRight, ChevronDown } from 'lucide-react';
-
-import { toursData } from '@/lib/data';
+import { adminService } from '@/services/adminService';
+import { Tour } from '@/lib/types';
+import { toast } from 'sonner';
 
 interface FeaturedToursProps {
   showAll?: boolean;
 }
 
 export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedToursProps) {
-  const [selectedTour, setSelectedTour] = useState<typeof toursData[0] | null>(null);
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedTour, setSelectedTour] = useState<any | null>(null);
   const [showAll, setShowAll] = useState(initialShowAll);
 
-  const displayedTours = showAll ? toursData : toursData.slice(0, 4);
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const data = await adminService.getTours();
+        setTours(data || []);
+      } catch {
+        toast.error('Failed to fetch tours');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTours();
+  }, []);
+
+  const displayedTours = showAll ? tours : tours.slice(0, 4);
+
+  if (!isLoading && tours.length === 0) return null;
 
   return (
     <section id="tours" className="py-12 sm:py-16 lg:py-20 bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16 space-y-3">
-          <span className="text-blue-600 font-bold text-xs uppercase tracking-widest">
-            Featured Packages
+        <div className="text-center mb-12 sm:mb-16 space-y-4">
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+            Curated Experiences
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#003B5C]">
-            Handpicked Tour Packages
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            Handpicked Tour <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Packages</span>
           </h2>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Our most popular tours carefully crafted to deliver the perfect balance of adventure, comfort, and value.
           </p>
         </div>
 
         {/* Tours Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {displayedTours.map((tour) => (
-            <TourCard
-              key={tour.id}
-              {...tour}
-              onClick={() => setSelectedTour(tour)}
-            />
-          ))}
+          {isLoading ? (
+            [1, 2, 3, 4].map(i => (
+              <div key={i} className="h-[400px] bg-gray-100 rounded-[2rem] animate-pulse"></div>
+            ))
+          ) : (
+            displayedTours.map((tour) => (
+              <TourCard
+                key={tour.id}
+                image={tour.image}
+                location={tour.location}
+                title={tour.title || tour.name || ''}
+                price={tour.price}
+                originalPrice={tour.originalPrice}
+                discount={tour.discount}
+                rating={tour.rating}
+                reviews={tour.reviews || 0}
+                duration={tour.duration || ''}
+                maxPeople={tour.groupSize}
+                tag={tour.tag}
+                onClick={() => setSelectedTour(tour)}
+              />
+            ))
+          )}
         </div>
 
         {/* View All Button */}

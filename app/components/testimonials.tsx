@@ -48,11 +48,14 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16 space-y-4">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            What Our Travelers Say
+          <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+            Traveler Stories
+          </span>
+          <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travelers</span> Say
           </h2>
-          <p className="text-lg text-gray-600 text-balance">
-            Real experiences from thousands of happy travelers
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Real experiences from thousands of happy travelers who explored the world with us.
           </p>
         </div>
 

@@ -61,7 +61,7 @@ export default function EnquiriesPage() {
     try {
       const data = await adminService.getEnquiries();
       setEnquiries(data);
-    } catch (error: unknown) {
+    } catch {
       toast.error('Failed to load enquiries');
     } finally {
       setLoading(false);
@@ -69,7 +69,10 @@ export default function EnquiriesPage() {
   }, []);
 
   React.useEffect(() => {
-    fetchEnquiries();
+    const timer = setTimeout(() => {
+      fetchEnquiries();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchEnquiries]);
 
   const handleUpdateStatus = async (id: number, status: string) => {
@@ -77,7 +80,7 @@ export default function EnquiriesPage() {
       await adminService.updateEnquiryStatus(id, status);
       toast.success(`Enquiry marked as ${status}`);
       fetchEnquiries();
-    } catch (error: unknown) {
+    } catch {
       toast.error('Failed to update enquiry status');
     }
   };

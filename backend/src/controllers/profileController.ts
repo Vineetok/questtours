@@ -23,7 +23,7 @@ export const uploadAvatar = async (req: Request, res: Response) => {
       message: 'Avatar uploaded successfully',
       avatarUrl
     });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -37,7 +37,7 @@ export const getProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(result.rows[0]);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -70,7 +70,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       message: 'Profile updated successfully',
       user: result.rows[0]
     });
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -93,7 +93,7 @@ export const getPayments = async (req: Request, res: Response) => {
     `;
     const result = await pool.query(query, [userId]);
     res.json(result.rows);
-  } catch (error: unknown) {
+  } catch {
     res.status(500).json({ message: 'Server error' });
   }
 };

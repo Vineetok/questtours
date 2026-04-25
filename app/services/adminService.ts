@@ -1,5 +1,5 @@
 import { api } from './api';
-import { Agent, Customer, Booking, Ticket, Enquiry } from '@/lib/types';
+import { Agent, Customer, Booking, Ticket, Enquiry, Tour, Package, Plan } from '@/lib/types';
 
 export interface RecentBooking {
   id: string;
@@ -9,7 +9,6 @@ export interface RecentBooking {
   status: string;
   amount: string;
 }
-
 export interface AdminStats {
   totalCustomers: number;
   totalAgents: number;
@@ -31,7 +30,7 @@ export const adminService = {
   },
   
   getAgents: () => {
-    return api.get<Agent[]>('/admin/agents');
+    return api.get<{agents:Agent[]}>('/admin/agents');
   },
   
   getCustomers: () => {
@@ -53,4 +52,22 @@ export const adminService = {
   updateEnquiryStatus: (id: number, status: string) => {
     return api.patch<{ message: string; enquiry: Enquiry }>(`/admin/enquiries/${id}`, { status });
   },
+
+  // Tours Management
+  getTours: () => api.get<Tour[]>('/admin/tours'),
+  addTour: (tour: Partial<Tour>) => api.post<Tour>('/admin/tours', tour),
+  updateTour: (id: string | number, tour: Partial<Tour>) => api.put<Tour>(`/admin/tours/${id}`, tour),
+  deleteTour: (id: string | number) => api.delete<{ message: string }>(`/admin/tours/${id}`),
+
+  // Packages Management
+  getPackages: () => api.get<Package[]>('/admin/packages'),
+  addPackage: (pkg: Partial<Package>) => api.post<Package>('/admin/packages', pkg),
+  updatePackage: (id: string | number, pkg: Partial<Package>) => api.put<Package>(`/admin/packages/${id}`, pkg),
+  deletePackage: (id: string | number) => api.delete<{ message: string }>(`/admin/packages/${id}`),
+
+  // Plans (Itineraries) Management
+  getPlans: () => api.get<Plan[]>('/admin/plans'),
+  addPlan: (plan: Partial<Plan>) => api.post<Plan>('/admin/plans', plan),
+  updatePlan: (id: string | number, plan: Partial<Plan>) => api.put<Plan>(`/admin/plans/${id}`, plan),
+  deletePlan: (id: string | number) => api.delete<{ message: string }>(`/admin/plans/${id}`),
 };

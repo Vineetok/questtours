@@ -19,7 +19,7 @@ export default function CategoriesPage() {
             Travel by Style
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Whether you're looking for a romantic getaway or a thrilling adventure, find the perfect category for your next trip.
+            Whether you&apos;re looking for a romantic getaway or a thrilling adventure, find the perfect category for your next trip.
           </p>
         </div>
       </section>

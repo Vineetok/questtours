@@ -11,10 +11,13 @@ export function AgentSection() {
           {/* Left Content */}
           <div className="space-y-6 sm:space-y-8">
             <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-                Become a Travel Agent
+              <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">
+                Partner With Us
+              </span>
+              <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
+                Become a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travel Agent</span>
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-slate-500 leading-relaxed">
                 Turn your passion for travel into a profitable business. Earn commissions by listing and promoting your tours on our platform.
               </p>
             </div>
@@ -32,7 +35,7 @@ export function AgentSection() {
               ))}
             </div>
 
-            <Link href="/signup">
+            <Link href="/signup?role=agent">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6 rounded-xl w-full sm:w-auto">
                 Join as Agent
               </Button>

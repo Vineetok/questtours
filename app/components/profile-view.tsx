@@ -16,7 +16,7 @@ export function ProfileView() {
   const { user, setUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', location: '' });
   const [saving, setSaving] = useState(false);
 
   const fetchProfile = useCallback(async () => {
@@ -25,7 +25,12 @@ export function ProfileView() {
       if (data) {
         const updatedUser = updateUserData(data);
         setUser(updatedUser);
-        setFormData({ name: updatedUser.name, email: updatedUser.email });
+        setFormData({ 
+          name: updatedUser.name, 
+          email: updatedUser.email, 
+          phone: updatedUser.phone || '', 
+          location: updatedUser.location || '' 
+        });
       }
     } catch {
       // Error handled by toast if needed, but fetchProfile is usually silent on background refresh
@@ -36,7 +41,12 @@ export function ProfileView() {
     // Sync form data once when user is loaded
     if (user && !formData.name) {
       const timer = setTimeout(() => {
-        setFormData({ name: user.name, email: user.email });
+        setFormData({ 
+          name: user.name, 
+          email: user.email, 
+          phone: user.phone || '', 
+          location: user.location || '' 
+        });
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -179,7 +189,7 @@ export function ProfileView() {
           <div className="w-full mt-10 space-y-6 text-sm">
             <div className="flex flex-col gap-1">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Mobile Number</p>
-              <p className="font-medium text-gray-900">+91 98765 43210</p>
+              <p className="font-medium text-gray-900">{user.phone || 'Not updated'}</p>
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Email Address</p>
@@ -187,7 +197,7 @@ export function ProfileView() {
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Location</p>
-              <p className="font-medium text-gray-600 italic">Not updated</p>
+              <p className="font-medium text-gray-600 italic">{user.location || 'Not updated'}</p>
             </div>
           </div>
         </Card>
@@ -252,30 +262,58 @@ export function ProfileView() {
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile Number</label>
-                <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium opacity-60">
-                  +91 98765 43210 (ReadOnly)
-                </div>
+                {isEditing ? (
+                  <input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                    placeholder="e.g. +91 98765 43210"
+                  />
+                ) : (
+                  <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium">
+                    {user.phone || 'Not updated'}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
-              {isEditing ? (
-                <input
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
-                  placeholder="Enter your email"
-                />
-              ) : (
-                <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium flex justify-between items-center">
-                  <span>{user.email}</span>
-                  <div className="h-5 w-5 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
-                    <Check size={12} strokeWidth={3} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                {isEditing ? (
+                  <input
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                    placeholder="Enter your email"
+                  />
+                ) : (
+                  <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium flex justify-between items-center">
+                    <span>{user.email}</span>
+                    <div className="h-5 w-5 bg-teal-100 rounded-full flex items-center justify-center text-teal-600">
+                      <Check size={12} strokeWidth={3} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Location</label>
+                {isEditing ? (
+                  <input
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    className="w-full p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                    placeholder="e.g. Mumbai, India"
+                  />
+                ) : (
+                  <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-100 text-gray-900 font-medium">
+                    {user.location || 'Not updated'}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="pt-6">

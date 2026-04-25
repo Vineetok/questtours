@@ -8,13 +8,7 @@ import {
   CheckCircle2,
   AlertCircle,
   MessageSquare,
-  LayoutDashboard,
-  Calendar as CalendarIcon,
-  Heart,
-  History,
-  User as UserIcon,
-  Map,
-  Ticket as TicketIcon,
+
 } from 'lucide-react';
 import { ticketService, TicketData } from '@/services/ticketService';
 import { getUserData } from '@/lib/auth';
@@ -40,16 +34,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/inputs/select";
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-  { title: 'Tickets', url: '/dashboard/customer/tickets', icon: TicketIcon },
-];
 
 export default function CustomerTicketsPage() {
   const { user, setUser } = useUser();

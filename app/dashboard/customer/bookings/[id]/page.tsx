@@ -8,20 +8,18 @@ import {
   LayoutDashboard, 
   Map, 
   Heart, 
-  History, 
-  Calendar as CalendarIcon,
+  CreditCard,
   ChevronLeft,
   Download,
   Users as UsersIcon,
   Clock,
   CheckCircle2,
   AlertCircle,
-  CreditCard,
   Printer,
-  User as UserIcon
 } from 'lucide-react';
 import Image from 'next/image';
 import { customerBookings } from '@/lib/mock-data';
+import { customerNavItems } from '@/lib/customer-nav-items';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
@@ -37,15 +35,6 @@ import {
   AlertDialogTrigger 
 } from '@/components/ui/overlays/alert-dialog';
 import { toast } from 'sonner';
-
-const customerNavItems = [
-  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: CalendarIcon },
-  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
-  { title: 'Payments', url: '/dashboard/customer/payments', icon: History },
-  { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
-];
 
 export default function BookingDetailsPage() {
   const params = useParams();

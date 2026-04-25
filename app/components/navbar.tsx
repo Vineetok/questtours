@@ -98,30 +98,30 @@ export function Navbar() {
         : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-md border-b border-white/10'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[70px]">
+        <div className="flex items-center justify-between h-[72px] gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 flex-shrink-0 group"
+            className="flex items-center gap-2.5 flex-shrink-0 group hover:opacity-80 transition-opacity duration-200"
           >
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
-              <Plane size={18} className="text-white -rotate-45" />
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
+              <Plane size={20} className="text-white -rotate-45" />
             </div>
-            <span className="text-xl font-black text-white tracking-tight">
+            <span className="text-lg font-black text-white tracking-tight leading-none">
               Quest<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Tours</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+                className={`relative px-4 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 ${
                   isActive(link.href)
                     ? 'text-white bg-white/10'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                    : 'text-white/75 hover:text-white hover:bg-white/10'
                 }`}
               >
                 {link.label}
@@ -134,7 +134,7 @@ export function Navbar() {
               onMouseEnter={() => setIsToursOpen(true)}
               onMouseLeave={() => setIsToursOpen(false)}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-white/75 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200">
                 Tours
                 <ChevronDown
                   size={14}
@@ -143,24 +143,24 @@ export function Navbar() {
               </button>
 
               {/* Mega Menu */}
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ${
-                isToursOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
+              <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-300 ${
+                isToursOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none'
               }`}>
-                <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-black/20 border border-slate-100 overflow-hidden min-w-[520px] flex p-8 gap-10">
+                <div className="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-2xl shadow-black/20 border border-slate-100 overflow-hidden min-w-[560px] flex p-10 gap-12">
                   {/* International Column */}
                   <div className="flex-1">
-                    <h3 className="flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.25em] mb-5">
+                    <h3 className="flex items-center gap-2.5 text-blue-600 font-black text-[11px] uppercase tracking-[0.3em] mb-6 pb-3 border-b border-blue-100">
                       <div className="h-6 w-6 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <Globe size={12} className="text-blue-600" />
+                        <Globe size={13} className="text-blue-600" />
                       </div>
                       International
                     </h3>
-                    <div className="space-y-2.5">
+                    <div className="space-y-3">
                       {internationalTours.map((tour) => (
                         <Link
                           key={tour}
                           href={`/tours?type=international&location=${encodeURIComponent(tour)}`}
-                          className="block text-slate-600 hover:text-blue-600 text-sm font-semibold transition-colors leading-snug"
+                          className="block text-slate-700 hover:text-blue-600 text-sm font-semibold transition-colors duration-150 leading-relaxed"
                           onClick={() => setIsToursOpen(false)}
                         >
                           {tour}
@@ -170,22 +170,22 @@ export function Navbar() {
                   </div>
 
                   {/* Divider */}
-                  <div className="w-px bg-slate-100" />
+                  <div className="w-px bg-slate-200" />
 
                   {/* Domestic Column */}
                   <div className="flex-1">
-                    <h3 className="flex items-center gap-2 text-emerald-600 font-black text-[10px] uppercase tracking-[0.25em] mb-5">
+                    <h3 className="flex items-center gap-2.5 text-emerald-600 font-black text-[11px] uppercase tracking-[0.3em] mb-6 pb-3 border-b border-emerald-100">
                       <div className="h-6 w-6 bg-emerald-50 rounded-lg flex items-center justify-center">
-                        <MapPin size={12} className="text-emerald-600" />
+                        <MapPin size={13} className="text-emerald-600" />
                       </div>
                       Domestic
                     </h3>
-                    <div className="space-y-2.5">
+                    <div className="space-y-3">
                       {domesticTours.map((tour) => (
                         <Link
                           key={tour}
                           href={`/tours?type=domestic&location=${encodeURIComponent(tour)}`}
-                          className="block text-slate-600 hover:text-emerald-600 text-sm font-semibold transition-colors leading-snug"
+                          className="block text-slate-700 hover:text-emerald-600 text-sm font-semibold transition-colors duration-150 leading-relaxed"
                           onClick={() => setIsToursOpen(false)}
                         >
                           {tour}
@@ -207,20 +207,20 @@ export function Navbar() {
                 setIsInternationalOpen(false);
               }}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-white/75 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200">
                 Gallery 
                 <ChevronDown size={14} className={`transition-transform duration-200 ${isGalleryOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              <div className={`absolute top-full left-0 pt-2 transition-all duration-300 ${
-                isGalleryOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-4 invisible'
+              <div className={`absolute top-full left-0 pt-3 transition-all duration-300 ${
+                isGalleryOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'
               }`}>
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 min-w-[240px] p-4 flex flex-col gap-2">
+                <div className="bg-white rounded-xl shadow-2xl border border-slate-100 min-w-[260px] p-2 flex flex-col gap-0.5">
                   {galleryOptions.map((option) => (
                     <div key={option.name} className="relative group/sub">
                       {option.hasSubmenu ? (
                         <div 
-                          className="flex items-center justify-between text-slate-600 hover:text-sky-600 transition-colors text-sm font-semibold p-2 hover:bg-slate-50 rounded-lg cursor-pointer"
+                          className="flex items-center justify-between text-slate-700 hover:text-sky-600 transition-colors text-sm font-semibold px-3 py-2.5 hover:bg-slate-50 rounded-lg cursor-pointer"
                           onMouseEnter={() => {
                             setIsDomesticOpen(false);
                             setIsInternationalOpen(false);
@@ -230,15 +230,15 @@ export function Navbar() {
                           {option.name} <ChevronDown size={14} className="-rotate-90" />
                           
                           {/* Nested Sub-menu */}
-                          <div className={`absolute top-0 left-full pl-4 w-[220px] transition-all duration-200 ${
+                          <div className={`absolute top-0 left-full pl-2 w-[240px] transition-all duration-200 ${
                             option.state ? 'opacity-100 translate-x-0 visible' : 'opacity-0 translate-x-2 invisible'
                           }`}>
-                            <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 flex flex-col gap-2">
+                            <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-2 flex flex-col gap-0.5">
                               {option.categories?.map((cat) => (
                                 <Link 
                                   key={cat.name} 
                                   href={cat.href}
-                                  className="text-slate-600 hover:text-sky-600 transition-colors text-xs font-bold p-2 hover:bg-slate-50 rounded-lg"
+                                  className="text-slate-700 hover:text-sky-600 transition-colors text-sm font-semibold px-3 py-2 hover:bg-slate-50 rounded-lg"
                                   onClick={() => {
                                     setIsGalleryOpen(false);
                                     option.setState?.(false);
@@ -253,7 +253,7 @@ export function Navbar() {
                       ) : (
                         <Link 
                           href={option.href}
-                          className="text-slate-600 hover:text-sky-600 transition-colors text-sm font-semibold p-2 hover:bg-slate-50 rounded-lg block"
+                          className="text-slate-700 hover:text-sky-600 transition-colors text-sm font-semibold px-3 py-2.5 hover:bg-slate-50 rounded-lg block"
                           onMouseEnter={() => {
                             setIsDomesticOpen(false);
                             setIsInternationalOpen(false);
@@ -274,20 +274,20 @@ export function Navbar() {
               onMouseEnter={() => setIsAboutOpen(true)}
               onMouseLeave={() => setIsAboutOpen(false)}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-white/75 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200">
                 About 
                 <ChevronDown size={14} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              <div className={`absolute top-full left-0 pt-2 transition-all duration-300 ${
-                isAboutOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-4 invisible'
+              <div className={`absolute top-full left-0 pt-3 transition-all duration-300 ${
+                isAboutOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-2 invisible'
               }`}>
-                <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 min-w-[200px] p-4 flex flex-col gap-2">
+                <div className="bg-white rounded-xl shadow-2xl border border-slate-100 min-w-[220px] p-2 flex flex-col gap-0.5">
                   {aboutOptions.map((option) => (
                     <Link 
                       key={option.name} 
                       href={option.href}
-                      className="text-slate-600 hover:text-sky-600 transition-colors text-sm font-semibold p-2 hover:bg-slate-50 rounded-lg block"
+                      className="text-slate-700 hover:text-sky-600 transition-colors text-sm font-semibold px-3 py-2.5 hover:bg-slate-50 rounded-lg block"
                       onClick={() => setIsAboutOpen(false)}
                     >
                       {option.name}
@@ -300,29 +300,29 @@ export function Navbar() {
             {/* Contact Link */}
             <Link
               href="/contact"
-              className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+              className={`relative px-4 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 ${
                 isActive('/contact')
                   ? 'text-white bg-white/10'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
+                  : 'text-white/75 hover:text-white hover:bg-white/10'
               }`}
             >
               Contact
             </Link>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             <Link href="/signup?role=agent">
-              <Button variant="ghost" className="text-white hover:text-blue-400 font-medium text-sm lg:text-base">
+              <Button variant="ghost" className="text-white/75 hover:text-white hover:bg-white/10 font-semibold text-sm px-4 py-2">
                 Become an Agent
               </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" className="text-white hover:bg-white/10 font-medium text-sm lg:text-base">
+              <Button variant="ghost" className="text-white/75 hover:text-white hover:bg-white/10 font-semibold text-sm px-4 py-2">
                 Login
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 text-sm lg:text-base px-6">
+              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold shadow-lg shadow-blue-900/30 text-sm px-6 py-2 rounded-lg">
                 Sign Up
               </Button>
             </Link>
@@ -331,10 +331,10 @@ export function Navbar() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
+            className="lg:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={22} /> : <Menu size={22} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
@@ -342,12 +342,12 @@ export function Navbar() {
         <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
           isOpen ? 'max-h-[85vh] opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh]">
+          <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-6 space-y-1.5 overflow-y-auto max-h-[80vh]">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                className={`block px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
                   isActive(link.href) ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -356,19 +356,19 @@ export function Navbar() {
             ))}
 
             {/* Mobile Tours Accordion */}
-            <div className="space-y-2">
+            <div className="space-y-2 pt-3">
               <button
                 onClick={() => setIsToursOpen(!isToursOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
               >
                 Tours
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
-                <div className="px-4 py-3 ml-2 border-l border-white/10 space-y-4">
+              <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[600px]' : 'max-h-0'}`}>
+                <div className="px-4 py-4 ml-2 border-l border-white/10 space-y-5">
                   <div>
-                    <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-2">🌏 International</p>
+                    <p className="text-blue-400 text-[11px] font-black uppercase tracking-widest mb-3">🌏 International</p>
                     <div className="space-y-2">
                       {internationalTours.map(tour => (
                         <Link
@@ -383,7 +383,7 @@ export function Navbar() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-2">📍 Domestic</p>
+                    <p className="text-emerald-400 text-[11px] font-black uppercase tracking-widest mb-3">📍 Domestic</p>
                     <div className="space-y-2">
                       {domesticTours.map(tour => (
                         <Link
@@ -402,10 +402,10 @@ export function Navbar() {
             </div>
 
             {/* Mobile Gallery Accordion */}
-            <div className="space-y-2">
+            <div className="space-y-2 pt-3">
               <button
                 onClick={() => setIsGalleryOpen(!isGalleryOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
               >
                 Gallery
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isGalleryOpen ? 'rotate-180' : ''}`} />
@@ -416,7 +416,7 @@ export function Navbar() {
                     <Link
                       key={option.name}
                       href={option.href}
-                      className="block px-3 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors"
+                      className="block px-3 py-2.5 text-sm font-semibold text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
                       onClick={() => setIsOpen(false)}
                     >
                       {option.name}
@@ -430,7 +430,7 @@ export function Navbar() {
             <div className="space-y-2">
               <button
                 onClick={() => setIsAboutOpen(!isAboutOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-lg text-sm font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
               >
                 About <ChevronDown size={16} className={`transition-transform duration-300 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -440,7 +440,7 @@ export function Navbar() {
                     <Link
                       key={option.name}
                       href={option.href}
-                      className="block px-3 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors"
+                      className="block px-3 py-2.5 text-sm font-semibold text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
                       onClick={() => setIsOpen(false)}
                     >
                       {option.name}
@@ -453,7 +453,7 @@ export function Navbar() {
             {/* Mobile Contact Link */}
             <Link
               href="/contact"
-              className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+              className={`block px-4 py-3 rounded-lg text-sm font-semibold transition-colors ${
                 isActive('/contact') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -463,17 +463,17 @@ export function Navbar() {
             {/* Mobile CTA Buttons */}
             <div className="pt-4 border-t border-white/5 space-y-2">
               <Link href="/signup?role=agent" className="block">
-                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
+                <button className="w-full px-4 py-3 rounded-lg text-sm font-semibold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
                   Become an Agent
                 </button>
               </Link>
               <Link href="/login" className="block">
-                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
+                <button className="w-full px-4 py-3 rounded-lg text-sm font-semibold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
                   Login
                 </button>
               </Link>
               <Link href="/signup" className="block">
-                <button className="w-full px-4 py-3 rounded-xl text-sm font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 transition-all">
+                <button className="w-full px-4 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 transition-all">
                   Sign Up
                 </button>
               </Link>
@@ -484,4 +484,4 @@ export function Navbar() {
       </div>
     </nav>
   )
-  };
+  }

@@ -32,7 +32,7 @@ export const getProfile = async (req: Request, res: Response) => {
   const userId = (req as unknown as AuthenticatedRequest).user?.id;
   
   try {
-    const result = await pool.query('SELECT id, name, email, role, avatar FROM users WHERE id = $1', [userId]);
+    const result = await pool.query('SELECT id, name, email, role, avatar, phone, location FROM users WHERE id = $1', [userId]);
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -57,9 +57,11 @@ export const updateProfile = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Email is already in use' });
     }
 
+    const { phone, location } = req.body;
+
     const result = await pool.query(
-      'UPDATE users SET name = $1, email = $2, updated_at = NOW() WHERE id = $3 RETURNING id, name, email, role, avatar',
-      [name, email, userId]
+      'UPDATE users SET name = $1, email = $2, phone = $3, location = $4, updated_at = NOW() WHERE id = $5 RETURNING id, name, email, role, avatar, phone, location',
+      [name, email, phone, location, userId]
     );
 
     if (result.rows.length === 0) {

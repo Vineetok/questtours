@@ -81,7 +81,7 @@ function ToursContent() {
 
       {/* Hero Header */}
       <section className="relative pt-32 pb-24 bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&h=400&fit=crop')] bg-cover bg-center opacity-40 scale-105" />
+        <div className="absolute inset-0 bg-[url('/tours/travel-bg.png')] bg-cover bg-center opacity-40 scale-105" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/80 to-[#F2F7FA]" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
@@ -150,7 +150,7 @@ function ToursContent() {
                   <Button 
                     variant="outline" 
                     aria-label="Clear All Filters"
-                    onClick={() => setFilters({ search: '', budget: 200000, duration: '' })}
+                    onClick={() => setFilters({ search: '', budget: 200000, duration: '', themes: [] })}
                     className="rounded-xl border-2 font-bold px-8 h-12"
                   >
                     Clear All Filters

@@ -38,7 +38,7 @@ export function FeaturedPlans() {
               Exclusive Itineraries
             </span>
             <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
-              Curated <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travel Plans</span>
+              Curated <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Travel Plans</span>
             </h2>
             <p className="text-slate-500 text-lg max-w-2xl leading-relaxed">
               Professional day-by-day itineraries designed to give you the ultimate travel experience without the stress of planning.

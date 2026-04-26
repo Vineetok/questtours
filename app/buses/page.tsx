@@ -14,13 +14,13 @@ export default function BusesPage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-48 bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1600&q=80')] bg-cover bg-center opacity-40" />
+        <div className="absolute inset-0 bg-[url('/tours/bus-bg.png')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-[#F2F7FA]" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl lg:text-7xl font-black text-white tracking-tight">
-              Bus <span className="text-emerald-400 italic">Tickets</span>
+              Bus <span className="text-emerald-400">Tickets</span>
             </h1>
             <p className="text-gray-300 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
               Choose from 2500+ Bus Operators. Best prices guaranteed with live tracking.
@@ -77,7 +77,7 @@ export default function BusesPage() {
       {/* Popular Routes */}
       <section className="py-24 max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-black text-slate-900">Popular Bus <span className="text-emerald-600 italic">Routes</span></h2>
+          <h2 className="text-3xl font-black text-slate-900">Popular Bus <span className="text-emerald-600">Routes</span></h2>
           <Button variant="ghost" className="text-emerald-600 font-black uppercase tracking-widest text-xs">View All Routes</Button>
         </div>
         
@@ -109,12 +109,12 @@ export default function BusesPage() {
       {/* Safety Section */}
       <section className="pb-24 max-w-7xl mx-auto px-4">
         <div className="bg-slate-900 rounded-[3rem] p-12 lg:p-20 overflow-hidden relative">
-          <div className="absolute right-0 top-0 h-full w-1/2 bg-[url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80')] bg-cover bg-center opacity-20 hidden lg:block" />
+          <div className="absolute right-0 top-0 h-full w-1/2 bg-[url('/tours/bus-bg.png')] bg-cover bg-center opacity-20 hidden lg:block" />
           <div className="relative z-10 max-w-xl space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <span className="text-emerald-400 font-black text-xs uppercase tracking-[0.3em]">Safety Assured</span>
-              <h2 className="text-4xl lg:text-6xl font-black text-white leading-tight">Travel Safer With <br /> <span className="text-emerald-400 italic">Primo Buses.</span></h2>
-              <p className="text-slate-400 text-lg italic">The highest rated buses with verified drivers, sanitized coaches, and live GPS tracking for women safety.</p>
+              <h2 className="text-4xl lg:text-6xl font-black text-white leading-tight">Travel Safer With <br /> <span className="text-emerald-400">Primo Buses.</span></h2>
+              <p className="text-slate-400 text-lg">The highest rated buses with verified drivers, sanitized coaches, and live GPS tracking for women safety.</p>
             </div>
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-6">

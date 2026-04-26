@@ -185,7 +185,7 @@ export default function InsurancePage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-52 bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80')] bg-cover bg-center opacity-30" />
+        <div className="absolute inset-0 bg-[url('/tours/insurance-bg.png')] bg-cover bg-center opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/50 to-[#F2F7FA]" />
 
         {/* Decorative elements */}
@@ -199,7 +199,7 @@ export default function InsurancePage() {
           </div>
           <h1 className="text-5xl lg:text-7xl font-black text-white tracking-tight leading-none">
             Travel With<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic">Complete</span>{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Complete</span>{' '}
             Peace of Mind
           </h1>
           <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
@@ -279,7 +279,7 @@ export default function InsurancePage() {
           <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">Coverage Details</span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
             Everything You Need,{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Covered</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Covered</span>
           </h2>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto">
             From medical emergencies to missing flights — our comprehensive policies ensure you&apos;re never left stranded.
@@ -308,7 +308,7 @@ export default function InsurancePage() {
       {/* Hero Visual + CTA */}
       <section className="py-8 max-w-7xl mx-auto px-4">
         <div className="rounded-[3rem] overflow-hidden bg-slate-900 relative min-h-[500px] flex items-center">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80')] bg-cover bg-center opacity-20" />
+          <div className="absolute inset-0 bg-[url('/tours/insurance-bg.png')] bg-cover bg-center opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent" />
 
           <div className="relative z-10 p-12 lg:p-20 max-w-2xl space-y-8">
@@ -316,7 +316,7 @@ export default function InsurancePage() {
               <span className="text-blue-400 font-black text-[10px] uppercase tracking-[0.3em]">Claim Support 24/7</span>
               <h2 className="text-4xl lg:text-5xl font-black text-white leading-tight">
                 Need Help? We&apos;re<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic">Always Here.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Always Here.</span>
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed">
                 Our dedicated insurance team is available around the clock to assist with claims, documentation, and emergency support wherever you are.
@@ -350,7 +350,7 @@ export default function InsurancePage() {
           <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">Traveler Stories</span>
           <h2 className="text-4xl lg:text-5xl font-black text-slate-900">
             Real People.{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Real Claims.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Real Claims.</span>
           </h2>
         </div>
 
@@ -383,7 +383,7 @@ export default function InsurancePage() {
           <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">Common Questions</span>
           <h2 className="text-4xl lg:text-5xl font-black text-slate-900">
             Frequently Asked{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Questions</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Questions</span>
           </h2>
         </div>
 

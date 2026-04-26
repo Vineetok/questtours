@@ -66,7 +66,21 @@ export const adminService = {
   deletePackage: (id: string | number) => api.delete<{ message: string }>(`/admin/packages/${id}`),
 
   // Plans (Itineraries) Management
-  getPlans: () => api.get<Plan[]>('/plans'),
+  getPlans: async () => {
+    const plans = await api.get<Plan[]>('/plans');
+    return plans.map(p => {
+      const title = (p.title || '').toLowerCase();
+      if (title.includes('bhutan')) return { ...p, image: '/tours/bhutan-override.png' };
+      if (title.includes('gir forest')) return { ...p, image: '/tours/gujarat-gir.png' };
+      if (title.includes('ahmedabad heritage')) return { ...p, image: '/tours/gujarat-ahmedabad.png' };
+      if (title.includes('dwarka') || title.includes('somnath')) return { ...p, image: '/tours/gujarat-dwarka.png' };
+      if (title.includes('statue of unity')) return { ...p, image: '/tours/gujarat-statue.png' };
+      if (title.includes('rann utsav')) return { ...p, image: '/tours/gujarat-rann.png' };
+      // Catch-all for any other Gujarat plans with generic or missing images
+      if (title.includes('gujarat')) return { ...p, image: '/tours/dest/gujarat.png' };
+      return p;
+    });
+  },
   addPlan: (plan: Partial<Plan>) => api.post<Plan>('/admin/plans', plan),
   updatePlan: (id: string | number, plan: Partial<Plan>) => api.put<Plan>(`/admin/plans/${id}`, plan),
   deletePlan: (id: string | number) => api.delete<{ message: string }>(`/admin/plans/${id}`),

@@ -16,13 +16,13 @@ export default function TrainsPage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-48 bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=1600&q=80')] bg-cover bg-center opacity-40" />
+        <div className="absolute inset-0 bg-[url('/tours/trains-bg.png')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-[#F2F7FA]" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl lg:text-7xl font-black text-white tracking-tight">
-              Train <span className="text-blue-400 italic">Booking</span>
+              Train <span className="text-blue-400">Booking</span>
             </h1>
             <p className="text-gray-300 text-lg lg:text-xl font-medium max-w-2xl mx-auto">
               IRCTC Authorized Partner. Fast, Secure, and Guaranteed Bookings.

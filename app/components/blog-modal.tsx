@@ -89,7 +89,7 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
 
             <DialogDescription asChild>
               <div className="text-lg text-gray-600 leading-relaxed space-y-6">
-                <p className="font-medium text-gray-900 text-xl italic border-l-4 border-blue-600 pl-4 py-1">
+                <p className="font-medium text-gray-900 text-xl border-l-4 border-blue-600 pl-4 py-1">
                   &quot;{post.excerpt}&quot;
                 </p>
                 

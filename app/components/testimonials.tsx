@@ -5,7 +5,7 @@ import { Star } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
-    avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop',
+    avatar: '/tours/avatar-1.png',
     name: 'Aditya Sharma',
     location: 'Mumbai, India',
     review: 'The Rajasthan heritage tour was mind-blowing! Everything from the stay in the Haveli to the desert safari was perfectly managed. Truly an unforgettable experience.',
@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     id: 2,
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop',
+    avatar: '/tours/avatar-2.png',
     name: 'Priya Patel',
     location: 'Ahmedabad, India',
     review: 'Varanasi at night is spiritual and serene. QuestTours made sure we had the best view for the Ganga Aarti. Highly recommend their local guides!',
@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     id: 3,
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop',
+    avatar: '/tours/avatar-3.png',
     name: 'Rahul Varma',
     location: 'Delhi, India',
     review: 'Our Kerala houseboat stay was the highlight of our honeymoon. The food on board was authentic and delicious. Hassle-free booking through the app!',
@@ -29,7 +29,7 @@ const testimonials = [
   },
   {
     id: 4,
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop',
+    avatar: '/tours/avatar-4.png',
     name: 'Ananya Iyer',
     location: 'Chennai, India',
     review: 'Goa was fun, but the private beach retreat suggested by QuestTours was exactly the peace we needed. Professional service throughout.',
@@ -52,7 +52,7 @@ export function Testimonials() {
             Traveler Stories
           </span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Travelers</span> Say
+            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Travelers</span> Say
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Real experiences from thousands of happy travelers who explored the world with us.

@@ -135,7 +135,7 @@ export function TourModal({ isOpen, onClose, tour }: TourModalProps) {
               {/* Description */}
               <div className="mb-10">
                 <h3 className="mb-4 text-xl font-bold text-slate-900">The Experience</h3>
-                <DialogDescription className="text-base leading-relaxed text-slate-600 italic border-l-4 border-sky-500 pl-4 py-1">
+                <DialogDescription className="text-base leading-relaxed text-slate-600 border-l-4 border-sky-500 pl-4 py-1">
                   {tour.description || "Embark on a journey that blends hidden gems with iconic landmarks. Our curated approach ensures you skip the crowds and find the soul of the city."}
                 </DialogDescription>
               </div>

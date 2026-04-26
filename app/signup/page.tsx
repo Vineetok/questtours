@@ -68,7 +68,7 @@ function SignupForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-12" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2042&auto=format&fit=crop")' }}>
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-12" style={{ backgroundImage: 'url("/tours/travel-bg.png")' }}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-md shadow-2xl border-none">

@@ -1,7 +1,7 @@
 export const toursData = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
+    image: '/tours/manali.png',
     location: 'Manali',
     title: 'Magical Manali & Solang Valley Adventure',
     price: 12999,
@@ -17,7 +17,7 @@ export const toursData = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80',
+    image: '/tours/goa.png',
     location: 'Goa',
     title: 'Romantic Goa Beach Getaway',
     price: 15999,
@@ -33,7 +33,7 @@ export const toursData = [
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
+    image: '/tours/kerala.png',
     location: 'Kerala',
     title: 'Kerala Backwaters & Houseboat Experience',
     price: 18999,
@@ -49,7 +49,7 @@ export const toursData = [
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
+    image: '/tours/rajasthan.png',
     location: 'Rajasthan',
     title: 'Royal Rajasthan Heritage Tour',
     price: 22999,
@@ -65,7 +65,7 @@ export const toursData = [
   },
   {
     id: 5,
-    image: 'https://images.unsplash.com/photo-1581791534721-e599df4417f7?w=800&q=80',
+    image: '/tours/ladakh.png',
     location: 'Ladakh',
     title: 'Leh Ladakh High Altitude Expedition',
     price: 35000,
@@ -81,7 +81,7 @@ export const toursData = [
   },
   {
     id: 6,
-    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80',
+    image: '/tours/santorini.png',
     location: 'Santorini',
     title: 'Greek Islands Luxury Cruise',
     price: 85000,
@@ -97,7 +97,7 @@ export const toursData = [
   },
   {
     id: 7,
-    image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80',
+    image: '/tours/venice.png',
     location: 'Venice',
     title: 'Romantic Venice Canal Tour',
     price: 62000,
@@ -113,7 +113,7 @@ export const toursData = [
   },
   {
     id: 8,
-    image: 'https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/tours/agra.png',
     location: 'Agra',
     title: 'Taj Mahal Heritage Experience',
     price: 4999,
@@ -129,7 +129,7 @@ export const toursData = [
   },
   {
     id: 9,
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/bali.png',
     location: 'Bali',
     title: 'Bali Tropical Paradise Tour',
     price: 42000,
@@ -145,7 +145,7 @@ export const toursData = [
   },
   {
     id: 10,
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/dubai.png',
     location: 'Dubai',
     title: 'Modern Dubai City & Desert Safari',
     price: 38000,
@@ -161,7 +161,7 @@ export const toursData = [
   },
   {
     id: 11,
-    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/paris.png',
     location: 'Paris',
     title: 'Eiffel Tower & Louvre Museum Tour',
     price: 55000,
@@ -177,7 +177,7 @@ export const toursData = [
   },
   {
     id: 12,
-    image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/switzerland.png',
     location: 'Switzerland',
     title: 'Swiss Alps Panorama Rail Tour',
     price: 95000,
@@ -193,7 +193,7 @@ export const toursData = [
   },
   {
     id: 13,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/rishikesh.png',
     location: 'Rishikesh',
     title: 'Spiritual Ganga & Yoga Retreat',
     price: 8500,
@@ -209,7 +209,7 @@ export const toursData = [
   },
   {
     id: 14,
-    image: 'https://images.unsplash.com/photo-1593181629936-11c609b8db9b?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/sikkim.png',
     location: 'Sikkim',
     title: 'North Sikkim Lacheng & Lachen Tour',
     price: 16500,
@@ -225,7 +225,7 @@ export const toursData = [
   },
   {
     id: 15,
-    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/maldives.png',
     location: 'Maldives',
     title: 'Overwater Villa Luxury Retreat',
     price: 120000,
@@ -241,7 +241,7 @@ export const toursData = [
   },
   {
     id: 16,
-    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/kyoto.png',
     location: 'Kyoto',
     title: 'Kyoto Heritage & Zen Gardens',
     price: 75000,
@@ -257,7 +257,7 @@ export const toursData = [
   },
   {
     id: 17,
-    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/vietnam.png',
     location: 'Vietnam',
     title: 'Halong Bay Cruise & Hanoi Culture',
     price: 45000,
@@ -273,7 +273,7 @@ export const toursData = [
   },
   {
     id: 18,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800',
+    image: '/tours/udaipur.png',
     location: 'Udaipur',
     title: 'Lake City Royal Palace Tour',
     price: 14500,
@@ -289,7 +289,7 @@ export const toursData = [
   },
   {
     id: 19,
-    image: 'https://images.unsplash.com/photo-1614082242765-7c98ca0f3df3?auto=format&fit=crop&q=80&w=800',
+    image: '/tours/hampi.png',
     location: 'Hampi',
     title: 'Hampi Ruins & Boulders Exploration',
     price: 9500,

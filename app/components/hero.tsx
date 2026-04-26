@@ -9,20 +9,20 @@ import Link from 'next/link';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1600&q=80',
+    image: '/tours/hero-beach.png',
     title: 'Discover Your Next',
     highlight: 'Adventure',
     subtitle: 'Explore breathtaking destinations with curated tour packages designed for unforgettable experiences.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80',
+    image: '/tours/hero-mountain.png',
     title: 'Create Memories That',
     highlight: 'Last Forever',
     highlightColor: 'text-cyan-400',
     subtitle: 'From mountain peaks to ocean shores, find your perfect getaway with QuestTours.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=1600&q=80',
+    image: '/tours/hero-adventure.png',
     title: 'Travel Beyond',
     highlight: 'Boundaries',
     highlightColor: 'text-indigo-400',
@@ -79,7 +79,7 @@ export function Hero() {
       </AnimatePresence>
 
       {/* Dark Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-900" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-700" />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
@@ -97,11 +97,10 @@ export function Hero() {
               <motion.h1 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.0, delay: 0.3 }}
-                className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[1.1] tracking-tight"
+                className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight"
               >
                 {heroSlides[currentSlide].title}<br />
-                <span className={heroSlides[currentSlide].highlightColor || 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic'}>
+                <span className={heroSlides[currentSlide].highlightColor || 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400'}>
                   {heroSlides[currentSlide].highlight}
                 </span>
               </motion.h1>
@@ -109,7 +108,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.5 }}
-                className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed"
+                className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-medium leading-relaxed"
               >
                 {heroSlides[currentSlide].subtitle}
               </motion.p>
@@ -122,27 +121,27 @@ export function Hero() {
               <Link
                 key={service.id}
                 href={service.href}
-                className={`flex flex-col items-center gap-2 p-3 min-w-[80px] sm:min-w-[100px] rounded-2xl transition-all duration-300 group ${
+                className={`flex flex-col items-center gap-1 p-2 min-w-[60px] sm:min-w-[75px] rounded-2xl transition-all duration-300 group ${
                   service.id === 'tours' 
-                    ? 'bg-blue-600/20 text-white border border-blue-400/30' 
-                    : 'text-slate-400 hover:text-white hover:bg-white/10 border border-transparent'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' 
+                    : 'bg-white/60 backdrop-blur-md text-slate-700 hover:text-slate-900 hover:bg-white/80 shadow-lg shadow-black/5 border border-white/40'
                 }`}
               >
-                <div className={`p-2.5 rounded-xl transition-transform group-hover:scale-110 ${service.id === 'tours' ? 'bg-blue-500 shadow-lg shadow-blue-500/50' : 'bg-white/10'}`}>
-                  <service.icon size={22} />
+                <div className={`p-1.5 rounded-xl transition-transform group-hover:scale-110 ${service.id === 'tours' ? 'bg-white/20' : 'bg-slate-100 text-slate-500 group-hover:text-blue-600'}`}>
+                  <service.icon size={16} />
                 </div>
-                <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest">{service.label}</span>
+                <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest">{service.label}</span>
               </Link>
             ))}
           </div>
 
-          {/* Search Bar - Modern Glassmorphic Widget */}
-          <div className="bg-white/10 backdrop-blur-2xl rounded-[2.5rem] p-6 lg:p-10 border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-700 max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+          {/* Search Bar - Modern White Widget */}
+          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-[2rem] p-4 lg:p-6 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-700 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
               {/* Destination */}
               <div className="md:col-span-4 text-left space-y-2">
-                <label className="text-white/70 text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <MapPin size={12} className="text-blue-400" />
+                <label className="text-black text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
+                  <MapPin size={12} className="text-blue-600" />
                   From City / Destination
                 </label>
                 <div className="relative">
@@ -150,29 +149,29 @@ export function Hero() {
                     placeholder="Search destinations..."
                     value={searchData.destination}
                     onChange={(e) => setSearchData({ ...searchData, destination: e.target.value })}
-                    className="h-16 bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:ring-blue-500 focus:bg-white/20 rounded-2xl font-bold text-lg px-6"
+                    className="h-10 bg-white/40 border-white/40 text-slate-900 placeholder:text-slate-600 focus:ring-blue-500 focus:bg-white/80 focus:border-blue-500 rounded-lg font-bold text-sm px-3 transition-all"
                   />
                 </div>
               </div>
 
               {/* Date */}
               <div className="md:col-span-3 text-left space-y-2">
-                <label className="text-white/70 text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <Calendar size={12} className="text-blue-400" />
+                <label className="text-black text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
+                  <Calendar size={12} className="text-blue-600" />
                   Travel Date
                 </label>
                 <Input
                   type="date"
                   value={searchData.date}
                   onChange={(e) => setSearchData({ ...searchData, date: e.target.value })}
-                  className="h-16 bg-white/10 border-white/10 text-white focus:ring-blue-500 focus:bg-white/20 rounded-2xl font-bold text-lg px-6"
+                  className="h-10 bg-white/40 border-white/40 text-slate-900 focus:ring-blue-500 focus:bg-white/80 focus:border-blue-500 rounded-lg font-bold text-sm px-3 transition-all"
                 />
               </div>
 
               {/* Travelers */}
               <div className="md:col-span-3 text-left space-y-2">
-                <label className="text-white/70 text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
-                  <Users size={12} className="text-blue-400" />
+                <label className="text-black text-[10px] font-black uppercase tracking-widest ml-1 flex items-center gap-2">
+                  <Users size={12} className="text-blue-600" />
                   Travelers
                 </label>
                 <Input
@@ -180,7 +179,7 @@ export function Hero() {
                   min="1"
                   value={searchData.travelers}
                   onChange={(e) => setSearchData({ ...searchData, travelers: e.target.value })}
-                  className="h-16 bg-white/10 border-white/10 text-white focus:ring-blue-500 focus:bg-white/20 rounded-2xl font-bold text-lg px-6"
+                  className="h-10 bg-white/40 border-white/40 text-slate-900 focus:ring-blue-500 focus:bg-white/80 focus:border-blue-500 rounded-lg font-bold text-sm px-3 transition-all"
                 />
               </div>
 
@@ -189,9 +188,9 @@ export function Hero() {
                 <Button 
                   onClick={handleScrollToTours}
                   disabled={isSearchDisabled}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white h-16 rounded-2xl font-black flex items-center justify-center gap-2 shadow-xl shadow-blue-600/30 hover:scale-105 transition-all disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white h-10 rounded-lg font-black flex items-center justify-center gap-2 shadow-xl shadow-blue-600/30 hover:scale-105 transition-all disabled:opacity-50"
                 >
-                  <Search size={22} />
+                  <Search size={20} />
                   <span className="uppercase tracking-widest text-xs">Search</span>
                 </Button>
               </div>

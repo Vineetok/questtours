@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { MapPin, ArrowRight, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 // import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
 
@@ -12,7 +13,7 @@ const popularDestinations = [
     name: 'Manali',
     location: 'India',
     packages: 24,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
+    image: '/tours/dest/manali.png',
     colSpan: 'lg:col-span-8',
   },
   {
@@ -20,7 +21,7 @@ const popularDestinations = [
     name: 'Goa',
     location: 'India',
     packages: 32,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80',
+    image: '/tours/dest/goa.png',
     colSpan: 'lg:col-span-4',
   },
   {
@@ -28,7 +29,7 @@ const popularDestinations = [
     name: 'Kerala',
     location: 'India',
     packages: 28,
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
+    image: '/tours/dest/kerala.png',
     colSpan: 'lg:col-span-4',
   },
   {
@@ -36,25 +37,26 @@ const popularDestinations = [
     name: 'Rajasthan',
     location: 'India',
     packages: 20,
-    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
+    image: '/tours/dest/rajasthan.png',
     colSpan: 'lg:col-span-8',
     showExplore: true,
   },
 ];
 
 const allExtraDestinations = [
-  { id: 7, name: 'Leh Ladakh', location: 'India', packages: 12, image: 'https://images.unsplash.com/photo-1581791534721-e599df4417f7?w=800&q=80' },
-  { id: 8, name: 'Sikkim', location: 'India', packages: 18, image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&q=80' },
-  { id: 9, name: 'Andaman', location: 'India', packages: 22, image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80' },
-  { id: 10, name: 'Agra', location: 'India', packages: 10, image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80' },
-  { id: 11, name: 'Rishikesh', location: 'India', packages: 15, image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80' },
-  { id: 12, name: 'Udaipur', location: 'India', packages: 20, image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80' },
-  { id: 13, name: 'Kyoto', location: 'Japan', packages: 25, image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80' },
-  { id: 14, name: 'Paris', location: 'France', packages: 30, image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80' },
-  { id: 15, name: 'Santorini', location: 'Greece', packages: 18, image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80' },
-  { id: 16, name: 'Maldives', location: 'Indian Ocean', packages: 28, image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80' },
-  { id: 5, name: 'Bali', location: 'Indonesia', packages: 18, image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80' },
-  { id: 6, name: 'Dubai', location: 'UAE', packages: 15, image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80' },
+  { id: 7, name: 'Leh Ladakh', location: 'India', packages: 12, image: '/tours/dest/ladakh.png' },
+  { id: 8, name: 'Sikkim', location: 'India', packages: 18, image: '/tours/sikkim-dest.png' },
+  { id: 9, name: 'Andaman', location: 'India', packages: 22, image: '/tours/andaman.png' },
+  { id: 10, name: 'Agra', location: 'India', packages: 10, image: '/tours/agra-dest.png' },
+  { id: 11, name: 'Rishikesh', location: 'India', packages: 15, image: '/tours/dest/rishikesh.png' },
+  { id: 12, name: 'Udaipur', location: 'India', packages: 20, image: '/tours/dest/udaipur.png' },
+  { id: 13, name: 'Kyoto', location: 'Japan', packages: 25, image: '/tours/dest/kyoto.png' },
+  { id: 14, name: 'Paris', location: 'France', packages: 30, image: '/tours/dest/paris.png' },
+  { id: 15, name: 'Santorini', location: 'Greece', packages: 18, image: '/tours/dest/santorini.png' },
+  { id: 16, name: 'Maldives', location: 'Indian Ocean', packages: 28, image: '/tours/dest/maldives.png' },
+  { id: 17, name: 'Gujarat', location: 'India', packages: 15, image: '/tours/dest/gujarat.png' },
+  { id: 5, name: 'Bali', location: 'Indonesia', packages: 18, image: '/tours/dest/bali.png' },
+  { id: 6, name: 'Dubai', location: 'UAE', packages: 15, image: '/tours/dest/dubai.png' },
 ];
 
 interface DestinationsProps {
@@ -62,6 +64,7 @@ interface DestinationsProps {
 }
 
 export function Destinations({ showAll = false }: DestinationsProps) {
+  const router = useRouter();
   const [isAllOpen, setIsAllOpen] = useState(false);
 
   // const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -80,7 +83,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
             Top Destinations
           </span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-            Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Popular</span> Destinations
+            Explore <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Popular</span> Destinations
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             From the snow-capped Himalayas to sun-kissed beaches, discover handpicked destinations that promise extraordinary experiences.
@@ -100,9 +103,9 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-[#003B5C] mb-1">{dest.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
-                  <Button 
+                  <Button
                     className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                    onClick={() => {}}
+                    onClick={() => router.push('/login')}
                   >
                     View Plan
                   </Button>
@@ -115,11 +118,11 @@ export function Destinations({ showAll = false }: DestinationsProps) {
             {/* Bento Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
               {popularDestinations.map((dest) => (
-                  <div
-                    key={dest.id}
-                    className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
-                    onClick={() => {}}
-                  >
+                <div
+                  key={dest.id}
+                  className={`group relative overflow-hidden rounded-2xl h-[350px] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-500 ${dest.colSpan}`}
+                  onClick={() => { }}
+                >
                   <Image
                     src={dest.image}
                     alt={dest.name}
@@ -128,7 +131,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   />
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#003B5C]/90 via-transparent to-transparent opacity-80" />
-                  
+
                   <div className="absolute bottom-0 left-0 p-6 w-full">
                     <div className="flex items-center gap-1 text-blue-400 mb-1">
                       <MapPin size={14} className="fill-blue-400" />
@@ -140,14 +143,17 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <p className="text-white/80 text-sm">
                       {dest.packages} Tour Packages
                     </p>
-                  <div className="mt-4">
-                    <Button 
-                      className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View Plan
-                    </Button>
-                  </div>
+                    <div className="mt-4">
+                      <Button
+                        className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push('/login');
+                        }}
+                      >
+                        View Plan
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -155,7 +161,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
 
             {/* Footer Button */}
             <div className="mt-12 text-center">
-              <button 
+              <button
                 onClick={() => setIsAllOpen(true)}
                 className="inline-flex items-center px-8 py-3 bg-white border-2 border-gray-200 rounded-full text-[#003B5C] font-bold hover:bg-gray-50 transition-all gap-2 group cursor-pointer"
               >
@@ -179,7 +185,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                 <h2 className="text-3xl font-bold text-[#003B5C]">All Destinations</h2>
                 <p className="text-gray-500">Pick your next dream getaway</p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsAllOpen(false)}
                 className="p-3 bg-white text-gray-500 hover:text-gray-800 rounded-full shadow-md transition-all"
               >
@@ -199,9 +205,9 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   <div className="p-5">
                     <h3 className="text-xl font-bold text-[#003B5C] mb-1">{dest.name}</h3>
                     <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
-                    <Button 
+                    <Button
                       className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                      onClick={() => {}}
+                      onClick={() => router.push('/login')}
                     >
                       View Plan
                     </Button>
@@ -217,3 +223,5 @@ export function Destinations({ showAll = false }: DestinationsProps) {
     </section>
   );
 }
+
+

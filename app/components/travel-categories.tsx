@@ -102,7 +102,7 @@ export function TravelCategories() {
             Trip Discovery
           </span>
           <h2 className="text-4xl lg:text-6xl font-black text-slate-900 leading-tight">
-            Find Your Perfect <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">Trip Style</span>
+            Find Your Perfect <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Trip Style</span>
           </h2>
           <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
             Whether you&apos;re seeking adventure, romance, or family fun — we have the perfect tour category for every traveler.

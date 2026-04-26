@@ -6,9 +6,9 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { toursData as tours } from '@/lib/data';
 import { Tour } from '@/lib/types';
-import { 
+import {
   ArrowLeft,
-  Users, 
+  Users,
   CreditCard,
   ShieldCheck,
   CheckCircle2,
@@ -17,7 +17,7 @@ import {
   Map,
 } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
-import { Card, CardContent, CardHeader, CardTitle} from '@/components/ui/display/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/display/card';
 import { Input } from '@/components/ui/inputs/input';
 import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
@@ -29,7 +29,7 @@ export default function BookingPage() {
   const params = useParams();
   const router = useRouter();
   const tourId = params.id;
-  
+
   const [passengers, setPassengers] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1); // 1: Details, 2: Payment, 3: Success
@@ -41,13 +41,13 @@ export default function BookingPage() {
     cardNumber: '', cardExpiry: '', cardCvc: '',
     accommodation: '', health: '', adults: 1, children: 0, infants: 0, password: ''
   });
-  
+
   const requiredFields = [
-    'salutation', 'fullName', 'dob', 'gender', 'nationality', 'email', 'whatsapp', 
-    'arrival', 'departure', 'passport', 'issuingCountry', 'passportExpiry', 
+    'salutation', 'fullName', 'dob', 'gender', 'nationality', 'email', 'whatsapp',
+    'arrival', 'departure', 'passport', 'issuingCountry', 'passportExpiry',
     'insurance', 'cardNumber', 'cardExpiry', 'cardCvc', 'password'
   ] as const;
-  
+
   const isFormValid = requiredFields.every(key => String(formData[key]).trim() !== '');
 
   const tour = (tours as unknown as Tour[]).find((t: Tour) => t.id.toString() === tourId);
@@ -56,7 +56,7 @@ export default function BookingPage() {
 
   const handleBooking = async () => {
     setIsSubmitting(true);
-    
+
     try {
       const payload = {
         formData,
@@ -75,9 +75,9 @@ export default function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      
+
       const data = await res.json();
-      
+
       if (!res.ok) throw new Error(data.message || 'Failed to create booking');
 
       // Auto-login the user into their session
@@ -96,7 +96,7 @@ export default function BookingPage() {
         price: passengers * tour.price,
         image: tour.image
       };
-      
+
       const existingBookings = JSON.parse(localStorage.getItem('quest_tours_bookings') || '[]');
       localStorage.setItem('quest_tours_bookings', JSON.stringify([newBooking, ...existingBookings]));
 
@@ -126,7 +126,7 @@ export default function BookingPage() {
               Your adventure to <strong>{tour.location}</strong> is officially on the calendar. We&apos;ve sent the confirmation and itinerary to your email.
             </p>
             <div className="space-y-4">
-              <Button 
+              <Button
                 onClick={() => {
                   if (user) {
                     router.push('/dashboard/customer/bookings');
@@ -138,7 +138,7 @@ export default function BookingPage() {
               >
                 View My Bookings
               </Button>
-              <Button 
+              <Button
                 variant="ghost"
                 onClick={() => router.push('/')}
                 className="w-full h-14 text-slate-500 hover:text-slate-900 font-bold"
@@ -156,11 +156,11 @@ export default function BookingPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12 w-full">
         <div className="flex items-center gap-4 mb-10">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => router.back()}
             className="rounded-xl h-12 w-12 p-0 bg-white shadow-sm ring-1 ring-slate-100"
           >
@@ -188,7 +188,7 @@ export default function BookingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Salutation *</Label>
-                    <select value={formData.salutation} onChange={e => setFormData({...formData, salutation: e.target.value})} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
+                    <select value={formData.salutation} onChange={e => setFormData({ ...formData, salutation: e.target.value })} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
                       <option value="">Select...</option>
                       <option value="Mr.">Mr.</option>
                       <option value="Mrs.">Mrs.</option>
@@ -198,18 +198,18 @@ export default function BookingPage() {
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Full Legal Name *</Label>
-                    <Input value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="As it appears on your passport" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.fullName} onChange={e => setFormData({ ...formData, fullName: e.target.value })} placeholder="As it appears on your passport" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Date of Birth *</Label>
-                    <Input value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.dob} onChange={e => setFormData({ ...formData, dob: e.target.value })} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Gender *</Label>
-                    <select value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
+                    <select value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
                       <option value="">Select...</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
@@ -218,18 +218,18 @@ export default function BookingPage() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Nationality *</Label>
-                    <Input value={formData.nationality} onChange={e => setFormData({...formData, nationality: e.target.value})} placeholder="Country of Residence" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.nationality} onChange={e => setFormData({ ...formData, nationality: e.target.value })} placeholder="Country of Residence" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Email Address *</Label>
-                    <Input value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="you@example.com" type="email" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="you@example.com" type="email" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">WhatsApp Number *</Label>
-                    <Input value={formData.whatsapp} onChange={e => setFormData({...formData, whatsapp: e.target.value})} placeholder="+1 234 567 8900" type="tel" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.whatsapp} onChange={e => setFormData({ ...formData, whatsapp: e.target.value })} placeholder="+1 234 567 8900" type="tel" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
               </CardContent>
@@ -251,16 +251,16 @@ export default function BookingPage() {
                     <p className="text-xs text-slate-500 font-medium font-mono">Max: {tour.groupSize}</p>
                   </div>
                   <div className="flex items-center gap-4">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
+                    <Button
+                      variant="outline"
+                      size="icon"
                       className="rounded-lg h-10 w-10 border-slate-200"
                       onClick={() => setPassengers(Math.max(1, passengers - 1))}
                     > - </Button>
                     <span className="text-xl font-black w-8 text-center">{passengers}</span>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
+                    <Button
+                      variant="outline"
+                      size="icon"
                       className="rounded-lg h-10 w-10 border-slate-200"
                       onClick={() => setPassengers(passengers + 1)}
                     > + </Button>
@@ -270,32 +270,32 @@ export default function BookingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Expected Arrival Date *</Label>
-                    <Input value={formData.arrival} onChange={e => setFormData({...formData, arrival: e.target.value})} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.arrival} onChange={e => setFormData({ ...formData, arrival: e.target.value })} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Expected Departure Date *</Label>
-                    <Input value={formData.departure} onChange={e => setFormData({...formData, departure: e.target.value})} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.departure} onChange={e => setFormData({ ...formData, departure: e.target.value })} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Adults *</Label>
-                    <Input value={formData.adults} onChange={e => setFormData({...formData, adults: parseInt(e.target.value) || 0})} type="number" min={1} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.adults} onChange={e => setFormData({ ...formData, adults: parseInt(e.target.value) || 0 })} type="number" min={1} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Children</Label>
-                    <Input value={formData.children} onChange={e => setFormData({...formData, children: parseInt(e.target.value) || 0})} type="number" min={0} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.children} onChange={e => setFormData({ ...formData, children: parseInt(e.target.value) || 0 })} type="number" min={0} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Infants</Label>
-                    <Input value={formData.infants} onChange={e => setFormData({...formData, infants: parseInt(e.target.value) || 0})} type="number" min={0} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.infants} onChange={e => setFormData({ ...formData, infants: parseInt(e.target.value) || 0 })} type="number" min={0} className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Accommodation & Bed Preferences</Label>
-                  <textarea value={formData.accommodation} onChange={e => setFormData({...formData, accommodation: e.target.value})} rows={2} placeholder="E.g., Queen bed, high floor, crib required" className="w-full rounded-xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-sky-500 transition-all px-4 py-3 outline-none resize-none text-slate-900" />
+                  <textarea value={formData.accommodation} onChange={e => setFormData({ ...formData, accommodation: e.target.value })} rows={2} placeholder="E.g., Queen bed, high floor, crib required" className="w-full rounded-xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-sky-500 transition-all px-4 py-3 outline-none resize-none text-slate-900" />
                 </div>
               </CardContent>
             </Card>
@@ -313,28 +313,28 @@ export default function BookingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Passport Number *</Label>
-                    <Input value={formData.passport} onChange={e => setFormData({...formData, passport: e.target.value})} placeholder="Enter passport number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.passport} onChange={e => setFormData({ ...formData, passport: e.target.value })} placeholder="Enter passport number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Issuing Country *</Label>
-                    <Input value={formData.issuingCountry} onChange={e => setFormData({...formData, issuingCountry: e.target.value})} placeholder="Country of issue" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.issuingCountry} onChange={e => setFormData({ ...formData, issuingCountry: e.target.value })} placeholder="Country of issue" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Passport Expiry Date *</Label>
-                    <Input value={formData.passportExpiry} onChange={e => setFormData({...formData, passportExpiry: e.target.value})} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.passportExpiry} onChange={e => setFormData({ ...formData, passportExpiry: e.target.value })} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Travel Insurance Policy *</Label>
-                    <Input value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} placeholder="Provider & Policy Number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Input value={formData.insurance} onChange={e => setFormData({ ...formData, insurance: e.target.value })} placeholder="Provider & Policy Number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Account Password (Create/Login) *</Label>
-                  <Input autoComplete="new-password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} type="password" placeholder="Enter password to secure and access your booking" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                  <Input autoComplete="new-password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} type="password" placeholder="Enter password to secure and access your booking" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   <p className="text-[11px] font-medium text-slate-400 pt-1 flex items-center justify-end">
                     Don't have an account? <a href="/signup" target="_blank" className="text-sky-600 font-bold ml-1 hover:underline">Sign Up</a>
                   </p>
@@ -342,7 +342,7 @@ export default function BookingPage() {
 
                 <div className="space-y-2">
                   <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Health, Mobility & Dietary Restrictions</Label>
-                  <textarea value={formData.health} onChange={e => setFormData({...formData, health: e.target.value})} rows={2} placeholder="Any allergies, mobility issues, or special diet needs?" className="w-full rounded-xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-sky-500 transition-all px-4 py-3 outline-none resize-none text-slate-900" />
+                  <textarea value={formData.health} onChange={e => setFormData({ ...formData, health: e.target.value })} rows={2} placeholder="Any allergies, mobility issues, or special diet needs?" className="w-full rounded-xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-sky-500 transition-all px-4 py-3 outline-none resize-none text-slate-900" />
                 </div>
               </CardContent>
             </Card>
@@ -371,16 +371,16 @@ export default function BookingPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Card Number</Label>
-                    <Input value={formData.cardNumber} onChange={e => setFormData({...formData, cardNumber: e.target.value})} placeholder="**** **** **** 4242" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
+                    <Input value={formData.cardNumber} onChange={e => setFormData({ ...formData, cardNumber: e.target.value })} placeholder="**** **** **** 4242" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
                   </div>
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Expiry Date</Label>
-                      <Input value={formData.cardExpiry} onChange={e => setFormData({...formData, cardExpiry: e.target.value})} placeholder="MM / YY" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
+                      <Input value={formData.cardExpiry} onChange={e => setFormData({ ...formData, cardExpiry: e.target.value })} placeholder="MM / YY" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-xs font-black uppercase tracking-widest text-slate-400">CVC</Label>
-                      <Input value={formData.cardCvc} onChange={e => setFormData({...formData, cardCvc: e.target.value})} placeholder="***" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
+                      <Input value={formData.cardCvc} onChange={e => setFormData({ ...formData, cardCvc: e.target.value })} placeholder="***" className="h-12 rounded-xl bg-slate-50/50 border-slate-100" />
                     </div>
                   </div>
                 </div>
@@ -419,14 +419,14 @@ export default function BookingPage() {
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     disabled={isSubmitting || !isFormValid}
                     onClick={handleBooking}
                     className={`w-full h-14 ${!isFormValid ? 'bg-slate-300 cursor-not-allowed opacity-70' : 'bg-sky-600 hover:bg-sky-500 shadow-xl shadow-sky-900/50'} text-white rounded-2xl font-black text-lg transition-all`}
                   >
                     {isSubmitting ? 'Processing...' : !isFormValid ? 'Fill Required Details' : 'Confirm & Pay'}
                   </Button>
-                  
+
                   <div className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10">
                     <ShieldCheck className="h-5 w-5 text-emerald-400" />
                     <p className="text-[11px] font-medium leading-tight text-slate-300">

@@ -34,14 +34,14 @@ export const customerStats = [
 ];
 
 export const customerBookings = [
-  { id: 'BK-001', tour: 'Alpine Escape', status: 'Confirmed', date: '2024-05-15', price: 1200, image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop' },
-  { id: 'BK-105', tour: 'Bali Retreat', status: 'Completed', date: '2023-11-10', price: 950, image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800&auto=format&fit=crop' },
+  { id: 'BK-001', tour: 'Alpine Escape', status: 'Confirmed', date: '2024-05-15', price: 1200, image: '/tours/alpine.png' },
+  { id: 'BK-105', tour: 'Bali Retreat', status: 'Completed', date: '2023-11-10', price: 950, image: '/tours/mock/bali.png' },
 ];
 
 export const wishlistTours = [
-  { id: 'T-001', name: 'Swiss Alps Hiking', location: 'Switzerland', price: 2400, rating: 4.9, image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=800&auto=format&fit=crop' },
-  { id: 'T-002', name: 'Moroccan Desert Safari', location: 'Morocco', price: 1800, rating: 4.7, image: 'https://images.unsplash.com/photo-1509060445200-6f13a7209420?q=80&w=800&auto=format&fit=crop' },
-  { id: 'T-003', name: 'Kyoto Temples', location: 'Japan', price: 3200, rating: 5.0, image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop' },
+  { id: 'T-001', name: 'Swiss Alps Hiking', location: 'Switzerland', price: 2400, rating: 4.9, image: '/tours/swiss-alps.png' },
+  { id: 'T-002', name: 'Moroccan Desert Safari', location: 'Morocco', price: 1800, rating: 4.7, image: '/tours/morocco.png' },
+  { id: 'T-003', name: 'Kyoto Temples', location: 'Japan', price: 3200, rating: 5.0, image: '/tours/mock/kyoto.png' },
 ];
 
 export const revenueData = [

@@ -30,7 +30,7 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
       {/* Image Section */}
       <div className="relative w-full md:w-80 h-60 md:h-full shrink-0 overflow-hidden">
         <Image 
-          src={plan.image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"} 
+          src={plan.image || "/tours/fallback/fallback-card.png"} 
           alt={plan.title} 
           fill 
           className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -94,7 +94,7 @@ export default function CustomerDashboard() {
               <Card key={plan.id} className="group border-none shadow-xl shadow-blue-900/5 rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-500 hover:-translate-y-2 bg-white flex flex-col h-full cursor-pointer" onClick={() => setSelectedPlan(plan)}>
                 <div className="relative h-64 w-full overflow-hidden">
                   <Image
-                    src={plan.image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"}
+                    src={plan.image || "/tours/fallback/fallback-customer.png"}
                     alt={plan.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -122,7 +122,7 @@ export default function CustomerDashboard() {
                        <div className="flex -space-x-2">
                           {[1,2,3].map(i => (
                             <div key={i} className="w-7 h-7 rounded-full border-2 border-white bg-gray-100 overflow-hidden relative">
-                               <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + plan.id}`} alt="User" fill />
+                               <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}-${plan.id}`} alt="User" fill />
                             </div>
                           ))}
                        </div>

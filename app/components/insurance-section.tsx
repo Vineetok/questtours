@@ -12,7 +12,7 @@ export function InsuranceSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-950 rounded-[3rem] overflow-hidden relative p-8 lg:p-16">
           {/* Background Decorative Elements */}
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-[url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80')] bg-cover bg-center opacity-20 hidden lg:block" />
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-[url('/tours/insurance-bg.png')] bg-cover bg-center opacity-20 hidden lg:block" />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
           
           <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -47,11 +47,12 @@ export function InsuranceSection() {
             <div className="flex-1 relative hidden lg:block">
               <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-700">
                 <Image
-                  src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80" 
+                  src="/tours/insurance-card.png" 
                   alt="Travel Insurance" 
                   width={600}
                   height={400}
-                  className="w-full h-[400px] object-cover"
+                  style={{ width: '100%', height: '400px' }}
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
               </div>

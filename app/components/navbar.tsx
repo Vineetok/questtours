@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Globe, MapPin, Plane } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/inputs/button';
 
@@ -54,7 +55,7 @@ export function Navbar() {
   // Prevent hydration mismatch by not rendering until mounted on client
   if (!mounted) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10 h-16 sm:h-20" />
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-100 h-16 sm:h-20" />
     );
   }
 
@@ -94,34 +95,36 @@ export function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled
-        ? 'bg-slate-950/95 backdrop-blur-2xl shadow-2xl shadow-black/30 border-b border-white/5'
-        : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-md border-b border-white/10'
+        ? 'bg-white shadow-xl shadow-slate-200/50 border-b border-slate-100'
+        : 'bg-white border-b border-slate-100'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[70px]">
+        <div className="flex items-center h-[90px] gap-8">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 flex-shrink-0 group"
+            className="flex-shrink-0 group"
           >
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-shadow">
-              <Plane size={18} className="text-white -rotate-45" />
-            </div>
-            <span className="text-xl font-black text-white tracking-tight">
-              Quest<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Tours</span>
-            </span>
+            <Image 
+              src="/logo.png" 
+              alt="QuestTours" 
+              width={200} 
+              height={60} 
+              className="h-16 sm:h-20 w-auto object-contain"
+              priority
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
                   isActive(link.href)
-                    ? 'text-white bg-white/10'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 {link.label}
@@ -134,7 +137,7 @@ export function Navbar() {
               onMouseEnter={() => setIsToursOpen(true)}
               onMouseLeave={() => setIsToursOpen(false)}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all duration-200">
                 Tours
                 <ChevronDown
                   size={14}
@@ -146,7 +149,7 @@ export function Navbar() {
               <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-300 ${
                 isToursOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
               }`}>
-                <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-black/20 border border-slate-100 overflow-hidden min-w-[520px] flex p-8 gap-10">
+                <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden min-w-[520px] flex p-8 gap-10">
                   {/* International Column */}
                   <div className="flex-1">
                     <h3 className="flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-[0.25em] mb-5">
@@ -207,7 +210,7 @@ export function Navbar() {
                 setIsInternationalOpen(false);
               }}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all duration-200">
                 Gallery 
                 <ChevronDown size={14} className={`transition-transform duration-200 ${isGalleryOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -274,7 +277,7 @@ export function Navbar() {
               onMouseEnter={() => setIsAboutOpen(true)}
               onMouseLeave={() => setIsAboutOpen(false)}
             >
-              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200">
+              <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all duration-200">
                 About 
                 <ChevronDown size={14} className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -302,27 +305,28 @@ export function Navbar() {
               href="/contact"
               className={`relative px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
                 isActive('/contact')
-                  ? 'text-white bg-white/10'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
+                  ? 'text-blue-600 bg-blue-50'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               Contact
             </Link>
+          </div>
 
           {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             <Link href="/signup?role=agent">
-              <Button variant="ghost" className="text-white hover:text-blue-400 font-medium text-sm lg:text-base">
+              <Button variant="ghost" className="text-slate-600 hover:text-blue-600 hover:bg-slate-50 font-bold text-sm lg:text-base px-5">
                 Become an Agent
               </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" className="text-white hover:bg-white/10 font-medium text-sm lg:text-base">
+              <Button variant="ghost" className="text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm lg:text-base px-5">
                 Login
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-900/20 text-sm lg:text-base px-6">
+              <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-black shadow-lg shadow-blue-600/20 text-sm lg:text-base px-8 h-12 rounded-2xl transition-all">
                 Sign Up
               </Button>
             </Link>
@@ -331,7 +335,7 @@ export function Navbar() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
+            className="lg:hidden text-slate-900 p-2 rounded-xl hover:bg-slate-100 transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={22} /> : <Menu size={22} />}
@@ -342,13 +346,13 @@ export function Navbar() {
         <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
           isOpen ? 'max-h-[85vh] opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="bg-slate-950/98 backdrop-blur-2xl border-t border-white/5 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh]">
+          <div className="bg-white border-t border-slate-100 px-4 py-5 space-y-1 overflow-y-auto max-h-[80vh] shadow-2xl">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-                  isActive(link.href) ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+                  isActive(link.href) ? 'text-blue-600 bg-blue-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 {link.label}
@@ -359,14 +363,14 @@ export function Navbar() {
             <div className="space-y-2">
               <button
                 onClick={() => setIsToursOpen(!isToursOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 Tours
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isToursOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <div className={`transition-all duration-300 overflow-hidden ${isToursOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
-                <div className="px-4 py-3 ml-2 border-l border-white/10 space-y-4">
+                <div className="px-4 py-3 ml-2 border-l border-slate-100 space-y-4">
                   <div>
                     <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest mb-2">🌏 International</p>
                     <div className="space-y-2">
@@ -405,13 +409,13 @@ export function Navbar() {
             <div className="space-y-2">
               <button
                 onClick={() => setIsGalleryOpen(!isGalleryOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 Gallery
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isGalleryOpen ? 'rotate-180' : ''}`} />
               </button>
               {isGalleryOpen && (
-                <div className="ml-4 pl-3 border-l border-white/10 space-y-1">
+                <div className="ml-4 pl-3 border-l border-slate-100 space-y-1">
                   {galleryOptions.map((option) => (
                     <Link
                       key={option.name}
@@ -430,12 +434,12 @@ export function Navbar() {
             <div className="space-y-2">
               <button
                 onClick={() => setIsAboutOpen(!isAboutOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 About <ChevronDown size={16} className={`transition-transform duration-300 ${isAboutOpen ? 'rotate-180' : ''}`} />
               </button>
               {isAboutOpen && (
-                <div className="ml-4 pl-3 border-l border-white/10 space-y-1">
+                <div className="ml-4 pl-3 border-l border-slate-100 space-y-1">
                   {aboutOptions.map((option) => (
                     <Link
                       key={option.name}
@@ -454,21 +458,21 @@ export function Navbar() {
             <Link
               href="/contact"
               className={`block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-                isActive('/contact') ? 'text-white bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'
+                isActive('/contact') ? 'text-blue-600 bg-blue-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               Contact
             </Link>
 
             {/* Mobile CTA Buttons */}
-            <div className="pt-4 border-t border-white/5 space-y-2">
+            <div className="pt-4 border-t border-slate-100 space-y-2">
               <Link href="/signup?role=agent" className="block">
-                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-400 hover:bg-white/5 border border-blue-500/30 hover:border-blue-400/50 transition-all">
+                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-blue-600 hover:bg-blue-50 border border-blue-100 transition-all">
                   Become an Agent
                 </button>
               </Link>
               <Link href="/login" className="block">
-                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-all">
+                <button className="w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-100 transition-all">
                   Login
                 </button>
               </Link>
@@ -481,7 +485,6 @@ export function Navbar() {
           </div>
         </div>
       </div>
-      </div>
     </nav>
-  )
-  };
+  );
+}

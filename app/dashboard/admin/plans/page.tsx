@@ -197,7 +197,7 @@ export default function PlansManagementPage() {
       accessor: (plan: Plan) => (
         <div className="flex items-center gap-3">
           <div className="relative h-12 w-16 rounded-lg overflow-hidden border border-gray-100 shrink-0">
-            <Image src={plan.image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"} alt={plan.title} fill className="object-cover" />
+            <Image src={plan.image || "/tours/fallback/fallback-admin.png"} alt={plan.title} fill className="object-cover" />
           </div>
           <div className="min-w-0">
             <p className="font-bold text-gray-900 truncate">{plan.title}</p>

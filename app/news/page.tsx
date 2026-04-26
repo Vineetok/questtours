@@ -54,7 +54,7 @@ const blogPosts = [
     id: 1,
     title: 'Top 10 Hidden Gems in Bali You Must Visit',
     excerpt: 'Discover secret beaches, mystical waterfalls, and serene temples off the beaten path in the Island of Gods.',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80',
+    image: '/tours/news/bali.png',
     date: 'April 15, 2026',
     category: 'Travel Guides',
   },
@@ -62,7 +62,7 @@ const blogPosts = [
     id: 2,
     title: 'How to Pack for a Swiss Alps Adventure',
     excerpt: 'Everything you need to know about layering, essential gear, and packing light for your high-altitude getaway.',
-    image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800&q=80',
+    image: '/tours/news/swiss.png',
     date: 'April 12, 2026',
     category: 'Tips & Tricks',
   },
@@ -70,7 +70,7 @@ const blogPosts = [
     id: 3,
     title: 'A Culinary Journey Through Kyoto',
     excerpt: 'From street food stalls to Michelin-starred kaiseki, explore the vibrant and traditional food scene of Kyoto.',
-    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80',
+    image: '/tours/news/kyoto.png',
     date: 'April 08, 2026',
     category: 'Food & Culture',
   },
@@ -78,7 +78,7 @@ const blogPosts = [
     id: 4,
     title: 'The Best Time to Visit the Maldives',
     excerpt: 'Planning a tropical escape? Here is a breakdown of the weather, seasons, and when to book your overwater villa.',
-    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80',
+    image: '/tours/news/maldives.png',
     date: 'April 02, 2026',
     category: 'Destinations',
   },
@@ -86,7 +86,7 @@ const blogPosts = [
     id: 5,
     title: 'Sustainable Travel: How to Be an Eco-Tourist',
     excerpt: 'Simple habits and choices that can minimize your carbon footprint and support local communities while traveling.',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80',
+    image: '/tours/news/eco.png',
     date: 'March 28, 2026',
     category: 'Eco Travel',
   },
@@ -94,7 +94,7 @@ const blogPosts = [
     id: 6,
     title: 'Navigating Venice Like a Local',
     excerpt: 'Avoid the tourist traps and discover the authentic charm of Venice\'s quiet canals and hidden squares.',
-    image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80',
+    image: '/tours/news/venice.png',
     date: 'March 22, 2026',
     category: 'City Guides',
   },
@@ -205,7 +205,7 @@ export default function NewsPage() {
                         <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.2em]">{item.source}</span>
                       </div>
                       
-                      <h3 className="text-sm font-bold text-slate-400 mb-2 italic">"{item.marathiTitle}"</h3>
+                      <h3 className="text-sm font-bold text-slate-400 mb-2">"{item.marathiTitle}"</h3>
                       <h2 className="text-2xl font-black text-[#003B5C] mb-4 group-hover:text-blue-600 transition-colors leading-tight">
                         {item.title}
                       </h2>

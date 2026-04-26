@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Toaster } from 'sonner'
+import { WhatsAppPopup } from '@/components/whatsapp-popup'
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-white`}>
         {children}
         <Toaster position="top-center" richColors />
+        <WhatsAppPopup />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

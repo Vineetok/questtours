@@ -75,7 +75,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Our Office</h3>
-                    <p className="text-gray-500">Quest Tours GTS No. 1663,Shop No 1,Bhavani Chambers,Ramkhind Galli,Belgaum-590001.</p>
+                    <p className="text-gray-500">Quest Tours 1st Floor, Lokmanya Multi-purpose Co-op Soc. Ltd., Near Kesari wada, Narayan Peth, Pune-411030</p>
                   </div>
                 </div>
                 
@@ -85,7 +85,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Phone Number</h3>
-                    <p className="text-gray-500">0831-2407073</p>
+                    <p className="text-gray-500">+91 - 90193 94696</p>
                   </div>
                 </div>
 

@@ -2,13 +2,18 @@ import {
   LayoutDashboard,
   User as UserIcon,
   Map,
-  History,
-  Ticket
+  Calendar,
+  Heart,
+  CreditCard,
+  Ticket as TicketIcon,
 } from 'lucide-react';
 
 export const customerNavItems = [
-  { title: 'My Itineraries', url: '/dashboard/customer', icon: LayoutDashboard },
-  { title: 'Past Trips', url: '/dashboard/customer/history', icon: History },
+  { title: 'Dashboard', url: '/dashboard/customer', icon: LayoutDashboard },
+  { title: 'My Bookings', url: '/dashboard/customer/bookings', icon: Calendar },
+  { title: 'Wishlist', url: '/dashboard/customer/wishlist', icon: Heart },
+  { title: 'Payments', url: '/dashboard/customer/payments', icon: CreditCard },
   { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
-  { title: 'Support', url: '/dashboard/customer/tickets', icon: Ticket },
+  { title: 'Support Tickets', url: '/dashboard/customer/tickets', icon: TicketIcon },
+  { title: 'Explore', url: '/destinations', icon: Map },
 ];

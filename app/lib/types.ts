@@ -6,6 +6,8 @@ export interface User {
   email: string;
   role: 'admin' | 'customer' | 'agent';
   avatar?: string | null;
+  phone?: string;
+  location?: string;
 }
 
 export interface Day {

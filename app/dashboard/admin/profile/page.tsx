@@ -4,13 +4,15 @@ import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { adminNavItems } from '@/lib/admin-nav-items';
 import { ProfileView } from '@/components/profile-view';
-
+import { useUser } from '@/hooks/use-user';
 export default function AdminProfilePage() {
+  const { user } = useUser();
+  
   return (
     <DashboardLayout
       role="admin"
-      userName="Admin User"
-      userEmail="admin@questtours.com"
+      userName={user?.name || "Admin"}
+      userEmail={user?.email || "admin@example.com"}
       navItems={adminNavItems}
     >
       <div className="space-y-6">

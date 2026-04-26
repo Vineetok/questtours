@@ -11,55 +11,66 @@ export const createBooking = async (req: Request, res: Response) => {
   try {
     const { formData, tourDetails } = req.body;
 
-    // 0. Authenticate or Create User
+    if (!formData || !tourDetails) {
+      return res.status(400).json({ message: 'Invalid request data' });
+    }
+
     if (!formData.password) {
-      return res.status(400).json({ message: 'Password is required to secure your booking.' });
+      return res.status(400).json({ message: 'Password is required' });
     }
 
     let userId;
-    let token;
     let userRole = 'customer';
     let userName = formData.fullName;
 
-    const userExistResult = await client.query('SELECT * FROM users WHERE email = $1', [formData.email]);
-    
+    // ---------------- USER CHECK ----------------
+    const userExistResult = await client.query(
+      'SELECT * FROM users WHERE email = $1',
+      [formData.email]
+    );
+
     if (userExistResult.rows.length > 0) {
       const user = userExistResult.rows[0];
+
       const isMatch = await bcrypt.compare(formData.password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: 'Account exists. Incorrect password.' });
+        return res.status(401).json({ message: 'Incorrect password' });
       }
+
       userId = user.id;
       userRole = user.role;
       userName = user.name;
     } else {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(formData.password, salt);
+      const hashedPassword = await bcrypt.hash(formData.password, 10);
+
       const newUser = await client.query(
-        'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id',
+        `INSERT INTO users (name, email, password, role)
+         VALUES ($1,$2,$3,$4) RETURNING id`,
         [formData.fullName, formData.email, hashedPassword, 'customer']
       );
+
       userId = newUser.rows[0].id;
     }
 
-    token = jwt.sign({ id: userId, role: userRole }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign(
+      { id: userId, role: userRole },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
 
-    // Start transaction
+    // ---------------- START TRANSACTION ----------------
     await client.query('BEGIN');
 
-    // 1. Insert or Update Traveler
-    let dbGender = 'Mx.';
-    if (['Mr.', 'Mrs.', 'Ms.', 'Mx.'].includes(formData.salutation)) {
-      dbGender = formData.salutation;
-    }
-
+    // ---------------- TRAVELER ----------------
     const travelerQuery = `
       INSERT INTO travelers (
-        full_legal_name, date_of_birth, gender, nationality, country_of_residence, email, phone, 
-        passport_number, issuing_country, passport_expiry,
-        has_limitations, limitation_description, has_allergies, allergy_details, dietary_restrictions
+        full_legal_name, date_of_birth, gender, nationality,
+        country_of_residence, email, phone, passport_number,
+        issuing_country, passport_expiry,
+        has_limitations, limitation_description,
+        has_allergies, allergy_details, dietary_restrictions
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15
       )
       ON CONFLICT (passport_number) DO UPDATE SET
         full_legal_name = EXCLUDED.full_legal_name,
@@ -68,13 +79,10 @@ export const createBooking = async (req: Request, res: Response) => {
       RETURNING traveler_id;
     `;
 
-    const hasLimitations = formData.health ? true : false;
-    const healthDetails = formData.health || '';
-
     const travelerValues = [
       formData.fullName,
       formData.dob,
-      dbGender,
+      formData.salutation || 'Mx.',
       formData.nationality,
       formData.nationality,
       formData.email,
@@ -82,8 +90,8 @@ export const createBooking = async (req: Request, res: Response) => {
       formData.passport,
       formData.issuingCountry,
       formData.passportExpiry,
-      hasLimitations,
-      healthDetails,
+      !!formData.health,
+      formData.health || '',
       false,
       '',
       ''
@@ -92,9 +100,10 @@ export const createBooking = async (req: Request, res: Response) => {
     const travelerResult = await client.query(travelerQuery, travelerValues);
     const travelerId = travelerResult.rows[0].traveler_id;
 
-    // 2. Insert Booking
-    const bookingReference = 'BR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-    
+    // ---------------- BOOKING ----------------
+    const bookingReference =
+      'BR-' + Math.random().toString(36).substring(2, 11).toUpperCase();
+
     const groupData = {
       total_passengers: tourDetails.passengers || 1,
       adults: formData.adults || 1,
@@ -104,14 +113,15 @@ export const createBooking = async (req: Request, res: Response) => {
 
     const bookingQuery = `
       INSERT INTO bookings (
-        booking_reference, travel_start_date, travel_end_date, group_data, accommodation_preferences,
-        insurance_policy_number, amount, payment_method, last_four_digits, payment_status, booking_status, user_id
+        booking_reference, travel_start_date, travel_end_date,
+        group_data, accommodation_preferences,
+        insurance_policy_number, amount,
+        payment_method, last_four_digits,
+        payment_status, booking_status, user_id
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12
       ) RETURNING booking_id;
     `;
-
-    const lastFour = formData.cardNumber ? formData.cardNumber.slice(-4) : '0000';
 
     const bookingValues = [
       bookingReference,
@@ -119,10 +129,10 @@ export const createBooking = async (req: Request, res: Response) => {
       formData.departure,
       JSON.stringify(groupData),
       formData.accommodation || '',
-      formData.insurance,
-      tourDetails.totalPrice,
+      formData.insurance || '',
+      tourDetails.totalPrice || 0,
       'Credit Card',
-      lastFour,
+      formData.cardNumber ? formData.cardNumber.slice(-4) : '0000',
       'paid',
       'confirmed',
       userId
@@ -131,18 +141,17 @@ export const createBooking = async (req: Request, res: Response) => {
     const bookingResult = await client.query(bookingQuery, bookingValues);
     const bookingId = bookingResult.rows[0].booking_id;
 
-    // 3. Insert Booking_Traveler Link
-    const linkQuery = `
-      INSERT INTO booking_travelers (booking_id, traveler_id, seat_status)
-      VALUES ($1, $2, 'confirmed');
-    `;
-    await client.query(linkQuery, [bookingId, travelerId]);
+    // ---------------- LINK ----------------
+    await client.query(
+      `INSERT INTO booking_travelers (booking_id, traveler_id, seat_status)
+       VALUES ($1,$2,'confirmed')`,
+      [bookingId, travelerId]
+    );
 
-    // Commit transaction
     await client.query('COMMIT');
-
-    res.status(201).json({
-      message: 'Booking successfully created',
+   
+    return res.status(201).json({
+      message: 'Booking created successfully',
       bookingId,
       bookingReference,
       token,
@@ -154,10 +163,14 @@ export const createBooking = async (req: Request, res: Response) => {
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     await client.query('ROLLBACK');
-    console.error('Error creating booking:', error);
-    res.status(500).json({ message: 'Internal server error' });
+
+    return res.status(500).json({
+      message: 'Internal server error',
+      error: error.message
+    });
+
   } finally {
     client.release();
   }

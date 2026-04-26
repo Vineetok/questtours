@@ -17,11 +17,11 @@ import {
   Map,
 } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/display/card';
+import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle} from '@/components/ui/display/card';
 import { Input } from '@/components/ui/inputs/input';
 import { Label } from '@/components/ui/inputs/label';
 import { toast } from 'sonner';
-import Image from 'next/image';
 import { useUser } from '@/hooks/use-user';
 import { formatCurrency } from '@/lib/utils';
 
@@ -188,7 +188,7 @@ export default function BookingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Salutation *</Label>
-                    <select value={formData.salutation} onChange={e => setFormData({ ...formData, salutation: e.target.value })} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
+                    <select value={formData.salutation} onChange={e => setFormData({...formData, salutation: e.target.value})} aria-label="Salutation" className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
                       <option value="">Select...</option>
                       <option value="Mr.">Mr.</option>
                       <option value="Mrs.">Mrs.</option>
@@ -209,7 +209,7 @@ export default function BookingPage() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Gender *</Label>
-                    <select value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value })} className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
+                    <select value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} aria-label="Gender" className="h-12 w-full rounded-xl bg-slate-50/50 border border-slate-100 px-4 focus:bg-white focus:border-sky-500 transition-all outline-none text-slate-900">
                       <option value="">Select...</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
@@ -323,12 +323,12 @@ export default function BookingPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Passport Expiry Date *</Label>
-                    <Input value={formData.passportExpiry} onChange={e => setFormData({ ...formData, passportExpiry: e.target.value })} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Passport Expiry Date </Label>
+                    <Input value={formData.passportExpiry} onChange={e => setFormData({...formData, passportExpiry: e.target.value})} type="date" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Travel Insurance Policy *</Label>
-                    <Input value={formData.insurance} onChange={e => setFormData({ ...formData, insurance: e.target.value })} placeholder="Provider & Policy Number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
+                    <Label className="text-xs font-black uppercase tracking-widest text-slate-400">Travel Insurance Policy </Label>
+                    <Input value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} placeholder="Provider & Policy Number" className="h-12 rounded-xl bg-slate-50/50 border-slate-100 focus:bg-white transition-all px-4" />
                   </div>
                 </div>
 
@@ -363,7 +363,7 @@ export default function BookingPage() {
                     <span className="text-xs font-bold text-sky-900">Credit Card</span>
                   </Button>
                   <Button variant="outline" className="h-20 rounded-2xl border-slate-200 flex flex-col items-center justify-center gap-1 hover:border-slate-300">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-5" alt="PayPal" />
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-5" alt="PayPal" />
                     <span className="text-xs font-bold text-slate-500">PayPal</span>
                   </Button>
                 </div>

@@ -6,12 +6,12 @@ export const userService = {
     return api.get<User>('/profile');
   },
 
-  updateProfile: (data: unknown) => {
-    return api.put<unknown>('/profile', data);
+  updateProfile: (data: Partial<User>) => {
+    return api.put<{ message: string; user: User }>('/profile', data);
   },
 
   uploadAvatar: (formData: FormData) => {
-    return api.post<unknown>('/profile/avatar', formData, true);
+    return api.post<{ avatarUrl: string }>('/profile/avatar', formData, true);
   },
 
   getPayments: () => {

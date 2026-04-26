@@ -9,10 +9,12 @@ import {
   
   Map,
   Package as PackageIcon,
+  User,
 } from 'lucide-react';
 
 export const adminNavItems = [
   { title: 'Overview', url: '/dashboard/admin', icon: LayoutDashboard },
+  { title: 'Profile', url: '/dashboard/admin/profile', icon: User },
   { title: 'Manage/Import History', url: '/dashboard/admin/import', icon: UploadCloud },
   { title: 'Customers', url: '/dashboard/admin/customers', icon: Users },
   { title: 'Agents', url: '/dashboard/admin/agents', icon: Briefcase },

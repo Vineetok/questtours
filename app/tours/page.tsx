@@ -46,7 +46,7 @@ function ToursContent() {
     if (loc) setFilters(prev => ({ ...prev, search: loc }));
   }, [searchParams]);
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = (key: string, value: unknown ) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
@@ -68,7 +68,7 @@ function ToursContent() {
     }
 
     const planTheme = plan.theme || 'Culture';
-    const matchesTheme = filters.themes.length === 0 || filters.themes.includes(planTheme);
+    const matchesTheme = !filters.themes || filters.themes.length === 0 || filters.themes.includes(planTheme);
 
     return matchesSearch && matchesBudget && matchesDuration && matchesTheme;
   });

@@ -43,7 +43,7 @@ export function FeaturedPackages() {
               All-inclusive travel packages curated to provide you with a seamless and luxurious vacation experience.
             </p>
           </div>
-          <Link href="/login">
+          <Link href="/tours">
             <Button variant="outline" className="h-14 px-8 rounded-2xl border-2 font-black gap-2 hover:bg-gray-50 transition-all">
               Explore All Packages <ChevronRight size={18} />
             </Button>
@@ -66,8 +66,9 @@ export function FeaturedPackages() {
                 originalPrice={pkg.originalPrice}
                 discount={pkg.discount}
                 duration={pkg.duration}
-                rating={4.9} // Default for packages
-                reviews={120} // Default for packages
+                rating={4.9} 
+                reviews={120} 
+                onClick={() => window.location.href = `/tours/${pkg.id}`}
               />
             ))
           )}

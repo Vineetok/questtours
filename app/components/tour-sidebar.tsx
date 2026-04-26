@@ -23,7 +23,7 @@ export function TourSidebar({ id, price, duration, location, isMobile = false, o
   const handleBooking = () => {
     setIsNavigating(true);
     setTimeout(() => {
-      router.push(`/booking/${id}?passengers=${passengers}`);
+      router.push(`/tours/${id}/book?passengers=${passengers}`);
       if (onClose) onClose();
     }, 300);
   };

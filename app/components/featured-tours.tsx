@@ -73,7 +73,7 @@ export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedTours
                 duration={tour.duration || ''}
                 maxPeople={tour.groupSize}
                 tag={tour.tag}
-                onClick={() => setSelectedTour(tour)}
+                onClick={() => window.location.href = `/tours/${tour.id}`}
               />
             ))
           )}

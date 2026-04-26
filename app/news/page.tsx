@@ -141,7 +141,7 @@ export default function NewsPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed"
             >
-              Stay updated with Quest Tours' journey, achievements, and our contributions to the community and travel industry.
+              Stay updated with Quest Tours&apos; journey, achievements, and our contributions to the community and travel industry.
             </motion.p>
           </div>
         </div>
@@ -298,6 +298,7 @@ export default function NewsPage() {
                 <div className="absolute top-6 right-6 z-10">
                   <button
                     onClick={() => setSelectedImage(null)}
+                    aria-label="Close Image Modal"
                     className="p-3 bg-black/10 hover:bg-black/20 rounded-full transition-colors backdrop-blur-md"
                     aria-label='Close'
                   >

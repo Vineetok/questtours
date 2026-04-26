@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import {  MapPin, Star,  CheckCircle2 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 interface PlanCardProps {
   plan: {
     id: string | number;
@@ -20,11 +21,15 @@ interface PlanCardProps {
 }
 
 export function PlanCard({ plan, onClick }: PlanCardProps) {
+  const router = useRouter();
   const nights = plan.duration.split('/')[1]?.trim() || plan.duration;
 
   return (
     <div 
-      onClick={onClick}
+      onClick={() => {
+        if (onClick) onClick();
+        router.push(`/tours/${plan.id}`);
+      }}
       className="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer flex flex-col md:flex-row h-full md:h-72"
     >
       {/* Image Section */}

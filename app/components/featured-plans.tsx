@@ -44,7 +44,7 @@ export function FeaturedPlans() {
               Professional day-by-day itineraries designed to give you the ultimate travel experience without the stress of planning.
             </p>
           </div>
-          <Link href="/login">
+          <Link href="/tours">
             <Button variant="outline" className="h-14 px-8 rounded-2xl border-2 font-black gap-2 hover:bg-gray-50 transition-all">
               View All Plans <ChevronRight size={18} />
             </Button>
@@ -92,7 +92,7 @@ export function FeaturedPlans() {
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Starting From</span>
                       <span className="text-2xl font-black text-[#003B5C]">{formatCurrency(plan.price)}</span>
                     </div>
-                    <Link href="/login">
+                    <Link href={`/tours/${plan.id}`}>
                        <Button className="bg-blue-600 hover:bg-blue-700 h-12 w-12 rounded-2xl flex items-center justify-center p-0 shadow-lg shadow-blue-200">
                          <ChevronRight size={20} className="text-white" />
                        </Button>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Globe, MapPin, Plane } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe, MapPin, Plane, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -99,7 +99,7 @@ export function Navbar() {
         : 'bg-white border-b border-slate-100'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-[90px] gap-8">
+        <div className="flex items-center justify-between h-[90px] gap-4 lg:gap-8">
           {/* Logo */}
           <Link
             href="/"
@@ -110,7 +110,7 @@ export function Navbar() {
               alt="QuestTours" 
               width={200} 
               height={60} 
-              className="h-16 sm:h-20 w-auto object-contain"
+              className="h-10 sm:h-20 w-auto object-contain"
               priority
             />
           </Link>
@@ -336,10 +336,10 @@ export function Navbar() {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-slate-900 p-2 rounded-xl hover:bg-slate-100 transition-colors"
+            className="lg:hidden text-slate-900 p-2.5 rounded-xl hover:bg-slate-100 transition-colors flex-shrink-0"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={24} /> : <MoreVertical size={24} />}
           </button>
         </div>
 

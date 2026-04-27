@@ -300,7 +300,6 @@ export default function NewsPage() {
                     onClick={() => setSelectedImage(null)}
                     aria-label="Close Image Modal"
                     className="p-3 bg-black/10 hover:bg-black/20 rounded-full transition-colors backdrop-blur-md"
-                    aria-label='Close'
                   >
                     <X className="w-6 h-6 text-black" />
                   </button>

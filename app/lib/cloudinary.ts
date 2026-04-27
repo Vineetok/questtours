@@ -4,8 +4,15 @@
  */
 
 export async function uploadImageToCloudinary(file: File): Promise<string> {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'demo';
-  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'unsigned_preset';
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!cloudName || cloudName === 'your_cloud_name_here') {
+    throw new Error('Missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME in .env file');
+  }
+  if (!uploadPreset || uploadPreset === 'your_upload_preset_here') {
+    throw new Error('Missing NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET in .env file');
+  }
 
   const formData = new FormData();
   formData.append('file', file);
@@ -21,7 +28,8 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
     );
 
     if (!response.ok) {
-      throw new Error('Failed to upload image to Cloudinary');
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || 'Failed to upload image to Cloudinary');
     }
 
     const data = await response.json();

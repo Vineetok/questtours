@@ -168,6 +168,7 @@ function GalleryContent() {
         >
           <button
             className="absolute top-8 right-8 text-white hover:text-sky-400 transition-all p-3 z-50 bg-white/5 rounded-2xl border border-white/10"
+            aria-label="Close Fullscreen"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage(null);

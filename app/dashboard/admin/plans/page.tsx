@@ -11,6 +11,13 @@ import { ImageUpload } from '@/components/shared/image-upload';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
 import { Textarea } from '@/components/ui/inputs/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/inputs/select';
 import { 
   GripVertical,
   Clock,
@@ -87,6 +94,7 @@ export default function PlansManagementPage() {
       image: '',
       duration: '',
       location: '',
+      theme: 'Culture',
       itinerary: []
     });
     setIsDialogOpen(true);
@@ -333,6 +341,22 @@ export default function PlansManagementPage() {
                       placeholder="e.g. Zurich, Lucerne, Interlaken"
                       className="h-12 bg-white border-gray-200 rounded-xl"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-black text-gray-700 uppercase tracking-wider">Theme</label>
+                    <Select value={editingPlan?.theme ?? ''} onValueChange={value => setEditingPlan({...editingPlan, theme: value})}>
+                      <SelectTrigger className="h-12 w-full bg-white border-gray-200 rounded-xl">
+                        <SelectValue placeholder="Select a theme" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Honeymoon">Honeymoon</SelectItem>
+                        <SelectItem value="Culture">Culture</SelectItem>
+                        <SelectItem value="Adventure">Adventure</SelectItem>
+                        <SelectItem value="Offbeat">Offbeat</SelectItem>
+                        <SelectItem value="Family">Family</SelectItem>
+                        <SelectItem value="Luxury">Luxury</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <div className="space-y-2">

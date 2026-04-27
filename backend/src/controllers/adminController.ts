@@ -369,10 +369,10 @@ export const getPlans = async (req: Request, res: Response) => {
 
 export const addPlan = async (req: Request, res: Response) => {
   try {
-    const { title, description, price, image, duration, location, itinerary } = req.body;
+    const { title, description, price, image, duration, location, theme, itinerary } = req.body;
     const result = await pool.query(
-      'INSERT INTO plans (title, description, price, image, duration, location, itinerary) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [title, description, price, image, duration, location, JSON.stringify(itinerary)]
+      'INSERT INTO plans (title, description, price, image, duration, location, theme, itinerary) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [title, description, price, image, duration, location, theme || 'Culture', JSON.stringify(itinerary)]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -384,10 +384,10 @@ export const addPlan = async (req: Request, res: Response) => {
 export const updatePlan = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { title, description, price, image, duration, location, itinerary } = req.body;
+    const { title, description, price, image, duration, location, theme, itinerary } = req.body;
     const result = await pool.query(
-      'UPDATE plans SET title=$1, description=$2, price=$3, image=$4, duration=$5, location=$6, itinerary=$7, updated_at=CURRENT_TIMESTAMP WHERE id=$8 RETURNING *',
-      [title, description, price, image, duration, location, JSON.stringify(itinerary), id]
+      'UPDATE plans SET title=$1, description=$2, price=$3, image=$4, duration=$5, location=$6, theme=$7, itinerary=$8, updated_at=CURRENT_TIMESTAMP WHERE id=$9 RETURNING *',
+      [title, description, price, image, duration, location, theme || 'Culture', JSON.stringify(itinerary), id]
     );
     res.json(result.rows[0]);
   } catch (error) {

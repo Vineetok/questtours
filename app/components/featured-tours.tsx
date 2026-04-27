@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 
 interface FeaturedToursProps {
   showAll?: boolean;
+  
 }
 
 export function FeaturedTours({ showAll: initialShowAll = false }: FeaturedToursProps) {

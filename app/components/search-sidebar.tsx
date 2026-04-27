@@ -37,10 +37,10 @@ export function SearchSidebar({ filters, onFilterChange, locations }: SearchSide
           <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Search Destination</label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-            <Input 
+            <Input
               value={filters.search}
               onChange={(e) => onFilterChange('search', e.target.value)}
-              placeholder="Where to?" 
+              placeholder="Where to?"
               className="pl-10 h-12 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-blue-100"
             />
           </div>
@@ -54,22 +54,19 @@ export function SearchSidebar({ filters, onFilterChange, locations }: SearchSide
               <button
                 key={theme}
                 onClick={() => toggleTheme(theme)}
-                className={`flex items-center gap-3 p-2 rounded-xl transition-all ${
-                  filters.themes.includes(theme) 
-                    ? 'bg-blue-50 border-blue-200' 
+                className={`flex items-center gap-3 p-2 rounded-xl transition-all ${filters.themes.includes(theme)
+                    ? 'bg-blue-50 border-blue-200'
                     : 'hover:bg-slate-50 border-transparent'
-                } border`}
+                  } border`}
               >
-                <div className={`h-5 w-5 rounded border flex items-center justify-center transition-all ${
-                  filters.themes.includes(theme) 
-                    ? 'bg-blue-600 border-blue-600' 
+                <div className={`h-5 w-5 rounded border flex items-center justify-center transition-all ${filters.themes.includes(theme)
+                    ? 'bg-blue-600 border-blue-600'
                     : 'bg-white border-slate-300'
-                }`}>
+                  }`}>
                   {filters.themes.includes(theme) && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
-                <span className={`text-sm font-bold ${
-                  filters.themes.includes(theme) ? 'text-blue-600' : 'text-slate-600'
-                }`}>
+                <span className={`text-sm font-bold ${filters.themes.includes(theme) ? 'text-blue-600' : 'text-slate-600'
+                  }`}>
                   {theme}
                 </span>
               </button>
@@ -88,11 +85,10 @@ export function SearchSidebar({ filters, onFilterChange, locations }: SearchSide
               <button
                 key={d}
                 onClick={() => onFilterChange('duration', filters.duration === d ? '' : d)}
-                className={`text-xs font-bold py-2 rounded-lg border transition-all ${
-                  filters.duration === d 
-                    ? 'bg-blue-600 text-white border-blue-600' 
+                className={`text-xs font-bold py-2 rounded-lg border transition-all ${filters.duration === d
+                    ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-slate-600 border-slate-100 hover:border-blue-200'
-                }`}
+                  }`}
               >
                 {d}
               </button>
@@ -106,11 +102,12 @@ export function SearchSidebar({ filters, onFilterChange, locations }: SearchSide
             <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Max Budget</label>
             <span className="text-xs font-bold text-blue-600">₹{filters.budget.toLocaleString('en-IN')}</span>
           </div>
-          <input 
-            type="range" 
-            min="5000" 
-            max="200000" 
+          <input
+            type="range"
+            min="5000"
+            max="200000"
             step="5000"
+            aria-label="Budget Range"
             value={filters.budget}
             onChange={(e) => onFilterChange('budget', Number(e.target.value))}
             className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"

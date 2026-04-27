@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { 
-  LayoutDashboard, 
-  Map, 
-  Heart, 
+  Calendar,
   CreditCard,
   ChevronLeft,
   Download,
@@ -142,7 +140,7 @@ export default function BookingDetailsPage() {
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Date</p>
                     <div className="flex items-center gap-1.5 font-semibold">
-                      <CalendarIcon className="h-4 w-4 text-blue-600" />
+                      <Calendar className="h-4 w-4 text-blue-600" />
                       {booking.date}
                     </div>
                   </div>

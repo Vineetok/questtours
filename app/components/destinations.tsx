@@ -187,6 +187,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
               </div>
               <button
                 onClick={() => setIsAllOpen(false)}
+                aria-label="Close"
                 className="p-3 bg-white text-gray-500 hover:text-gray-800 rounded-full shadow-md transition-all"
               >
                 <X size={24} />

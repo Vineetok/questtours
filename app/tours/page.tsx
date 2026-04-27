@@ -9,13 +9,13 @@ import { PlanCard } from '@/components/plan-card';
 import { adminService } from '@/services/adminService';
 import { Plan } from '@/lib/types';
 import { MapPin, Loader2, Search } from 'lucide-react';
-import {Button} from '@/components/ui/inputs/button';
+import { Button } from '@/components/ui/inputs/button';
 import { toast } from 'sonner';
 
 function ToursContent() {
   const searchParams = useSearchParams();
   const initialLocation = searchParams.get('location') || '';
-  
+
   const [plans, setPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -31,7 +31,7 @@ function ToursContent() {
       try {
         const plansData = await adminService.getPlans();
         setPlans(plansData || []);
-      } catch  {
+      } catch {
         toast.error('Failed to fetch data');
       } finally {
         setIsLoading(false);
@@ -46,15 +46,15 @@ function ToursContent() {
     if (loc) setFilters(prev => ({ ...prev, search: loc }));
   }, [searchParams]);
 
-  const handleFilterChange = (key: string, value: unknown ) => {
+  const handleFilterChange = (key: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
   const filteredPlans = plans.filter(plan => {
-    const matchesSearch = plan.location.toLowerCase().includes(filters.search.toLowerCase()) || 
-                         plan.title.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesSearch = plan.location.toLowerCase().includes(filters.search.toLowerCase()) ||
+      plan.title.toLowerCase().includes(filters.search.toLowerCase());
     const matchesBudget = plan.price <= filters.budget;
-    
+
     let matchesDuration = true;
     if (filters.duration === '1-3 Nights') {
       const n = parseInt(plan.duration.split('/')[1]) || 0;
@@ -100,11 +100,11 @@ function ToursContent() {
       {/* Main Content Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 -mt-12 relative z-20">
         <div className="flex flex-col lg:flex-row gap-8">
-          
+
           {/* Sidebar */}
-          <SearchSidebar 
-            filters={filters} 
-            onFilterChange={handleFilterChange} 
+          <SearchSidebar
+            filters={filters}
+            onFilterChange={handleFilterChange}
             locations={locations}
           />
 
@@ -147,8 +147,8 @@ function ToursContent() {
                   <p className="text-slate-500 max-w-sm mx-auto">
                     We couldn&apos;t find any plans matching your filters. Try adjusting your budget or searching for a different destination.
                   </p>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     aria-label="Clear All Filters"
                     onClick={() => setFilters({ search: '', budget: 200000, duration: '', themes: [] })}
                     className="rounded-xl border-2 font-bold px-8 h-12"

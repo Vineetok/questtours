@@ -4,9 +4,8 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import Image from 'next/image';
 import { useState } from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Newspaper, Calendar, Eye, X, NewspaperIcon, ExternalLink, BookOpen } from 'lucide-react';
+import {  Calendar, Eye, X, NewspaperIcon, ExternalLink, BookOpen } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/navigation/tabs';
 import { BlogModal } from '@/components/blog-modal';
 
@@ -205,7 +204,7 @@ export default function NewsPage() {
                         <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.2em]">{item.source}</span>
                       </div>
                       
-                      <h3 className="text-sm font-bold text-slate-400 mb-2">"{item.marathiTitle}"</h3>
+                      <h3 className="text-sm font-bold text-slate-400 mb-2">&quot;{item.marathiTitle}&quot;</h3>
                       <h2 className="text-2xl font-black text-[#003B5C] mb-4 group-hover:text-blue-600 transition-colors leading-tight">
                         {item.title}
                       </h2>
@@ -300,7 +299,7 @@ export default function NewsPage() {
                     onClick={() => setSelectedImage(null)}
                     aria-label="Close Image Modal"
                     className="p-3 bg-black/10 hover:bg-black/20 rounded-full transition-colors backdrop-blur-md"
-                    aria-label='Close'
+                
                   >
                     <X className="w-6 h-6 text-black" />
                   </button>

@@ -12,7 +12,7 @@ import { removeAuthToken } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/hooks/use-user';
 import { 
-  User, 
+   
   ChevronUp,
   Settings,
   UserCircle

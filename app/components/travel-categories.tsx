@@ -177,6 +177,7 @@ export function TravelCategories() {
                 </div>
                 <button
                   onClick={() => setActiveCategory(null)}
+                  aria-label="Close"
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
                 >
                   <X className="w-6 h-6 text-gray-500" />

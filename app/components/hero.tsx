@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/inputs/button';
 import { Input } from '@/components/ui/inputs/input';
-import { Calendar, Users, MapPin, Search, Plane, Hotel, TrainFront, Bus, Car, ShieldCheck } from 'lucide-react';
+import { Calendar, Users, MapPin, Search,  TrainFront, Bus,  ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 

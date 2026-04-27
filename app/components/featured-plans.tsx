@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/inputs/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export function FeaturedPlans() {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -18,8 +19,8 @@ export function FeaturedPlans() {
       try {
         const data = await adminService.getPlans();
         setPlans(data.slice(0, 3) || []);
-      } catch (error) {
-        console.error('Failed to fetch plans');
+      } catch  {
+        toast.error('Failed to fetch plans');
       } finally {
         setIsLoading(false);
       }

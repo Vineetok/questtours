@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { TourGallery } from '@/components/tour-gallery';
@@ -9,11 +9,12 @@ import { TourItinerary } from '@/components/tour-itinerary';
 import { TourSidebar } from '@/components/tour-sidebar';
 import { adminService } from '@/services/adminService';
 import { Plan } from '@/lib/types';
-import { 
-  MapPin, 
-  Calendar, 
-  Share2, 
-  Heart, 
+import Link from 'next/link';
+import {
+  MapPin,
+  Calendar,
+  Share2,
+  Heart,
   Loader2,
   ChevronRight,
   Info,
@@ -75,9 +76,9 @@ export default function TourDetailPage() {
       <div className="pt-32 pb-8 bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">
-            <a href="/" className="hover:text-blue-600 transition-colors">Home</a>
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
             <ChevronRight size={12} />
-            <a href="/tours" className="hover:text-blue-600 transition-colors">Tours</a>
+            <Link href="/tours" className="hover:text-blue-600 transition-colors">Tours</Link>
             <ChevronRight size={12} />
             <span className="text-slate-900">{plan.location}</span>
           </nav>
@@ -115,10 +116,10 @@ export default function TourDetailPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12">
-          
+
           {/* Main Column */}
           <div className="lg:col-span-8 space-y-12">
-            
+
             {/* Gallery Section */}
             <TourGallery images={[plan.image]} />
 
@@ -130,11 +131,10 @@ export default function TourDetailPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-3 px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                      activeTab === tab.id 
-                      ? 'bg-slate-900 text-white shadow-xl' 
-                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                    }`}
+                    className={`flex items-center gap-3 px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id
+                        ? 'bg-slate-900 text-white shadow-xl'
+                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                      }`}
                   >
                     <Icon size={16} />
                     {tab.label}
@@ -148,7 +148,7 @@ export default function TourDetailPage() {
               {activeTab === 'itinerary' && (
                 <TourItinerary itinerary={plan.itinerary || []} />
               )}
-              
+
               {activeTab === 'policies' && (
                 <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm space-y-8">
                   <h2 className="text-3xl font-black text-slate-900">Policies & Terms</h2>
@@ -196,15 +196,13 @@ export default function TourDetailPage() {
               )}
             </div>
           </div>
-
           {/* Sidebar Column */}
           <div className="lg:col-span-4">
-            <TourSidebar 
+            <TourSidebar
               id={plan.id}
               price={plan.price}
               duration={plan.duration}
-              location={plan.location}
-            />
+              location={plan.location} />
           </div>
         </div>
       </div>

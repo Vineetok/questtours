@@ -68,7 +68,7 @@ export default function CareersPage() {
                 Join Our <span className="text-blue-600">Adventure</span>
               </h1>
               <p className="text-slate-600 text-xl font-medium leading-relaxed max-w-xl">
-                We're hiring amazing people. Come join us and help travelers discover the world in a whole new light.
+                We&apos;re hiring amazing people. Come join us and help travelers discover the world in a whole new light.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="#openings">
@@ -163,7 +163,7 @@ export default function CareersPage() {
                   </div>
                   <h2 className="text-3xl font-black text-slate-900 tracking-tight">Ready to join our team?</h2>
                   <p className="text-slate-500 font-medium leading-relaxed">
-                    If you are humble, ambitious, and thrive in a fast-paced environment, we'd love to get to know you.
+                    If you are humble, ambitious, and thrive in a fast-paced environment, we&apos;d love to get to know you.
                   </p>
                   <div className="pt-4">
                     <p className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-4">Send your updated profile to</p>

@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { TourCard } from './tour-card';
 import { adminService } from '@/services/adminService';
 import { Package } from '@/lib/types';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import {  ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/inputs/button';
+import { toast } from 'sonner';
 
 export function FeaturedPackages() {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -17,8 +18,8 @@ export function FeaturedPackages() {
       try {
         const data = await adminService.getPackages();
         setPackages(data || []);
-      } catch (error) {
-        console.error('Failed to fetch packages');
+      } catch  {
+        toast.error('Failed to fetch packages');
       } finally {
         setIsLoading(false);
       }

@@ -95,8 +95,8 @@ export default function MasterImportPage() {
         try {
           await adminService.addTour(tour);
           tourCount++;
-        } catch (e) {
-          console.error('Failed to add tour:', tour.title);
+        } catch  {
+          toast.error('Failed to add tour:', tour.title);
         }
       }
 
@@ -248,7 +248,7 @@ export default function MasterImportPage() {
                 </div>
                 <div className="space-y-4">
                   <p className="text-slate-300 text-sm leading-relaxed">
-                    Our <span className="text-white font-bold underline underline-offset-4 decoration-blue-500">Master Engine</span> uses the "Plans CSV" format. 
+                    Our <span className="text-white font-bold underline underline-offset-4 decoration-blue-500">Master Engine</span> uses the &quot;Plans CSV&quot; format. 
                     It intelligently deduplicates locations and cross-references all data points.
                   </p>
                   <div className="flex items-center gap-4 pt-2">

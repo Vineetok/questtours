@@ -2,7 +2,7 @@
 
 import { Navbar } from '../components/navbar';
 import { Footer } from '../components/footer';
-import { Target, Users, Award, Shield, Heart, Globe, Quote, Camera, Sparkles } from 'lucide-react';
+import {  Users,  Shield, Heart, Globe, Quote,  Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -21,7 +21,7 @@ export default function AboutPage() {
             Our <span className="text-blue-600">Story</span>
           </h1>
           <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">
-            A journey of a thousand miles begins with a single step. For us, that step was a quest for perfection in every traveler's story.
+            A journey of a thousand miles begins with a single step. For us, that step was a quest for perfection in every traveler&apos;s story.
           </p>
         </div>
       </section>
@@ -74,7 +74,7 @@ export default function AboutPage() {
             <div className="absolute -bottom-10 -right-10 bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100 max-w-xs hidden md:block">
               <Quote className="text-blue-500 mb-4" size={32} />
               <p className="text-slate-800 font-bold leading-relaxed mb-4">
-                "Travel is not just seeing places. It's about soaking the inherent beauty of the place and its people."
+                &quot;Travel is not just seeing places. It&apos;s about soaking the inherent beauty of the place and its people.&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-blue-100"></div>

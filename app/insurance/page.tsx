@@ -8,7 +8,6 @@ import {
   Star, Phone, MessageCircle, ChevronDown, ChevronUp, Globe, Users, Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const benefits = [

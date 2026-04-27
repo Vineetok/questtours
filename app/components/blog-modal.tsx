@@ -117,6 +117,7 @@ export function BlogModal({ isOpen, onClose, post }: BlogModalProps) {
                 <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Share this Story:</span>
                 <button 
                   onClick={handleShare}
+                  aria-label="share"
                   className="p-2 bg-gray-100 text-gray-500 hover:bg-blue-600 hover:text-white rounded-full transition-all"
                 >
                   <Share2 size={16} />

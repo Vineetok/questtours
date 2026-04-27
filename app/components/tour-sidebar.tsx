@@ -1,7 +1,7 @@
 // components/tour-sidebar.tsx
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {  Users, MapPin, Clock,  ShieldCheck, ChevronRight } from 'lucide-react';
+import { Users, MapPin, Clock, ShieldCheck, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
 import { Card, CardContent } from '@/components/ui/display/card';
 import { formatCurrency } from '@/lib/utils';
@@ -75,18 +75,18 @@ export function TourSidebar({ id, price, duration, location, isMobile = false, o
               Number of Travelers
             </label>
             <div className="flex items-center justify-between bg-white/5 rounded-xl p-2 border border-white/10">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="h-8 w-8 md:h-10 md:w-10 rounded-lg text-white hover:bg-white/10"
                 onClick={() => setPassengers(Math.max(1, passengers - 1))}
               >
                 -
               </Button>
               <span className="text-xl md:text-2xl font-black text-white">{passengers}</span>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="h-8 w-8 md:h-10 md:w-10 rounded-lg text-white hover:bg-white/10"
                 onClick={() => setPassengers(passengers + 1)}
               >
@@ -105,7 +105,7 @@ export function TourSidebar({ id, price, duration, location, isMobile = false, o
               <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-white/20" />
             </div>
 
-            <Button 
+            <Button
               onClick={handleBooking}
               disabled={isNavigating}
               className="w-full bg-sky-600 hover:bg-sky-500 text-white rounded-xl md:rounded-2xl font-bold h-12 md:h-14 text-sm md:text-base transition-all shadow-lg shadow-sky-900/50"

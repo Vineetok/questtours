@@ -150,7 +150,7 @@ function GalleryContent() {
             <Camera size={40} className="text-slate-300" />
           </div>
           <p className="text-slate-500 text-2xl font-bold mb-2">No images found</p>
-          <p className="text-slate-400">We couldn't find any photos for the category "{categoryFilter}".</p>
+          <p className="text-slate-400">We couldn&apos;t find any photos for the category &quot;{categoryFilter}&quot;.</p>
           <button
             onClick={() => window.history.pushState({}, '', '/gallery/international')}
             className="mt-8 text-sky-600 font-bold hover:underline"
@@ -168,6 +168,7 @@ function GalleryContent() {
         >
           <button
             className="absolute top-8 right-8 text-white hover:text-sky-400 transition-all p-3 z-50 bg-white/5 rounded-2xl border border-white/10"
+            aria-label="Close Fullscreen"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage(null);
@@ -176,9 +177,11 @@ function GalleryContent() {
             <X size={32} />
           </button>
           <div className="relative w-full h-full flex items-center justify-center">
-            <img
+            <Image
               src={selectedImage}
               alt="Fullscreen view"
+              width={1200}
+              height={800}
               className="max-w-full max-h-full object-contain rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500"
             />
           </div>

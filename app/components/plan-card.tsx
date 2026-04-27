@@ -56,7 +56,7 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
   };
 
   return (
-    <div 
+    <div
       onClick={() => {
         if (onClick) onClick();
         router.push(`/tours/${plan.id}`);
@@ -65,10 +65,10 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
     >
       {/* Image Section */}
       <div className="relative w-full md:w-80 h-60 md:h-full shrink-0 overflow-hidden">
-        <Image 
-          src={plan.image || "/tours/fallback/fallback-card.png"} 
-          alt={plan.title} 
-          fill 
+        <Image
+          src={plan.image || "/tours/fallback/fallback-card.png"}
+          alt={plan.title}
+          fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute top-4 left-4">
@@ -91,7 +91,7 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
             <MapPin size={14} />
             <span className="text-xs font-black uppercase tracking-widest">{plan.location}</span>
           </div>
-          
+
           <div>
             <h3 className="text-xl md:text-2xl font-black text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
               {plan.title}

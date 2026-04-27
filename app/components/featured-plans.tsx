@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/inputs/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
-import { wishlistService } from '@/services/wishlistService';
 import { toast } from 'sonner';
+import { wishlistService } from '@/services/wishlistService';
 import { Tour } from '@/lib/types';
 
 export function FeaturedPlans({ linkPrefix = '/tours', initialShowAll = false }: { linkPrefix?: string, initialShowAll?: boolean }) {
@@ -22,9 +22,9 @@ export function FeaturedPlans({ linkPrefix = '/tours', initialShowAll = false }:
     const fetchPlans = async () => {
       try {
         const data = await adminService.getPlans();
-        setAllPlans(data || []);
-      } catch (error) {
-        console.error('Failed to fetch plans');
+        setPlans(data.slice(0, 3) || []);
+      } catch  {
+        toast.error('Failed to fetch plans');
       } finally {
         setIsLoading(false);
       }

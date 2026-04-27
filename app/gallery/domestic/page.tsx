@@ -12,94 +12,95 @@ const domesticGallery = [
     category: "Kashmir, Vaishno Devi, Amritsar",
     id: "Kashmir",
     images: [
-      { src: "/domestic_gallery/kashmir-1.jpg", alt: "Kashmir Group" },
-      { src: "/domestic_gallery/kashmir-2.jpg", alt: "Vaishno Devi" },
-      { src: "/domestic_gallery/kashmir-3.jpg", alt: "Amritsar Golden Temple" },
-      { src: "/domestic_gallery/kashmir-4.jpg", alt: "Dal Lake Kashmir" },
-      { src: "/domestic_gallery/kashmir-5.jpg", alt: "Gulmarg Snow" },
-      { src: "/domestic_gallery/kashmir-special.jpg", alt: "Kashmir Special Tour" },
-      { src: "/domestic_gallery/kashmir-2018-1.jpg", alt: "Kashmir 2018 - 1" },
-      { src: "/domestic_gallery/kashmir-2018-2.jpg", alt: "Kashmir 2018 - 2" },
-      { src: "/domestic_gallery/kashmir-2018-3.jpg", alt: "Kashmir 2018 - 3" },
-      { src: "/domestic_gallery/kashmir-2018-4.jpg", alt: "Kashmir 2018 - 4" },
-      { src: "/domestic_gallery/kashmir-2018-5.jpg", alt: "Kashmir 2018 - 5" },
-      { src: "/domestic_gallery/kashmir-2018-6.jpg", alt: "Kashmir 2018 - 6" },
-      { src: "/domestic_gallery/kashmir-2018-7.jpg", alt: "Kashmir 2018 - 7" }
+      { src: "/domestic_gallery/kashmir-1.jpg", width: 400, height: 300, alt: "Kashmir Group" },
+      { src: "/domestic_gallery/kashmir-2.jpg", width: 400, height: 300, alt: "Vaishno Devi" },
+      { src: "/domestic_gallery/kashmir-3.jpg", width: 400, height: 300, alt: "Amritsar Golden Temple" },
+      { src: "/domestic_gallery/kashmir-4.jpg", width: 400, height: 300, alt: "Dal Lake Kashmir" },
+      { src: "/domestic_gallery/kashmir-5.jpg", width: 400, height: 300, alt: "Gulmarg Snow" },
+      { src: "/domestic_gallery/kashmir-special.jpg", width: 400, height: 300, alt: "Kashmir Special Tour" },
+      { src: "/domestic_gallery/kashmir-2018-1.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 1" },
+      { src: "/domestic_gallery/kashmir-2018-2.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 2" },
+      { src: "/domestic_gallery/kashmir-2018-3.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 3" },
+      { src: "/domestic_gallery/kashmir-2018-4.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 4" },
+      { src: "/domestic_gallery/kashmir-2018-5.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 5" },
+      { src: "/domestic_gallery/kashmir-2018-6.jpg", width: 400, height: 300, alt: "Kashmir 2018 - 6" },
+      { src: "/domestic_gallery/kashmir-2018-7.jpg", width: 400, height: 300,    alt: "Kashmir 2018 - 7" }
     ]
   },
   {
     category: "Rajasthan Tour",
     id: "Rajasthan",
     images: [
-      { src: "/domestic_gallery/rajasthan-1.jpg", alt: "Rajasthan Fort" },
-      { src: "/domestic_gallery/rajasthan-2.jpg", alt: "Desert Safari" },
-      { src: "/domestic_gallery/rajasthan-3.jpg", alt: "Cultural Folk Dance" },
-      { src: "/domestic_gallery/rajasthan-4.jpg", alt: "Udaipur Lake" },
-      { src: "/domestic_gallery/rajasthan-5.jpg", alt: "Group Photo Rajasthan" }
+      { src: "/domestic_gallery/rajasthan-1.jpg", width: 400, height: 300, alt: "Rajasthan Fort" },
+      { src: "/domestic_gallery/rajasthan-2.jpg", width: 400, height: 300, alt: "Desert Safari" },
+      { src: "/domestic_gallery/rajasthan-3.jpg", width: 400, height: 300, alt: "Cultural Folk Dance" },
+      { src: "/domestic_gallery/rajasthan-4.jpg", width: 400, height: 300, alt: "Udaipur Lake" },
+      { src: "/domestic_gallery/rajasthan-5.jpg", width: 400, height: 300, alt: "Group Photo Rajasthan" }
     ]
   },
   {
     category: "Leh Ladakh",
     id: "Ladakh",
     images: [
-      { src: "/domestic_gallery/ladakh-1.jpg", alt: "Leh Ladakh Mountains" }
+      { src: "/domestic_gallery/ladakh-1.jpg", width: 400, height: 300, alt: "Leh Ladakh Mountains" }
+      
     ]
   },
   {
     category: "Andaman Islands",
     id: "Andaman",
     images: [
-      { src: "/domestic_gallery/andaman-1.jpg", alt: "Andaman Beach" },
-      { src: "/domestic_gallery/andaman-2.jpg", alt: "Havelock Island" }
+      { src: "/domestic_gallery/andaman-1.jpg", width: 400, height: 300, alt: "Andaman Beach" },
+      { src: "/domestic_gallery/andaman-2.jpg", width: 400, height: 300, alt: "Havelock Island" }
     ]
   },
   {
     category: "Madhya Pradesh",
     id: "Madhya Pradesh",
     images: [
-      { src: "/domestic_gallery/mp-1.jpg", alt: "MP Heritage" }
+      { src: "/domestic_gallery/mp-1.jpg", width: 400, height: 300, alt: "MP Heritage" }
     ]
   },
   {
     category: "Shimla & Manali",
     id: "Shimla & Manali",
     images: [
-      { src: "/domestic_gallery/shimla-1.jpg", alt: "Shimla Mall Road" },
-      { src: "/domestic_gallery/shimla-2.jpg", alt: "Manali Mountains" }
+      { src: "/domestic_gallery/shimla-1.jpg", width: 400, height: 300, alt: "Shimla Mall Road" },
+      { src: "/domestic_gallery/shimla-2.jpg", width: 400, height: 300, alt: "Manali Mountains" }
     ]
   },
   {
     category: "Kashi Gaya Prayag",
     id: "Kashi",
     images: [
-      { src: "/domestic_gallery/kashi-1.jpg", alt: "Prayag Sangam" }
+      { src: "/domestic_gallery/kashi-1.jpg", width: 400, height: 300, alt: "Prayag Sangam" }
     ]
   },
   {
     category: "Delhi & Agra",
     id: "Delhi",
     images: [
-      { src: "/domestic_gallery/delhi-1.jpg", alt: "Delhi Agra" },
-      { src: "/domestic_gallery/delhi-2.jpg", alt: "Agra Fort" }
+      { src: "/domestic_gallery/delhi-1.jpg", width: 400, height: 300, alt: "Delhi Agra" },
+      { src: "/domestic_gallery/delhi-2.jpg", width: 400, height: 300, alt: "Agra Fort" }
     ]
   },
   {
     category: "Other Glimpses",
     id: "Other",
     images: [
-      { src: "/domestic_gallery/glimpse-main.jpg", alt: "Bhandardhara" },
-      { src: "/domestic_gallery/glimpse-1.jpg", alt: "Tour Glimpse 1" },
-      { src: "/domestic_gallery/glimpse-2.jpg", alt: "Tour Glimpse 2" },
-      { src: "/domestic_gallery/glimpse-3.jpg", alt: "Tour Glimpse 3" },
-      { src: "/domestic_gallery/glimpse-4.jpg", alt: "Tour Glimpse 4" },
-      { src: "/domestic_gallery/glimpse-5.jpg", alt: "Tour Glimpse 5" },
-      { src: "/domestic_gallery/glimpse-6.jpg", alt: "Tour Glimpse 6" },
-      { src: "/domestic_gallery/glimpse-7.jpg", alt: "Tour Glimpse 7" },
-      { src: "/domestic_gallery/glimpse-8.jpg", alt: "Tour Glimpse 8" },
-      { src: "/domestic_gallery/glimpse-9.jpg", alt: "Tour Glimpse 9" },
-      { src: "/domestic_gallery/glimpse-10.jpg", alt: "Tour Glimpse 10" },
-      { src: "/domestic_gallery/glimpse-11.jpg", alt: "Tour Glimpse 11" },
-      { src: "/domestic_gallery/glimpse-12.jpg", alt: "Tour Glimpse 12" }
+      { src: "/domestic_gallery/glimpse-main.jpg", width: 400, height: 300, alt: "Bhandardhara" },
+      { src: "/domestic_gallery/glimpse-1.jpg", width: 400, height: 300, alt: "Tour Glimpse 1" },
+      { src: "/domestic_gallery/glimpse-2.jpg", width: 400, height: 300, alt: "Tour Glimpse 2" },
+      { src: "/domestic_gallery/glimpse-3.jpg", width: 400, height: 300, alt: "Tour Glimpse 3" },
+      { src: "/domestic_gallery/glimpse-4.jpg", width: 400, height: 300, alt: "Tour Glimpse 4" },
+      { src: "/domestic_gallery/glimpse-5.jpg", width: 400, height: 300, alt: "Tour Glimpse 5" },
+      { src: "/domestic_gallery/glimpse-6.jpg", width: 400, height: 300, alt: "Tour Glimpse 6" },
+      { src: "/domestic_gallery/glimpse-7.jpg", width: 400, height: 300, alt: "Tour Glimpse 7" },
+      { src: "/domestic_gallery/glimpse-8.jpg", width: 400, height: 300, alt: "Tour Glimpse 8" },
+      { src: "/domestic_gallery/glimpse-9.jpg", width: 400, height: 300, alt: "Tour Glimpse 9" },
+      { src: "/domestic_gallery/glimpse-10.jpg", width: 400, height: 300, alt: "Tour Glimpse 10" },
+      { src: "/domestic_gallery/glimpse-11.jpg", width: 400, height: 300, alt: "Tour Glimpse 11" },
+      { src: "/domestic_gallery/glimpse-12.jpg", width: 400, height: 300,  alt: "Tour Glimpse 12" }
     ]
   }
 ];
@@ -176,7 +177,7 @@ function GalleryContent() {
             <Camera size={40} className="text-slate-300" />
           </div>
           <p className="text-slate-500 text-2xl font-bold mb-2">No images found</p>
-          <p className="text-slate-400">We couldn't find any photos for the category "{categoryFilter}".</p>
+          <p className="text-slate-400">We couldn&apos;t find any photos for the category &quot;{categoryFilter}&quot;.</p>
           <button
             onClick={() => window.history.pushState({}, '', '/gallery/domestic')}
             className="mt-8 text-sky-600 font-bold hover:underline"
@@ -193,6 +194,7 @@ function GalleryContent() {
           onClick={() => setSelectedImage(null)}
         >
           <button
+            aria-label="Close lightbox"
             className="absolute top-8 right-8 text-white hover:text-sky-400 transition-all p-3 z-50 bg-white/5 rounded-2xl border border-white/10"
             onClick={(e) => {
               e.stopPropagation();
@@ -202,9 +204,11 @@ function GalleryContent() {
             <X size={32} />
           </button>
           <div className="relative w-full h-full flex items-center justify-center">
-            <img
+            <Image
               src={selectedImage}
               alt="Fullscreen view"
+              width={1200}
+              height={900}
               className="max-w-full max-h-full object-contain rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500"
             />
           </div>

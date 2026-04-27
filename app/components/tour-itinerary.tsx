@@ -3,6 +3,7 @@
 import React from 'react';
 import { Day } from '@/lib/types';
 import { MapPin, Utensils, Hotel, CheckCircle2, ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 
 interface TourItineraryProps {
   itinerary: Day[];
@@ -73,9 +74,11 @@ export function TourItinerary({ itinerary }: TourItineraryProps) {
                   
                   {index === 0 && (
                     <div className="relative rounded-2xl overflow-hidden h-40 group/img">
-                      <img 
+                      <Image
                         src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=80" 
                         alt="Day highlight" 
+                        width={400}
+                        height={400}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

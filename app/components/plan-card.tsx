@@ -1,10 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import {  MapPin, Star,  CheckCircle2 } from 'lucide-react';
+import { MapPin, Star, CheckCircle2, Heart } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { wishlistService } from '@/services/wishlistService';
+import { toast } from 'sonner';
+import { Tour } from '@/lib/types';
 interface PlanCardProps {
   plan: {
     id: string | number;
@@ -23,6 +26,34 @@ interface PlanCardProps {
 export function PlanCard({ plan, onClick }: PlanCardProps) {
   const router = useRouter();
   const nights = plan.duration.split('/')[1]?.trim() || plan.duration;
+  const [isWishlist, setIsWishlist] = useState(false);
+
+  React.useEffect(() => {
+    setIsWishlist(wishlistService.isInWishlist(plan.id));
+  }, [plan.id]);
+
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isWishlist) {
+      wishlistService.removeFromWishlist(plan.id);
+      setIsWishlist(false);
+      toast.error(`${plan.title} removed from wishlist`);
+    } else {
+      const tour: Tour = {
+        id: plan.id,
+        name: plan.title,
+        location: plan.location,
+        price: plan.price,
+        image: plan.image,
+        rating: 4.9,
+        reviews: 500,
+        duration: plan.duration,
+      };
+      wishlistService.addToWishlist(tour);
+      setIsWishlist(true);
+      toast.success(`${plan.title} added to wishlist`);
+    }
+  };
 
   return (
     <div 
@@ -45,6 +76,12 @@ export function PlanCard({ plan, onClick }: PlanCardProps) {
             {nights}
           </span>
         </div>
+        <button 
+          onClick={toggleWishlist} 
+          className="absolute top-4 right-4 h-10 w-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 hover:bg-white/40 transition-colors z-10"
+        >
+          <Heart size={18} className={isWishlist ? "fill-rose-500 text-rose-500" : "text-white"} />
+        </button>
       </div>
 
       {/* Content Section */}

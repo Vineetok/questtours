@@ -22,7 +22,7 @@ export default function Home() {
       <FeaturedPackages />
       <Features />
       <TravelCategories />
-            <InsuranceSection />
+      <InsuranceSection />
       <AgentSection />
       <Testimonials />
       <Footer />

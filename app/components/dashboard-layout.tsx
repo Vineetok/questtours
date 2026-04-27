@@ -178,16 +178,7 @@ export function DashboardLayout({ children, role, userName: initialUserName, use
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-4 border-b bg-white px-6 sticky top-0 z-10">
             <SidebarTrigger className="-ml-2" />
-            <div className="flex-1">
-              <div className="relative max-w-md hidden md:block">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  className="w-full bg-gray-50 pl-10 border-gray-200 focus-visible:ring-blue-600 focus-visible:border-blue-600 transition-colors rounded-lg"
-                />
-              </div>
-            </div>
+            <div className="flex-1" />
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="icon" className="relative text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                 <Bell className="h-5 w-5" />

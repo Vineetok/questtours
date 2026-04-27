@@ -24,13 +24,15 @@ export function ProfileView() {
       const data = await userService.getProfile();
       if (data) {
         const updatedUser = updateUserData(data);
-        setUser(updatedUser);
-        setFormData({ 
-          name: updatedUser.name, 
-          email: updatedUser.email, 
-          phone: updatedUser.phone || '', 
-          location: updatedUser.location || '' 
-        });
+        if (updatedUser) {
+          setUser(updatedUser);
+          setFormData({ 
+            name: updatedUser.name, 
+            email: updatedUser.email, 
+            phone: updatedUser.phone || '', 
+            location: updatedUser.location || '' 
+          });
+        }
       }
     } catch {
       // Error handled by toast if needed, but fetchProfile is usually silent on background refresh

@@ -15,5 +15,5 @@ export const customerNavItems = [
   { title: 'Payments', url: '/dashboard/customer/payments', icon: CreditCard },
   { title: 'Profile', url: '/dashboard/customer/profile', icon: UserIcon },
   { title: 'Support Tickets', url: '/dashboard/customer/tickets', icon: TicketIcon },
-  { title: 'Explore', url: '/destinations', icon: Map },
+  { title: 'Explore', url: '/dashboard/customer/explore', icon: Map },
 ];

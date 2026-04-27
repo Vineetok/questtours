@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { customerNavItems } from '@/lib/customer-nav-items';
 import { Star, Trash2, ArrowRight, Plane, Search, SearchX, Heart, Map } from 'lucide-react';
-import { wishlistTours } from '@/lib/mock-data';
+import { wishlistService } from '@/services/wishlistService';
 import { Card, CardHeader, CardDescription, CardFooter } from '@/components/ui/display/card';
 import { Button } from '@/components/ui/inputs/button';
 import { Badge } from '@/components/ui/display/badge';
@@ -22,17 +22,32 @@ import { formatCurrency } from '@/lib/utils';
 export default function WishlistPage() {
   const { user } = useUser();
   const router = useRouter();
-  const [items, setItems] = useState<Tour[]>(wishlistTours);
+  const [items, setItems] = useState<Tour[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [checklistTourId, setChecklistTourId] = useState<string | null>(null);
 
-  const handleRemove = (id: string, name: string) => {
-    setItems(items.filter(item => item.id !== id));
+  React.useEffect(() => {
+    const loadWishlist = () => {
+      const data = wishlistService.getWishlist();
+      setItems(data);
+    };
+    loadWishlist();
+  }, []);
+
+  const handleRemove = (id: string | number, name: string) => {
+    wishlistService.removeFromWishlist(id);
+    setItems(wishlistService.getWishlist());
     toast.success(`${name} removed from your wishlist.`);
   };
 
+  const handleDetailsClick = (id: string | number) => {
+    router.push(`/dashboard/customer/explore/${id}`);
+  };
 
+  const handleBookNowClick = (id: string | number) => {
+    setChecklistTourId(String(id));
+  };
 
   const filteredItems = items.filter(item => 
     item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -46,11 +61,11 @@ export default function WishlistPage() {
       userEmail={user?.email || "customer@example.com"}
       navItems={customerNavItems}
     >
-      <div className="space-y-8">
+      <div className="space-y-8 pb-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Your Wishlist</h1>
-            <p className="text-gray-500">Keep track of the destinations you&apos;re dreaming about.</p>
+            <p className="text-gray-500 font-medium">Keep track of the destinations you&apos;re dreaming about.</p>
           </div>
           
           <div className="relative w-full md:w-80 group">
@@ -76,15 +91,15 @@ export default function WishlistPage() {
         {filteredItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredItems.map((tour) => (
-              <Card key={tour.id} className="group overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 bg-white ring-1 ring-gray-100">
-                <div className="relative aspect-[4/3] overflow-hidden">
+              <Card key={tour.id} className="group overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 bg-white ring-1 ring-gray-100 flex flex-col">
+                <div className="relative aspect-[4/3] overflow-hidden cursor-pointer" onClick={() => handleDetailsClick(tour.id)}>
                   <Image 
                     src={tour.image} 
                     alt={tour.name ?? 'Tour image'} 
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0" onClick={(e) => e.stopPropagation()}>
                     <Button 
                       variant="destructive" 
                       size="icon" 
@@ -97,11 +112,11 @@ export default function WishlistPage() {
                   <div className="absolute bottom-4 left-4">
                     <Badge className="bg-white/95 text-gray-900 border-none shadow-sm backdrop-blur-md px-3 py-1.5 flex items-center gap-1.5 font-bold rounded-lg">
                       <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                      {tour.rating}
+                      {tour.rating || '4.8'}
                     </Badge>
                   </div>
                 </div>
-                <CardHeader className="pb-4 pt-6">
+                <CardHeader className="pb-4 pt-6 flex-1 cursor-pointer" onClick={() => handleDetailsClick(tour.id)}>
                   <div className="space-y-1">
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate pr-2">{tour.name}</h3>
@@ -112,23 +127,22 @@ export default function WishlistPage() {
                     </CardDescription>
                   </div>
                 </CardHeader>
-                <CardFooter className="px-6 pb-6 pt-2 flex gap-3">
+                <CardFooter className="px-6 pb-6 pt-2 flex gap-3 mt-auto">
                   <div className="flex-1">
                     <Button 
-                      onClick={() => setChecklistTourId(String(tour.id))}
-                      className="w-full bg-gray-900 hover:bg-blue-600 text-white rounded-xl h-11 font-bold transition-all group/btn"
+                      onClick={() => handleBookNowClick(tour.id)}
+                      className="w-full bg-slate-900 hover:bg-blue-600 text-white rounded-xl h-11 font-bold transition-all group/btn"
                     >
                       Book Now <Plane className="ml-2 h-4 w-4 transition-transform group-hover/btn:-translate-y-1 group-hover/btn:translate-x-1" />
                     </Button>
                   </div>
-                  <Link href={`/tours/${tour.id}`}>
-                    <Button 
-                      variant="outline" 
-                      className="h-11 px-5 rounded-xl border-gray-200 hover:border-blue-600 hover:text-blue-600 font-bold transition-all"
-                    >
-                      Details
-                    </Button>
-                  </Link>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleDetailsClick(tour.id)}
+                    className="h-11 px-5 rounded-xl border-gray-200 hover:border-blue-600 hover:text-blue-600 font-bold transition-all"
+                  >
+                    Details
+                  </Button>
                 </CardFooter>
               </Card>
             ))}
@@ -148,7 +162,7 @@ export default function WishlistPage() {
             </p>
             <Button 
               className="bg-blue-600 hover:bg-blue-700 h-12 px-10 rounded-xl font-bold shadow-lg shadow-blue-200"
-              onClick={() => searchQuery ? setSearchQuery('') : window.location.href = '/destinations'}
+              onClick={() => searchQuery ? setSearchQuery('') : router.push('/dashboard/customer/explore')}
             >
               {searchQuery ? "Clear Search" : "Explore Destinations"}
             </Button>
@@ -165,10 +179,13 @@ export default function WishlistPage() {
               <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
                 <div className="max-w-xl">
                   <p className="text-indigo-100 text-lg leading-relaxed font-medium opacity-90">
-                    We noticed you like adventure tours in Switzerland! Check out our new <strong>Italian Dolomites Trek</strong> which is trending this summer with 15% early bird discount.
+                    We noticed you like adventure tours in India! Check out our new <strong>Ladakh Adventure</strong> which is trending this summer with 15% early bird discount.
                   </p>
                 </div>
-                <Button className="bg-white text-indigo-900 hover:bg-indigo-50 px-8 h-12 rounded-xl font-bold transition-all group/rec shadow-xl">
+                <Button 
+                  onClick={() => router.push('/dashboard/customer/explore/7')}
+                  className="bg-white text-indigo-900 hover:bg-indigo-50 px-8 h-12 rounded-xl font-bold transition-all group/rec shadow-xl"
+                >
                   Check it out <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/rec:translate-x-1" />
                 </Button>
               </div>
@@ -191,12 +208,12 @@ export default function WishlistPage() {
         onClose={() => setChecklistTourId(null)}
         onProceed={() => {
           if (checklistTourId) {
-            router.push(`/tours/${checklistTourId}/book`);
+            const id = checklistTourId;
             setChecklistTourId(null);
+            router.push(`/dashboard/customer/explore/${id}/book`);
           }
         }}
       />
     </DashboardLayout>
   );
 }
-

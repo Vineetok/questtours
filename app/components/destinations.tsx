@@ -1,11 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import { MapPin, ArrowRight, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, ArrowRight, X, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-// import { AuthModal } from '@/components/auth-modal';
 import { Button } from '@/components/ui/inputs/button';
+import { wishlistService } from '@/services/wishlistService';
+import { toast } from 'sonner';
+import { Tour } from '@/lib/types';
 
 const popularDestinations = [
   {
@@ -61,18 +63,47 @@ const allExtraDestinations = [
 
 interface DestinationsProps {
   showAll?: boolean;
+  linkPrefix?: string;
 }
 
-export function Destinations({ showAll = false }: DestinationsProps) {
+export function Destinations({ showAll = false, linkPrefix = '/tours' }: DestinationsProps) {
   const router = useRouter();
   const [isAllOpen, setIsAllOpen] = useState(false);
+  const [wishlistIds, setWishlistIds] = useState<(string | number)[]>([]);
 
-  // const [isAuthOpen, setIsAuthOpen] = useState(false);
+  // Sync wishlist state on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const wishlist = wishlistService.getWishlist();
+      setWishlistIds(wishlist.map(item => item.id));
+    }
+  }, []);
 
-  // const handleViewPlan = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   setIsAuthOpen(true);
-  // };
+  const destToTour = (dest: any): Tour => ({
+    id: `dest-${dest.id}`,
+    name: dest.name,
+    location: dest.location,
+    image: dest.image,
+    price: 15000,
+    rating: 4.8,
+    reviews: 120,
+    duration: '5 Days / 4 Nights',
+    highlights: ['Expert Guide', 'Luxury Stay', 'Meals Included']
+  });
+
+  const toggleWishlist = (e: React.MouseEvent, dest: any) => {
+    e.stopPropagation();
+    const tour = destToTour(dest);
+    if (wishlistService.isInWishlist(tour.id)) {
+      wishlistService.removeFromWishlist(tour.id);
+      setWishlistIds(prev => prev.filter(id => id !== tour.id));
+      toast.error(`${dest.name} removed from wishlist`);
+    } else {
+      wishlistService.addToWishlist(tour);
+      setWishlistIds(prev => [...prev, tour.id]);
+      toast.success(`${dest.name} added to wishlist`);
+    }
+  };
 
   return (
     <section id="destinations" className="py-12 sm:py-16 lg:py-20 bg-white">
@@ -99,13 +130,19 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#003B5C] flex items-center gap-1">
                     <MapPin size={10} className="text-blue-500" /> {dest.location}
                   </div>
+                  <button 
+                    onClick={(e) => toggleWishlist(e, dest)}
+                    className="absolute top-4 right-4 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-rose-500 shadow-md hover:scale-110 transition-transform"
+                  >
+                    <Heart size={16} className={wishlistIds.includes(`dest-${dest.id}`) ? "fill-rose-500" : ""} />
+                  </button>
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-[#003B5C] mb-1">{dest.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                   <Button
                     className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                    onClick={() => router.push('/login')}
+                    onClick={() => router.push(`${linkPrefix}/${dest.id}`)}
                   >
                     View Plan
                   </Button>
@@ -131,6 +168,13 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                   />
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#003B5C]/90 via-transparent to-transparent opacity-80" />
+                  
+                  <button 
+                    onClick={(e) => toggleWishlist(e, dest)}
+                    className="absolute top-6 right-6 h-10 w-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/30 hover:bg-white/40 transition-colors z-10"
+                  >
+                    <Heart size={20} className={wishlistIds.includes(`dest-${dest.id}`) ? "fill-rose-500" : ""} />
+                  </button>
 
                   <div className="absolute bottom-0 left-0 p-6 w-full">
                     <div className="flex items-center gap-1 text-blue-400 mb-1">
@@ -148,7 +192,7 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                         className="bg-white hover:bg-gray-100 text-black border-none rounded-full px-8 font-bold shadow-lg transition-all"
                         onClick={(e) => {
                           e.stopPropagation();
-                          router.push('/login');
+                          router.push(`${linkPrefix}/${dest.id}`);
                         }}
                       >
                         View Plan
@@ -201,13 +245,19 @@ export function Destinations({ showAll = false }: DestinationsProps) {
                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#003B5C] flex items-center gap-1">
                       <MapPin size={10} className="text-blue-500" /> {dest.location}
                     </div>
+                    <button 
+                      onClick={(e) => toggleWishlist(e, dest)}
+                      className="absolute top-4 right-4 h-8 w-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-rose-500 shadow-md hover:scale-110 transition-transform"
+                    >
+                      <Heart size={16} className={wishlistIds.includes(`dest-${dest.id}`) ? "fill-rose-500" : ""} />
+                    </button>
                   </div>
                   <div className="p-5">
                     <h3 className="text-xl font-bold text-[#003B5C] mb-1">{dest.name}</h3>
                     <p className="text-gray-500 text-sm mb-4">{dest.packages} Tour Packages Available</p>
                     <Button
                       className="w-full bg-white hover:bg-gray-100 text-black font-bold rounded-xl h-11 shadow-md transition-all border border-gray-200"
-                      onClick={() => router.push('/login')}
+                      onClick={() => router.push(`${linkPrefix}/${dest.id}`)}
                     >
                       View Plan
                     </Button>

@@ -3,21 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import { Plan } from '@/lib/types';
 import { adminService } from '@/services/adminService';
-import { Clock, MapPin, ChevronRight, Calendar } from 'lucide-react';
+import { Clock, MapPin, ChevronRight, Calendar, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/inputs/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { wishlistService } from '@/services/wishlistService';
+import { toast } from 'sonner';
+import { Tour } from '@/lib/types';
 
-export function FeaturedPlans() {
-  const [plans, setPlans] = useState<Plan[]>([]);
+export function FeaturedPlans({ linkPrefix = '/tours', initialShowAll = false }: { linkPrefix?: string, initialShowAll?: boolean }) {
+  const [allPlans, setAllPlans] = useState<Plan[]>([]);
+  const [displayPlans, setDisplayPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showAll, setShowAll] = useState(initialShowAll);
 
   useEffect(() => {
     const fetchPlans = async () => {
       try {
         const data = await adminService.getPlans();
-        setPlans(data.slice(0, 3) || []);
+        setAllPlans(data || []);
       } catch (error) {
         console.error('Failed to fetch plans');
       } finally {
@@ -27,7 +32,48 @@ export function FeaturedPlans() {
     fetchPlans();
   }, []);
 
-  if (plans.length === 0 && !isLoading) return null;
+  useEffect(() => {
+    if (showAll) {
+      setDisplayPlans(allPlans);
+    } else {
+      setDisplayPlans(allPlans.slice(0, 3));
+    }
+  }, [allPlans, showAll]);
+
+  const [wishlistIds, setWishlistIds] = useState<(string | number)[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const wishlist = wishlistService.getWishlist();
+      setWishlistIds(wishlist.map(item => item.id));
+    }
+  }, []);
+
+  const toggleWishlist = (e: React.MouseEvent, plan: Plan) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (wishlistService.isInWishlist(plan.id)) {
+      wishlistService.removeFromWishlist(plan.id);
+      setWishlistIds(prev => prev.filter(id => id !== plan.id));
+      toast.error(`${plan.title} removed from wishlist`);
+    } else {
+      const tour: Tour = {
+        id: plan.id,
+        name: plan.title,
+        location: plan.location,
+        price: plan.price,
+        image: plan.image,
+        rating: 4.9,
+        reviews: 500,
+        duration: plan.duration,
+      };
+      wishlistService.addToWishlist(tour);
+      setWishlistIds(prev => [...prev, plan.id]);
+      toast.success(`${plan.title} added to wishlist`);
+    }
+  };
+
+  if (allPlans.length === 0 && !isLoading) return null;
 
   return (
     <section id="plans" className="py-24 bg-white">
@@ -44,11 +90,25 @@ export function FeaturedPlans() {
               Professional day-by-day itineraries designed to give you the ultimate travel experience without the stress of planning.
             </p>
           </div>
-          <Link href="/tours">
-            <Button variant="outline" className="h-14 px-8 rounded-2xl border-2 font-black gap-2 hover:bg-gray-50 transition-all">
+          
+          {!showAll && allPlans.length > 3 && (
+            <Button 
+              onClick={() => setShowAll(true)}
+              variant="outline" 
+              className="h-14 px-8 rounded-2xl border-2 font-black gap-2 hover:bg-gray-50 transition-all"
+            >
               View All Plans <ChevronRight size={18} />
             </Button>
-          </Link>
+          )}
+          {showAll && allPlans.length > 3 && (
+             <Button 
+                onClick={() => setShowAll(false)}
+                variant="outline" 
+                className="h-14 px-8 rounded-2xl border-2 font-black gap-2 hover:bg-gray-50 transition-all"
+             >
+               Show Less
+             </Button>
+          )}
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -57,7 +117,7 @@ export function FeaturedPlans() {
               <div key={i} className="h-[450px] bg-gray-50 rounded-[2.5rem] animate-pulse"></div>
             ))
           ) : (
-            plans.map((plan) => (
+            displayPlans.map((plan) => (
               <div key={plan.id} className="group relative bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-500 hover:-translate-y-2 flex flex-col h-full">
                 <div className="relative h-64 overflow-hidden">
                   <Image
@@ -67,6 +127,14 @@ export function FeaturedPlans() {
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute top-6 right-6 z-10">
+                    <button 
+                      onClick={(e) => toggleWishlist(e, plan)} 
+                      className="h-10 w-10 bg-black/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 hover:bg-black/40 transition-colors group/wishlist"
+                    >
+                      <Heart size={18} className={`text-white transition-colors ${wishlistIds.includes(plan.id) ? "fill-rose-500 text-rose-500" : "group-hover/wishlist:fill-rose-500 group-hover/wishlist:text-rose-500"}`} />
+                    </button>
+                  </div>
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="flex items-center gap-2 text-white/80 text-xs font-bold mb-1 uppercase tracking-widest">
                       <MapPin size={12} className="text-blue-400" />
@@ -92,7 +160,7 @@ export function FeaturedPlans() {
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Starting From</span>
                       <span className="text-2xl font-black text-[#003B5C]">{formatCurrency(plan.price)}</span>
                     </div>
-                    <Link href={`/tours/${plan.id}`}>
+                    <Link href={`${linkPrefix}/${plan.id}`}>
                        <Button className="bg-blue-600 hover:bg-blue-700 h-12 w-12 rounded-2xl flex items-center justify-center p-0 shadow-lg shadow-blue-200">
                          <ChevronRight size={20} className="text-white" />
                        </Button>

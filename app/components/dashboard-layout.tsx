@@ -44,6 +44,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/display/dropdown-menu';
 
+import Image from 'next/image';
+
 interface NavItem {
   title: string;
   url: string;
@@ -76,12 +78,19 @@ export function DashboardLayout({ children, role, userName: initialUserName, use
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-gray-50/50">
         <Sidebar variant="inset" collapsible="icon" className="border-r">
-          <SidebarHeader className="h-16 flex items-center justify-between px-6 border-b">
-            <Link href="/" className="flex items-center gap-2 font-bold text-lg text-blue-600 group">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center text-white font-bold group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-shadow">
+          <SidebarHeader className="h-20 flex items-center justify-between px-4 border-b overflow-hidden">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg hidden group-data-[collapsible=icon]:flex items-center justify-center text-white font-bold shadow-sm transition-all group-hover:shadow-md">
                 Q
               </div>
-              <span className="group-data-[collapsible=icon]:hidden whitespace-nowrap">QuestTours</span>
+              <Image
+                src="/logo.png"
+                alt="QuestTours"
+                width={180}
+                height={50}
+                className="h-12 w-auto object-contain transition-all group-hover:scale-105 group-data-[collapsible=icon]:hidden"
+                priority
+              />
             </Link>
           </SidebarHeader>
           <SidebarContent className="px-0">

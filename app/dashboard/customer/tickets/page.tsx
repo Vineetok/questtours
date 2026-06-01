@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
+import { customerNavItems } from '@/lib/customer-nav-items';
 import {
-    Plus,
+  Plus,
   Clock,
   CheckCircle2,
   AlertCircle,
   MessageSquare,
-
+  Ticket as TicketIcon,
 } from 'lucide-react';
 import { ticketService, TicketData } from '@/services/ticketService';
 import { getUserData } from '@/lib/auth';

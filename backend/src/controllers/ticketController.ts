@@ -87,7 +87,7 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
     params.push(id);
 
     const result = await pool.query(updateQuery, params);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Ticket not found' });
     }
